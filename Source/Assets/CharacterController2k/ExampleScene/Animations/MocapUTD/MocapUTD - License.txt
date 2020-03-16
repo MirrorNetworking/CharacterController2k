@@ -1,0 +1,8 @@
+Mocap UTD animations are from the Mocap UTD Student Driven Mocap Library
+Source: http://mocaputd.com/
+
+Licensed as CC-BY-4.0:
+http://creativecommons.org/licenses/by/4.0/
+
+Modifications:
+  MCP_punches_01 was modified so that the upper body rotation stays fixed for the punch.

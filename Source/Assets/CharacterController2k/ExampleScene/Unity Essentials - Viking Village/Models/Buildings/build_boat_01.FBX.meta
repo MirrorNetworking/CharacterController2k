@@ -1,0 +1,159 @@
+fileFormatVersion: 2
+guid: c0e3cc442127dbd49821a91bcca81459
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: Boat_hull
+    100004: Dragon_head_01
+    100006: Dragon_head_02
+    100008: Object005
+    100010: Object060
+    100012: Scaffold_001
+    100014: Boat_scaffold
+    100016: Dragon_head
+    100018: build_boat_01
+    100020: build_boat_dragonhead_01
+    100022: build_boat_dragonhead_02
+    100024: build_boat_scaffold_01
+    100026: build_boat_01_collider
+    100028: build_boat_scaffold_01_collider
+    400000: //RootNode
+    400002: Boat_hull
+    400004: Dragon_head_01
+    400006: Dragon_head_02
+    400008: Object005
+    400010: Object060
+    400012: Scaffold_001
+    400014: Boat_scaffold
+    400016: Dragon_head
+    400018: build_boat_01
+    400020: build_boat_dragonhead_01
+    400022: build_boat_dragonhead_02
+    400024: build_boat_scaffold_01
+    400026: build_boat_01_collider
+    400028: build_boat_scaffold_01_collider
+    2300000: Boat_hull
+    2300002: Dragon_head_01
+    2300004: Dragon_head_02
+    2300006: Scaffold_001
+    2300008: Boat_scaffold
+    2300010: Dragon_head
+    2300012: build_boat_01
+    2300014: build_boat_dragonhead_01
+    2300016: build_boat_dragonhead_02
+    2300018: build_boat_scaffold_01
+    2300020: build_boat_01_collider
+    2300022: build_boat_scaffold_01_collider
+    3300000: Boat_hull
+    3300002: Dragon_head_01
+    3300004: Dragon_head_02
+    3300006: Scaffold_001
+    3300008: Boat_scaffold
+    3300010: Dragon_head
+    3300012: build_boat_01
+    3300014: build_boat_dragonhead_01
+    3300016: build_boat_dragonhead_02
+    3300018: build_boat_scaffold_01
+    3300020: build_boat_01_collider
+    3300022: build_boat_scaffold_01_collider
+    4300000: Dragon_head_02
+    4300002: Boat_hull
+    4300004: Dragon_head_01
+    4300006: Scaffold_001
+    4300008: Dragon_head
+    4300010: Boat_scaffold
+    4300012: build_boat_01
+    4300014: build_boat_dragonhead_01
+    4300016: build_boat_dragonhead_02
+    4300018: build_boat_scaffold_01
+    4300020: build_boat_01_collider
+    4300022: build_boat_scaffold_01_collider
+    9500000: //RootNode
+    2186277476908879412: ImportLogs
+  externalObjects: {}
+  materials:
+    importMaterials: 0
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 0
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    importVisibility: 0
+    importBlendShapes: 1
+    importCameras: 0
+    importLights: 0
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 0
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 0
+    previousCalculatedGlobalScale: 1
+    hasPreviousCalculatedGlobalScale: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 4
+    normalCalculationMode: 0
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 1
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
