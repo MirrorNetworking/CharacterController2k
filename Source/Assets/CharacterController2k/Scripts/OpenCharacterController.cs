@@ -1478,7 +1478,7 @@ namespace CharacterController2k
             float extraDistance = scaledRadius;
 
             Vector3 spherePosition = useBottomSphere ? GetBottomSphereWorldPosition(currentPosition) + offsetPosition
-                                                 : GetTopSphereWorldPosition(currentPosition) + offsetPosition;
+                                                     : GetTopSphereWorldPosition(currentPosition) + offsetPosition;
             if (Physics.SphereCast(spherePosition,
                                    scaledRadius,
                                    direction,
