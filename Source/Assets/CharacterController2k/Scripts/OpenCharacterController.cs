@@ -798,6 +798,51 @@ namespace CharacterController2k
             return true;
         }
 
+        // vis2k: add missing CanSetHeightAndCenter function
+        public bool CanSetHeightAndCenter(float newHeight, Vector3 newCenter)
+        {
+            // vis2k fix:
+            // IMPORTANT: adjust height BEFORE ever calculating the center.
+            //            previously it was adjusted AFTER calculating the center.
+            //            so the center would NOT EXACTLY be the center anymore
+            //            if the height was adjusted.
+            //            => causing all future center calculations to be wrong.
+            //            => causing center.y to increase every time
+            //            => causing the character to float in the air over time
+            //            see also: https://github.com/vis2k/uMMORPG/issues/36
+            newHeight = ValidateHeight(newHeight);
+
+            // debug draw
+            Debug.DrawLine(
+                GetTopSphereWorldPositionSimulated(transform, newCenter, newHeight, scaledRadius),
+                GetBottomSphereWorldPositionSimulated(transform, newCenter, newHeight, scaledRadius),
+                Color.yellow,
+                3f
+            );
+
+            // check the overlap capsule
+            int hits = Physics.OverlapCapsuleNonAlloc(
+                GetTopSphereWorldPositionSimulated(transform, newCenter, newHeight, scaledRadius),
+                GetBottomSphereWorldPositionSimulated(transform, newCenter, newHeight, scaledRadius),
+                radius,
+                m_OverlapCapsuleColliders,
+                GetCollisionLayerMask(),
+                triggerQuery);
+
+            for (int i = 0; i < hits; ++i)
+            {
+                // a collider that is not self?
+                Collider col = m_OverlapCapsuleColliders[i];
+                if (col != m_CapsuleCollider)
+                {
+                    return false;
+                }
+            }
+
+            // no overlaps
+            return true;
+        }
+
         // Reset the capsule's height to the default value.
         //   preserveFootPosition: Adjust the capsule's center to preserve the foot position?
         //   checkForPenetration: Check for collision, and then de-penetrate if there's collision?
