@@ -9,7 +9,7 @@ namespace CharacterController2k
         Vector3? stuckPosition;
 
         // Count how long the character is in the same position.
-        int suckPositionCount;
+        int stuckPositionCount;
 
         // If character's position does not change by more than this amount then we assume the character is stuck.
         const float k_StuckDistance = 0.001f;
@@ -30,7 +30,7 @@ namespace CharacterController2k
         public void OnMoveLoop()
         {
             hitCount = 0;
-            suckPositionCount = 0;
+            stuckPositionCount = 0;
             stuckPosition = null;
             isStuck = false;
         }
@@ -68,15 +68,15 @@ namespace CharacterController2k
                 }
                 else if (Vector3.Distance(stuckPosition.Value, characterPosition) <= k_StuckDistance)
                 {
-                    suckPositionCount++;
-                    if (suckPositionCount > k_MaxStuckPositionCount)
+                    stuckPositionCount++;
+                    if (stuckPositionCount > k_MaxStuckPositionCount)
                     {
                         isStuck = true;
                     }
                 }
                 else
                 {
-                    suckPositionCount = 0;
+                    stuckPositionCount = 0;
                     stuckPosition = null;
                 }
             }
@@ -85,7 +85,7 @@ namespace CharacterController2k
             {
                 isStuck = false;
                 hitCount = 0;
-                suckPositionCount = 0;
+                stuckPositionCount = 0;
                 stuckPosition = null;
 
                 return true;
