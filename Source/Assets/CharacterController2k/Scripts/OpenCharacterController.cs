@@ -881,8 +881,10 @@ namespace CharacterController2k
         //      currentPosition: position of the character
         //      checkForPenetration: Check for collision, and then de-penetrate if there's collision?
         //      updateGrounded: Update the grounded state? This uses a cast, so only set it to true if you need it.
-        void ValidateCapsule(bool updateCapsuleCollider, ref Vector3 currentPosition, bool checkForPenetration = false,
-            bool updateGrounded = false)
+        void ValidateCapsule(bool updateCapsuleCollider,
+                             ref Vector3 currentPosition,
+                             bool checkForPenetration = false,
+                             bool updateGrounded = false)
         {
             m_SlopeLimit = Mathf.Clamp(m_SlopeLimit, 0.0f, k_MaxSlopeLimit);
             m_SkinWidth = Mathf.Clamp(m_SkinWidth, k_MinSkinWidth, float.MaxValue);
