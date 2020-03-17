@@ -309,7 +309,7 @@ namespace CharacterController2k
 #endif
 
         // Move the character. This function does not apply any gravity.
-        // <param name="moveVector">Move along this vector.</param>
+        //   moveVector: Move along this vector.
         // <returns>CollisionFlags is the summary of collisions that occurred during the Move.</returns>
         public CollisionFlags Move(Vector3 moveVector)
         {
@@ -318,8 +318,8 @@ namespace CharacterController2k
         }
 
         // Set the position of the character.
-        // <param name="position">Position to set.</param>
-        // <param name="updateGrounded">Update the grounded state? This uses a cast, so only set it to true if you need it.</param>
+        //   position: Position to set.
+        //   updateGrounded: Update the grounded state? This uses a cast, so only set it to true if you need it.
         public void SetPosition(Vector3 position, bool updateGrounded)
         {
             transform.position = position;
@@ -331,14 +331,14 @@ namespace CharacterController2k
         }
 
         // Compute the minimal translation required to separate the character from the collider.
-        // <param name="positionOffset">Position offset to add to the capsule collider's position.</param>
-        // <param name="collider">The collider to test.</param>
-        // <param name="colliderPosition">Position of the collider.</param>
-        // <param name="colliderRotation">Rotation of the collider.</param>
-        // <param name="direction">Direction along which the translation required to separate the colliders apart is minimal.</param>
-        // <param name="distance">The distance along direction that is required to separate the colliders apart.</param>
-        // <param name="includeSkinWidth">Include the skin width in the test?</param>
-        // <param name="currentPosition">Position of the character</param>
+        //   positionOffset: Position offset to add to the capsule collider's position.
+        //   collider: The collider to test.
+        //   colliderPosition: Position of the collider.
+        //   colliderRotation: Rotation of the collider.
+        //   direction: Direction along which the translation required to separate the colliders apart is minimal.
+        //   distance: The distance along direction that is required to separate the colliders apart.
+        //   includeSkinWidth: Include the skin width in the test?
+        //   currentPosition: Position of the character
         // <returns>True if found penetration.</returns>
         bool ComputePenetration(Vector3 positionOffset,
                                        Collider collider, Vector3 colliderPosition, Quaternion colliderRotation,
@@ -375,13 +375,13 @@ namespace CharacterController2k
         }
 
         // Check for collision below the character, using a ray or sphere cast.
-        // <param name="distance">Distance to check.</param>
-        // <param name="hitInfo">Get the hit info.</param>
-        // <param name="offsetPosition">Position offset. If we want to do a cast relative to the character's current position.</param>
-        // <param name="useSphereCast">Use a sphere cast? If false then use a ray cast.</param>
-        // <param name="useSecondSphereCast">The second cast includes the skin width. Ideally only needed for human controlled player, for more accuracy.</param>
-        // <param name="adjustPositionSlightly">Adjust position slightly up, in case it's already inside an obstacle.</param>
-        // <param name="currentPosition">Position of the character</param>
+        //   distance: Distance to check.
+        //   hitInfo: Get the hit info.
+        //   offsetPosition: Position offset. If we want to do a cast relative to the character's current position.
+        //   useSphereCast: Use a sphere cast? If false then use a ray cast.
+        //   useSecondSphereCast: The second cast includes the skin width. Ideally only needed for human controlled player, for more accuracy.
+        //   adjustPositionSlightly: Adjust position slightly up, in case it's already inside an obstacle.
+        //   currentPosition: Position of the character
         // <returns>True if collision occurred.</returns>
         public bool CheckCollisionBelow(float distance, out RaycastHit hitInfo, Vector3 currentPosition,
                                         Vector3 offsetPosition,
@@ -458,10 +458,10 @@ namespace CharacterController2k
         }
 
         // Set the capsule's height and center.
-        // <param name="newHeight">The new height.</param>
-        // <param name="newCenter">The new center.</param>
-        // <param name="checkForPenetration">Check for collision, and then de-penetrate if there's collision?</param>
-        // <param name="updateGrounded">Update the grounded state? This uses a cast, so only set it to true if you need it.</param>
+        //   newHeight: The new height.
+        //   newCenter: The new center.
+        //   checkForPenetration: Check for collision, and then de-penetrate if there's collision?
+        //   updateGrounded: Update the grounded state? This uses a cast, so only set it to true if you need it.
         // <returns>Returns the height that was set, which may be different to newHeight because of validation.</returns>
         public float SetHeightAndCenter(float newHeight, Vector3 newCenter, bool checkForPenetration,
                                         bool updateGrounded)
@@ -509,8 +509,8 @@ namespace CharacterController2k
         }
 
         // Reset the capsule's height and center to the default values.
-        // <param name="checkForPenetration">Check for collision, and then de-penetrate if there's collision?</param>
-        // <param name="updateGrounded">Update the grounded state? This uses a cast, so only set it to true if you need it.</param>
+        //   checkForPenetration: Check for collision, and then de-penetrate if there's collision?
+        //   updateGrounded: Update the grounded state? This uses a cast, so only set it to true if you need it.
         // <returns>Returns the reset height.</returns>
         public float ResetHeightAndCenter(bool checkForPenetration, bool updateGrounded)
         {
@@ -524,9 +524,9 @@ namespace CharacterController2k
         }
 
         // Set the capsule's center (local).
-        // <param name="newCenter">The new center.</param>
-        // <param name="checkForPenetration">Check for collision, and then de-penetrate if there's collision?</param>
-        // <param name="updateGrounded">Update the grounded state? This uses a cast, so only set it to true if you need it.</param>
+        //   newCenter: The new center.
+        //   checkForPenetration: Check for collision, and then de-penetrate if there's collision?
+        //   updateGrounded: Update the grounded state? This uses a cast, so only set it to true if you need it.
         public void SetCenter(Vector3 newCenter, bool checkForPenetration, bool updateGrounded)
         {
             Vector3 oldCenter = m_Center;
@@ -569,8 +569,8 @@ namespace CharacterController2k
         }
 
         // Reset the capsule's center to the default value.
-        // <param name="checkForPenetration">Check for collision, and then de-penetrate if there's collision?</param>
-        // <param name="updateGrounded">Update the grounded state? This uses a cast, so only set it to true if you need it.</param>
+        //   checkForPenetration: Check for collision, and then de-penetrate if there's collision?
+        //   updateGrounded: Update the grounded state? This uses a cast, so only set it to true if you need it.
         public void ResetCenter(bool checkForPenetration, bool updateGrounded)
         {
             SetCenter(m_DefaultCenter, checkForPenetration, updateGrounded);
@@ -591,10 +591,10 @@ namespace CharacterController2k
 
         // Set the capsule's height (local). Minimum limit is double the capsule radius size.
         // Call CanSetHeight if you want to test if height can change, e.g. when changing from crouch to stand.
-        // <param name="newHeight">The new height.</param>
-        // <param name="preserveFootPosition">Adjust the capsule's center to preserve the foot position?</param>
-        // <param name="checkForPenetration">Check for collision, and then de-penetrate if there's collision?</param>
-        // <param name="updateGrounded">Update the grounded state? This uses a cast, so only set it to true if you need it.</param>
+        //   newHeight: The new height.
+        //   preserveFootPosition: Adjust the capsule's center to preserve the foot position?
+        //   checkForPenetration: Check for collision, and then de-penetrate if there's collision?
+        //   updateGrounded: Update the grounded state? This uses a cast, so only set it to true if you need it.
         // <returns>Returns the height that was set, which may be different to newHeight because of validation.</returns>
         public float SetHeight(float newHeight, bool preserveFootPosition, bool checkForPenetration,
                                bool updateGrounded)
@@ -761,9 +761,9 @@ namespace CharacterController2k
         }
 
         // Reset the capsule's height to the default value.
-        // <param name="preserveFootPosition">Adjust the capsule's center to preserve the foot position?</param>
-        // <param name="checkForPenetration">Check for collision, and then de-penetrate if there's collision?</param>
-        // <param name="updateGrounded">Update the grounded state? This uses a cast, so only set it to true if you need it.</param>
+        //   preserveFootPosition: Adjust the capsule's center to preserve the foot position?
+        //   checkForPenetration: Check for collision, and then de-penetrate if there's collision?
+        //   updateGrounded: Update the grounded state? This uses a cast, so only set it to true if you need it.
         // <returns>Returns the reset height.</returns>
         public float ResetHeight(bool preserveFootPosition, bool checkForPenetration, bool updateGrounded)
         {
