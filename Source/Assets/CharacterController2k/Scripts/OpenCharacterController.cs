@@ -1902,7 +1902,7 @@ namespace CharacterController2k
             float slideSpeedScale = Mathf.Clamp01(slopeAngle / k_MaxSlopeSlideAngle);
 
             // Apply gravity and slide along the obstacle
-            float gravity = Mathf.Abs(UnityEngine.Physics.gravity.y) * m_SlideGravityScale * slideSpeedScale;
+            float gravity = Mathf.Abs(Physics.gravity.y) * m_SlideGravityScale * slideSpeedScale;
             float verticalVelocity = Mathf.Clamp(gravity * m_SlidingDownSlopeTime, 0.0f, Mathf.Abs(m_SlideMaxSpeed));
             Vector3 moveVector = new Vector3(0.0f, -verticalVelocity, 0.0f) * dt;
 
