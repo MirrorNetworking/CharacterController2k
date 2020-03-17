@@ -31,8 +31,8 @@ namespace CharacterController2k
         public Vector3 rootTransformOffset = Vector3.zero;
 
         [Header("Collision")]
-        [SerializeField, Tooltip("Limits the collider to only climb slopes that are less steep (in degrees) than the indicated value.")]
-        float m_SlopeLimit = 45.0f;
+        [FormerlySerializedAs("m_SlopeLimit"), Tooltip("Limits the collider to only climb slopes that are less steep (in degrees) than the indicated value.")]
+        public float slopeLimit = 45.0f;
 
         [SerializeField, Tooltip("The character will step up a stair only if it is closer to the ground than the indicated value. " +
                  "This should not be greater than the Character Controller’s height or it will generate an error. " +
@@ -241,7 +241,6 @@ namespace CharacterController2k
         public Vector3 center => m_Center;
         public float height => m_Height;
         public float radius => m_Radius;
-        public float slopeLimit => m_SlopeLimit;
         public Bounds bounds => m_CapsuleCollider.bounds;
 
         // Initialise the capsule and rigidbody, and set the root position.
@@ -252,7 +251,7 @@ namespace CharacterController2k
             SetRootToOffset();
 
             m_InvRescaleFactor = 1 / Mathf.Cos(m_MinSlowAgainstWallsAngle * Mathf.Deg2Rad);
-            m_SlopeMovementOffset =  m_StepOffset / Mathf.Tan(m_SlopeLimit * Mathf.Deg2Rad);
+            m_SlopeMovementOffset =  m_StepOffset / Mathf.Tan(slopeLimit * Mathf.Deg2Rad);
         }
 
         // Set the root position.
@@ -831,7 +830,7 @@ namespace CharacterController2k
                              bool checkForPenetration = false,
                              bool updateGrounded = false)
         {
-            m_SlopeLimit = Mathf.Clamp(m_SlopeLimit, 0.0f, k_MaxSlopeLimit);
+            slopeLimit = Mathf.Clamp(slopeLimit, 0.0f, k_MaxSlopeLimit);
             m_SkinWidth = Mathf.Clamp(m_SkinWidth, k_MinSkinWidth, float.MaxValue);
             float oldHeight = m_Height;
             m_Height = ValidateHeight(m_Height);
@@ -1197,7 +1196,7 @@ namespace CharacterController2k
             }
 
             float slopeAngle = Vector3.Angle(Vector3.up, hitInfoCapsule.normal);
-            bool slopeIsSteep = slopeAngle > m_SlopeLimit &&
+            bool slopeIsSteep = slopeAngle > slopeLimit &&
                                 slopeAngle < k_MaxSlopeLimit &&
                                 Vector3.Dot(direction, hitInfoCapsule.normal) < 0.0f;
 
@@ -1540,7 +1539,7 @@ namespace CharacterController2k
             {
                 // Test if character is trying to walk up a steep slope
                 float slopeAngle = Vector3.Angle(Vector3.up, hitNormal);
-                slopeIsSteep = slopeAngle > m_SlopeLimit && slopeAngle < k_MaxSlopeLimit && Vector3.Dot(direction, hitNormal) < 0.0f;
+                slopeIsSteep = slopeAngle > slopeLimit && slopeAngle < k_MaxSlopeLimit && Vector3.Dot(direction, hitNormal) < 0.0f;
             }
 
             // Set moveVector
@@ -1832,7 +1831,7 @@ namespace CharacterController2k
             }
 
             float slopeAngle = Vector3.Angle(Vector3.up, hitNormal);
-            bool slopeIsSteep = slopeAngle > m_SlopeLimit;
+            bool slopeIsSteep = slopeAngle > slopeLimit;
             if (!slopeIsSteep || slopeAngle >= k_MaxSlopeSlideAngle)
             {
                 return false;
