@@ -11,21 +11,13 @@ namespace CharacterController2k
 {
 	public static class Extensions
 	{
-		/// <summary>
-		/// Is floatA equal to zero? Takes floating point inaccuracy into account, by using Epsilon.
-		/// </summary>
-		/// <param name="floatA"></param>
-		/// <returns></returns>
+		// Is floatA equal to zero? Takes floating point inaccuracy into account, by using Epsilon.
 		public static bool IsEqualToZero(this float floatA)
 		{
 			return Mathf.Abs(floatA) < Mathf.Epsilon;
 		}
 
-		/// <summary>
-		/// Is floatA not equal to zero? Takes floating point inaccuracy into account, by using Epsilon.
-		/// </summary>
-		/// <param name="floatA"></param>
-		/// <returns></returns>
+		// Is floatA not equal to zero? Takes floating point inaccuracy into account, by using Epsilon.
 		public static bool NotEqualToZero(this float floatA)
 		{
 			return Mathf.Abs(floatA) > Mathf.Epsilon;
