@@ -733,35 +733,7 @@ namespace CharacterController2k
                 return true;
             }
 
-            // debug draw
-            Debug.DrawLine(
-                GetTopSphereWorldPositionSimulated(transform, newCenter, newHeight, scaledRadius),
-                GetBottomSphereWorldPositionSimulated(transform, newCenter, newHeight, scaledRadius),
-                Color.yellow,
-                3f
-            );
-
-            // check the overlap capsule
-            int hits = Physics.OverlapCapsuleNonAlloc(
-                GetTopSphereWorldPositionSimulated(transform, newCenter, newHeight, scaledRadius),
-                GetBottomSphereWorldPositionSimulated(transform, newCenter, newHeight, scaledRadius),
-                radius,
-                m_OverlapCapsuleColliders,
-                GetCollisionLayerMask(),
-                triggerQuery);
-
-            for (int i = 0; i < hits; ++i)
-            {
-                // a collider that is not self?
-                Collider col = m_OverlapCapsuleColliders[i];
-                if (col != m_CapsuleCollider)
-                {
-                    return false;
-                }
-            }
-
-            // no overlaps
-            return true;
+            return CanSetHeightAndCenter(newHeight, newCenter);
         }
 
         // vis2k: add missing CanSetCenter function
