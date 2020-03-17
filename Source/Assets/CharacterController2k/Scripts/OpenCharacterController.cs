@@ -1813,13 +1813,13 @@ namespace CharacterController2k
         // Auto-slide down steep slopes.
         void UpdateSlideDownSlopes()
         {
-            float dt = Time.deltaTime;
-            if (!UpdateSlideDownSlopesInternal(dt))
+            float deltaTime = Time.deltaTime;
+            if (!UpdateSlideDownSlopesInternal(deltaTime))
             {
                 if (isSlidingDownSlope)
                 {
-                    m_SlidingDownSlopeTime += dt;
-                    m_DelayStopSlidingDownSlopeTime += dt;
+                    m_SlidingDownSlopeTime += deltaTime;
+                    m_DelayStopSlidingDownSlopeTime += deltaTime;
 
                     // Slight delay before we stop sliding down slopes. To handle cases where sliding test fails for a few frames.
                     if (m_DelayStopSlidingDownSlopeTime > k_StopSlideDownSlopeDelay)
