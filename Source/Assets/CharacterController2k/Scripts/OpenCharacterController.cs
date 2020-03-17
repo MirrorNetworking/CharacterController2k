@@ -421,12 +421,12 @@ namespace CharacterController2k
                 Vector3 start = GetFootWorldPosition(currentPosition) + offsetPosition + Vector3.up * extraDistance;
                 Debug.DrawLine(start, start + Vector3.down * (distance + extraDistance), Color.red);
 #endif
-                if (UnityEngine.Physics.Raycast(GetFootWorldPosition(currentPosition) + offsetPosition + Vector3.up * extraDistance,
-                                                Vector3.down,
-                                                out hitInfo,
-                                                distance + extraDistance,
-                                                GetCollisionLayerMask(),
-                                                m_TriggerQuery))
+                if (Physics.Raycast(GetFootWorldPosition(currentPosition) + offsetPosition + Vector3.up * extraDistance,
+                                    Vector3.down,
+                                    out hitInfo,
+                                    distance + extraDistance,
+                                    GetCollisionLayerMask(),
+                                    m_TriggerQuery))
                 {
                     didCollide = true;
                     hitInfo.distance = Mathf.Max(0.0f, hitInfo.distance - extraDistance);
