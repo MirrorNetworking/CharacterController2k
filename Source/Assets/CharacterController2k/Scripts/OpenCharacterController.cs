@@ -955,8 +955,7 @@ namespace CharacterController2k
             // Do the move loop
             MoveLoop(moveVector, tryToStickToGround, slideWhenMovingDown, doNotStepOffset);
 
-            bool doDownCast = tryToStickToGround ||
-                              moveVector.y <= 0.0f;
+            bool doDownCast = tryToStickToGround || moveVector.y <= 0.0f;
             UpdateGrounded(collisionFlags, doDownCast);
 
             // vis2k: fix velocity
