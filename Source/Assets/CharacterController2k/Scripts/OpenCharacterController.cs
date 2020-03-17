@@ -82,8 +82,9 @@ namespace CharacterController2k
         [Tooltip("Can character slide vertically when touching the ceiling? (For example, if ceiling is sloped.)")]
         public bool slideAlongCeiling = true;
 
-        [SerializeField, Tooltip("Should the character slow down against walls?")]
-        bool m_SlowAgainstWalls = false;
+        [FormerlySerializedAs("m_SlowAgainstWalls")]
+        [Tooltip("Should the character slow down against walls?")]
+        public bool slowAgainstWalls = false;
 
         [SerializeField, Range(0.0f, 90.0f), Tooltip("The minimal angle from which the character will start slowing down on walls.")]
         float m_MinSlowAgainstWallsAngle = 10.0f;
@@ -223,9 +224,6 @@ namespace CharacterController2k
 
         // Default height of the capsule (e.g. for resetting it).
         public float defaultHeight { get; private set; }
-
-        // Is the character able to be slowed down by walls?
-        public bool slowAgainstWalls { get { return m_SlowAgainstWalls; } }
 
         // Is the character sliding and has been sliding less than slideDownTimeUntilJumAllowed
         public bool startedSlide { get { return isSlidingDownSlope && m_SlidingDownSlopeTime <= m_SlideStartTime; } }
@@ -1569,7 +1567,7 @@ namespace CharacterController2k
                 project.Normalize();
 
                 // Slide along the obstacle
-                bool isWallSlowingDown = m_SlowAgainstWalls && m_MinSlowAgainstWallsAngle < 90.0f;
+                bool isWallSlowingDown = slowAgainstWalls && m_MinSlowAgainstWallsAngle < 90.0f;
 
                 if (isWallSlowingDown)
                 {
