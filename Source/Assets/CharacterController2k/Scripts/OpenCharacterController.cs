@@ -62,8 +62,9 @@ namespace CharacterController2k
                  "Ideally, x and z should be zero to avoid rotating into another collider.")]
         public Vector3 center;
 
-        [SerializeField, Tooltip("Length of the Capsule Collider’s radius. This is essentially the width of the collider.")]
-        float m_Radius = 0.5f;
+        [FormerlySerializedAs("m_Radius")]
+        [Tooltip("Length of the Capsule Collider’s radius. This is essentially the width of the collider.")]
+        public float radius = 0.5f;
 
         [SerializeField, Tooltip("The Character’s Capsule Collider height. It should be at least double the radius.")]
         float m_Height = 2.0f;
@@ -233,7 +234,7 @@ namespace CharacterController2k
             {
                 Vector3 scale = transform.lossyScale;
                 float maxScale = Mathf.Max(Mathf.Max(scale.x, scale.y), scale.z);
-                return m_Radius * maxScale;
+                return radius * maxScale;
             }
         }
 
@@ -243,7 +244,6 @@ namespace CharacterController2k
         // vis2k: add old character controller compatibility
         public Vector3 velocity => m_Velocity;
         public float height => m_Height;
-        public float radius => m_Radius;
         public Bounds bounds => m_CapsuleCollider.bounds;
 
         // Initialise the capsule and rigidbody, and set the root position.
@@ -356,7 +356,7 @@ namespace CharacterController2k
 
             if (includeSkinWidth)
             {
-                m_CapsuleCollider.radius = m_Radius + skinWidth;
+                m_CapsuleCollider.radius = radius + skinWidth;
                 m_CapsuleCollider.height = m_Height + (skinWidth * 2.0f);
             }
 
@@ -368,7 +368,7 @@ namespace CharacterController2k
                                                      out direction, out distance);
             if (includeSkinWidth)
             {
-                m_CapsuleCollider.radius = m_Radius;
+                m_CapsuleCollider.radius = radius;
                 m_CapsuleCollider.height = m_Height;
             }
 
@@ -587,7 +587,7 @@ namespace CharacterController2k
         // The valid height.
         public float ValidateHeight(float newHeight)
         {
-            return Mathf.Clamp(newHeight, m_Radius * 2.0f, float.MaxValue);
+            return Mathf.Clamp(newHeight, radius * 2.0f, float.MaxValue);
         }
 
         // Set the capsule's height (local). Minimum limit is double the capsule radius size.
@@ -811,7 +811,7 @@ namespace CharacterController2k
 
             // Copy settings to the capsule collider
             m_CapsuleCollider.center = center;
-            m_CapsuleCollider.radius = m_Radius;
+            m_CapsuleCollider.radius = radius;
             m_CapsuleCollider.height = m_Height;
 
             // Ensure that the rigidbody is kinematic and does not use gravity
@@ -844,7 +844,7 @@ namespace CharacterController2k
                 {
                     // Copy settings to the capsule collider
                     m_CapsuleCollider.center = center;
-                    m_CapsuleCollider.radius = m_Radius;
+                    m_CapsuleCollider.radius = radius;
                     m_CapsuleCollider.height = m_Height;
                 }
                 else if (!Mathf.Approximately(m_Height, oldHeight))
