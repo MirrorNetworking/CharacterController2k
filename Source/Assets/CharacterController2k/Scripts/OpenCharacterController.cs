@@ -1675,10 +1675,11 @@ namespace CharacterController2k
         //      includeSkinWidth: Include the skin width in the test?
         //      offsetPosition: Offset position, if we want to test somewhere relative to the capsule's position.
         //      hitInfo: The hit info.
-        bool GetPenetrationInfo(out float getDistance, out Vector3 getDirection, Vector3 currentPosition,
-                                        bool includeSkinWidth = true,
-                                        Vector3? offsetPosition = null,
-                                        RaycastHit? hitInfo = null)
+        bool GetPenetrationInfo(out float getDistance, out Vector3 getDirection,
+                                Vector3 currentPosition,
+                                bool includeSkinWidth = true,
+                                Vector3? offsetPosition = null,
+                                RaycastHit? hitInfo = null)
         {
             getDistance = 0.0f;
             getDirection = Vector3.zero;
