@@ -1494,12 +1494,12 @@ namespace CharacterController2k
         }
 
         // Do a sphere cast, including the skin width. Sphere position is at the top or bottom of the capsule.
-        //      direction">Direction to cast.
-        //      distance">Distance to cast.
+        //      direction: Direction to cast.
+        //      distance: Distance to cast.
         //      currentPosition: position of the character
-        //      bigRadiusHitInfo">Hit info.
-        //      offsetPosition">Offset position, if we want to test somewhere relative to the capsule's position.
-        //      useBottomSphere">Use the sphere at the bottom of the capsule? If false then use the top sphere.
+        //      bigRadiusHitInfo: Hit info.
+        //      offsetPosition: Offset position, if we want to test somewhere relative to the capsule's position.
+        //      useBottomSphere: Use the sphere at the bottom of the capsule? If false then use the top sphere.
         bool BigSphereCast(Vector3 direction, float distance, Vector3 currentPosition,
                                    out RaycastHit bigRadiusHitInfo,
                                    Vector3 offsetPosition,
