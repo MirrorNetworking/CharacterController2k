@@ -86,8 +86,9 @@ namespace CharacterController2k
         [Tooltip("Should the character slow down against walls?")]
         public bool slowAgainstWalls = false;
 
-        [SerializeField, Range(0.0f, 90.0f), Tooltip("The minimal angle from which the character will start slowing down on walls.")]
-        float m_MinSlowAgainstWallsAngle = 10.0f;
+        [FormerlySerializedAs("m_MinSlowAgainstWallsAngle")]
+        [Range(0.0f, 90.0f), Tooltip("The minimal angle from which the character will start slowing down on walls.")]
+        public float minSlowAgainstWallsAngle = 10.0f;
 
         [SerializeField, Tooltip("The desired interaction that cast calls should make against triggers")]
         QueryTriggerInteraction m_TriggerQuery = QueryTriggerInteraction.Ignore;
@@ -250,7 +251,7 @@ namespace CharacterController2k
 
             SetRootToOffset();
 
-            m_InvRescaleFactor = 1 / Mathf.Cos(m_MinSlowAgainstWallsAngle * Mathf.Deg2Rad);
+            m_InvRescaleFactor = 1 / Mathf.Cos(minSlowAgainstWallsAngle * Mathf.Deg2Rad);
             m_SlopeMovementOffset =  stepOffset / Mathf.Tan(slopeLimit * Mathf.Deg2Rad);
         }
 
@@ -276,7 +277,7 @@ namespace CharacterController2k
             transform.position = position;
             SetRootToOffset();
 
-            m_InvRescaleFactor = 1 / Mathf.Cos(m_MinSlowAgainstWallsAngle * Mathf.Deg2Rad);
+            m_InvRescaleFactor = 1 / Mathf.Cos(minSlowAgainstWallsAngle * Mathf.Deg2Rad);
         }
 
         // Draws the debug Gizmos
@@ -1567,7 +1568,7 @@ namespace CharacterController2k
                 project.Normalize();
 
                 // Slide along the obstacle
-                bool isWallSlowingDown = slowAgainstWalls && m_MinSlowAgainstWallsAngle < 90.0f;
+                bool isWallSlowingDown = slowAgainstWalls && minSlowAgainstWallsAngle < 90.0f;
 
                 if (isWallSlowingDown)
                 {
