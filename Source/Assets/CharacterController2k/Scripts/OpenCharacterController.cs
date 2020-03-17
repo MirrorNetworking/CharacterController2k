@@ -103,8 +103,9 @@ namespace CharacterController2k
         [Tooltip("The maximum speed that the character can slide downwards")]
         public float slideMaxSpeed = 10.0f;
 
-        [SerializeField, Tooltip("Gravity scale to apply when sliding down slopes.")]
-        float m_SlideGravityScale = 1.0f;
+        [FormerlySerializedAs("m_SlideGravityScale")]
+        [Tooltip("Gravity scale to apply when sliding down slopes.")]
+        public float slideGravityScale = 1.0f;
 
         [SerializeField, Tooltip("The time (in seconds) after initiating a slide classified as a slide start. Used to disable jumping.")]
         float m_SlideStartTime = 0.25f;
@@ -1850,7 +1851,7 @@ namespace CharacterController2k
             float slideSpeedScale = Mathf.Clamp01(slopeAngle / k_MaxSlopeSlideAngle);
 
             // Apply gravity and slide along the obstacle
-            float gravity = Mathf.Abs(Physics.gravity.y) * m_SlideGravityScale * slideSpeedScale;
+            float gravity = Mathf.Abs(Physics.gravity.y) * slideGravityScale * slideSpeedScale;
             float verticalVelocity = Mathf.Clamp(gravity * m_SlidingDownSlopeTime, 0.0f, Mathf.Abs(slideMaxSpeed));
             Vector3 moveVector = new Vector3(0.0f, -verticalVelocity, 0.0f) * dt;
 
