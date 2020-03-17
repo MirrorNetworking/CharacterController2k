@@ -199,7 +199,8 @@ namespace CharacterController2k
         readonly Collider[] m_PenetrationInfoColliders = new Collider[k_MaxOverlapColliders];
 
         // Velocity of the last movement. It's the new position minus the old position.
-        Vector3 m_Velocity;
+        // (should only be set internally, but needs to be readable for animations)
+        public Vector3 velocity { get; private set; }
 
         // Factor used to perform a slow down against the walls.
         float m_InvRescaleFactor;
@@ -246,7 +247,6 @@ namespace CharacterController2k
         }
 
         // vis2k: add old character controller compatibility
-        public Vector3 velocity => m_Velocity;
         public Bounds bounds => m_CapsuleCollider.bounds;
 
         // Initialise the capsule and rigidbody, and set the root position.
@@ -911,7 +911,7 @@ namespace CharacterController2k
             // vis2k: fix velocity
             // set velocity, which is direction * speed. we don't have speed,
             // but we do have elapsed time
-            m_Velocity = (transform.position - m_StartPosition) / Time.deltaTime;
+            velocity = (transform.position - m_StartPosition) / Time.deltaTime;
 
             BroadcastCollisionEvent();
         }
@@ -1862,7 +1862,7 @@ namespace CharacterController2k
 
             // Preserve collision flags and velocity. Because user expects them to only be set when manually calling Move/SimpleMove.
             CollisionFlags oldCollisionFlags = collisionFlags;
-            Vector3 oldVelocity = m_Velocity;
+            Vector3 oldVelocity = velocity;
 
             MoveInternal(moveVector, true, true, true);
             if ((collisionFlags & CollisionFlags.CollidedSides) != 0)
@@ -1872,7 +1872,7 @@ namespace CharacterController2k
             }
 
             collisionFlags = oldCollisionFlags;
-            m_Velocity = oldVelocity;
+            velocity = oldVelocity;
 
             return didSlide;
         }
