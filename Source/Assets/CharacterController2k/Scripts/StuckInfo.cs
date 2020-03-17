@@ -23,12 +23,12 @@ namespace CharacterController2k
         /// <summary>
         /// Is the character stuck in the current move loop iteration?
         /// </summary>
-        public bool isStuck { get; set; }
+        public bool isStuck;
 
         /// <summary>
         /// Count the number of collisions during movement, to determine when the character gets stuck.
         /// </summary>
-        public int hitCount { get; set; }
+        public int hitCount;
 
 
         /// <summary>
