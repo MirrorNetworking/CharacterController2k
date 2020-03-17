@@ -95,8 +95,9 @@ namespace CharacterController2k
         public QueryTriggerInteraction triggerQuery = QueryTriggerInteraction.Ignore;
 
         [Header("Sliding")]
-        [SerializeField, Tooltip("Should the character slide down slopes when their angle is more than the slope limit?")]
-        bool m_SlideDownSlopes = true;
+        [FormerlySerializedAs("m_SlideDownSlopes")]
+        [Tooltip("Should the character slide down slopes when their angle is more than the slope limit?")]
+        public bool slideDownSlopes = true;
 
         [SerializeField, Tooltip("The maximum speed that the character can slide downwards")]
         float m_SlideMaxSpeed = 10.0f;
@@ -1787,7 +1788,7 @@ namespace CharacterController2k
         // Auto-slide down steep slopes.
         bool UpdateSlideDownSlopesInternal(float dt)
         {
-            if (!m_SlideDownSlopes || !isGrounded)
+            if (!slideDownSlopes || !isGrounded)
             {
                 return false;
             }
