@@ -8,29 +8,19 @@ namespace CharacterController2k
         // Intervals (seconds) in which to check if the capsule's height/center must be changed.
         const float k_PendingUpdateIntervals = 1.0f;
 
-        /// <summary>
-        /// Height to set.
-        /// </summary>
+        // Height to set.
         public float? height { get; private set; }
 
-        /// <summary>
-        /// Center to set.
-        /// </summary>
+        // Center to set.
         public Vector3? center { get; private set; }
 
-        /// <summary>
-        /// Time.time when the height must be set.
-        /// </summary>
+        // Time.time when the height must be set.
         public float? heightTime { get; private set; }
 
-        /// <summary>
-        /// Time.time when the center must be set.
-        /// </summary>
+        // Time.time when the center must be set.
         public float? centerTime { get; private set; }
 
-        /// <summary>
-        /// Set the pending height.
-        /// </summary>
+        // Set the pending height.
         public void SetHeight(float newHeight)
         {
             height = newHeight;
@@ -40,9 +30,7 @@ namespace CharacterController2k
             }
         }
 
-        /// <summary>
-        /// Set the pending center.
-        /// </summary>
+        // Set the pending center.
         public void SetCenter(Vector3 newCenter)
         {
             center = newCenter;
@@ -52,45 +40,35 @@ namespace CharacterController2k
             }
         }
 
-        /// <summary>
-        /// Set the pending height and center.
-        /// </summary>
+        // Set the pending height and center.
         public void SetHeightAndCenter(float newHeight, Vector3 newCenter)
         {
             SetHeight(newHeight);
             SetCenter(newCenter);
         }
 
-        /// <summary>
-        /// Cancel the pending height.
-        /// </summary>
+        // Cancel the pending height.
         public void CancelHeight()
         {
             height = null;
             heightTime = null;
         }
 
-        /// <summary>
-        /// Cancel the pending center.
-        /// </summary>
+        // Cancel the pending center.
         public void CancelCenter()
         {
             center = null;
             centerTime = null;
         }
 
-        /// <summary>
-        /// Cancel the pending height and center.
-        /// </summary>
+        // Cancel the pending height and center.
         public void CancelHeightAndCenter()
         {
             CancelHeight();
             CancelCenter();
         }
 
-        /// <summary>
-        /// Clear the timers.
-        /// </summary>
+        // Clear the timers.
         public void ClearTimers()
         {
             heightTime = null;
