@@ -1698,7 +1698,7 @@ namespace CharacterController2k
 
             bool result = false;
             Vector3 localPos = Vector3.zero;
-            for (var i = 0; i < overlapCount; i++)
+            for (int i = 0; i < overlapCount; i++)
             {
                 Collider collider = m_PenetrationInfoColliders[i];
                 if (collider == null)
