@@ -991,9 +991,9 @@ namespace CharacterController2k
             }
             else if (doDownCast)
             {
-                RaycastHit hitInfo;
                 isGrounded = CheckCollisionBelow(m_GroundedTestDistance,
-                                                 out hitInfo, transform.position,
+                                                 out RaycastHit hitInfo,
+                                                 transform.position,
                                                  Vector3.zero,
                                                  true,
                                                  m_IsLocalHuman,
