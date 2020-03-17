@@ -28,7 +28,6 @@ namespace CharacterController2k
         /// </summary>
         public float? centerTime { get; private set; }
 
-
         /// <summary>
         /// Set the pending height.
         /// </summary>
