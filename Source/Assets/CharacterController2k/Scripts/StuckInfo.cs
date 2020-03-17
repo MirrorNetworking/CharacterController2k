@@ -6,7 +6,7 @@ namespace CharacterController2k
     public class StuckInfo
     {
         // For keeping track of the character's position, to determine when the character gets stuck.
-        Vector3? m_StuckPosition;
+        Vector3? stuckPosition;
 
         // Count how long the character is in the same position.
         int m_StuckPositionCount;
@@ -31,7 +31,7 @@ namespace CharacterController2k
         {
             hitCount = 0;
             m_StuckPositionCount = 0;
-            m_StuckPosition = null;
+            stuckPosition = null;
             isStuck = false;
         }
 
@@ -62,11 +62,11 @@ namespace CharacterController2k
                     return false;
                 }
 
-                if (m_StuckPosition == null)
+                if (stuckPosition == null)
                 {
-                    m_StuckPosition = characterPosition;
+                    stuckPosition = characterPosition;
                 }
-                else if (Vector3.Distance(m_StuckPosition.Value, characterPosition) <= k_StuckDistance)
+                else if (Vector3.Distance(stuckPosition.Value, characterPosition) <= k_StuckDistance)
                 {
                     m_StuckPositionCount++;
                     if (m_StuckPositionCount > k_MaxStuckPositionCount)
@@ -77,7 +77,7 @@ namespace CharacterController2k
                 else
                 {
                     m_StuckPositionCount = 0;
-                    m_StuckPosition = null;
+                    stuckPosition = null;
                 }
             }
 
@@ -86,7 +86,7 @@ namespace CharacterController2k
                 isStuck = false;
                 hitCount = 0;
                 m_StuckPositionCount = 0;
-                m_StuckPosition = null;
+                stuckPosition = null;
 
                 return true;
             }
