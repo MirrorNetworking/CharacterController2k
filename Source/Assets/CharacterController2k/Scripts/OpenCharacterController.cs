@@ -742,7 +742,7 @@ namespace CharacterController2k
             );
 
             // check the overlap capsule
-            int hits = UnityEngine.Physics.OverlapCapsuleNonAlloc(
+            int hits = Physics.OverlapCapsuleNonAlloc(
                 GetTopSphereWorldPositionSimulated(transform, newCenter, newHeight, scaledRadius),
                 GetBottomSphereWorldPositionSimulated(transform, newCenter, newHeight, scaledRadius),
                 radius,
