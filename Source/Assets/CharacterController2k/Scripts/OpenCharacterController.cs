@@ -1072,13 +1072,7 @@ namespace CharacterController2k
 #if UNITY_EDITOR
                 if (i == k_MaxMoveIterations - 1)
                 {
-                    Debug.LogWarning(string.Format(
-                                         "reached k_MaxMoveIterations!     (remainingMoveVector: {0}, {1}, {2})     " +
-                                         "(moveVector: {3}, {4}, {5})     hitCount: {6}",
-                                         remainingMoveVector.moveVector.x, remainingMoveVector.moveVector.y,
-                                         remainingMoveVector.moveVector.z,
-                                         moveVector.x, moveVector.y, moveVector.z,
-                                         m_StuckInfo.hitCount));
+                    Debug.LogWarning(name + " reached MaxMoveInterations(" + k_MaxMoveIterations + "): remainingVector=" + remainingMoveVector + " moveVector=" + moveVector + " hitCount=" + m_StuckInfo.hitCount);
                 }
 #endif
             }
