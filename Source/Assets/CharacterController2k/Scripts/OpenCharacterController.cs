@@ -1479,13 +1479,13 @@ namespace CharacterController2k
 
             Vector3 spherePosition = useBottomSphere ? GetBottomSphereWorldPosition(currentPosition) + offsetPosition
                                                  : GetTopSphereWorldPosition(currentPosition) + offsetPosition;
-            if (UnityEngine.Physics.SphereCast(spherePosition,
-                                               scaledRadius,
-                                               direction,
-                                               out smallRadiusHitInfo,
-                                               distance + extraDistance,
-                                               GetCollisionLayerMask(),
-                                               m_TriggerQuery))
+            if (Physics.SphereCast(spherePosition,
+                                   scaledRadius,
+                                   direction,
+                                   out smallRadiusHitInfo,
+                                   distance + extraDistance,
+                                   GetCollisionLayerMask(),
+                                   m_TriggerQuery))
             {
                 return smallRadiusHitInfo.distance <= distance;
             }
@@ -1511,13 +1511,13 @@ namespace CharacterController2k
 
             Vector3 spherePosition = useBottomSphere ? GetBottomSphereWorldPosition(currentPosition) + offsetPosition
                                                  : GetTopSphereWorldPosition(currentPosition) + offsetPosition;
-            if (UnityEngine.Physics.SphereCast(spherePosition,
-                                               scaledRadius + GetSkinWidth(),
-                                               direction,
-                                               out bigRadiusHitInfo,
-                                               distance + extraDistance,
-                                               GetCollisionLayerMask(),
-                                               m_TriggerQuery))
+            if (Physics.SphereCast(spherePosition,
+                                   scaledRadius + GetSkinWidth(),
+                                   direction,
+                                   out bigRadiusHitInfo,
+                                   distance + extraDistance,
+                                   GetCollisionLayerMask(),
+                                   m_TriggerQuery))
             {
                 return bigRadiusHitInfo.distance <= distance;
             }
