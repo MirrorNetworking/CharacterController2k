@@ -1182,12 +1182,12 @@ namespace CharacterController2k
             Vector3 rayDirection = (hitInfoCapsule.point + direction * offset) - rayOrigin;
 
             // Raycast returns a more accurate normal than SphereCast/CapsuleCast
-            if (UnityEngine.Physics.Raycast(rayOrigin,
-                                            rayDirection,
-                                            out hitInfoRay,
-                                            rayDirection.magnitude * k_RaycastScaleDistance,
-                                            GetCollisionLayerMask(),
-                                            m_TriggerQuery) &&
+            if (Physics.Raycast(rayOrigin,
+                                rayDirection,
+                                out hitInfoRay,
+                                rayDirection.magnitude * k_RaycastScaleDistance,
+                                GetCollisionLayerMask(),
+                                m_TriggerQuery) &&
                 hitInfoRay.collider == hitInfoCapsule.collider)
             {
                 hitInfoCapsule = hitInfoRay;
