@@ -473,7 +473,7 @@ namespace CharacterController2k
             float oldHeight = height;
             Vector3 oldCenter = center;
             Vector3 oldPosition = transform.position;
-            var cancelPending = true;
+            bool cancelPending = true;
             Vector3 virtualPosition = oldPosition;
 
             SetCenter(newCenter, false, false);
