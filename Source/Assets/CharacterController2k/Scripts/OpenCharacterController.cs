@@ -78,8 +78,9 @@ namespace CharacterController2k
         [Tooltip("Is the character controlled by a local human? If true then more calculations are done for more accurate movement.")]
         public bool isLocalHuman = true;
 
-        [SerializeField, Tooltip("Can character slide vertically when touching the ceiling? (For example, if ceiling is sloped.)")]
-        bool m_SlideAlongCeiling = true;
+        [FormerlySerializedAs("m_SlideAlongCeiling")]
+        [Tooltip("Can character slide vertically when touching the ceiling? (For example, if ceiling is sloped.)")]
+        public bool slideAlongCeiling = true;
 
         [SerializeField, Tooltip("Should the character slow down against walls?")]
         bool m_SlowAgainstWalls = false;
@@ -1227,13 +1228,13 @@ namespace CharacterController2k
                 if (horizontal.x.NotEqualToZero() || horizontal.z.NotEqualToZero())
                 {
                     // Move up then horizontal
-                    AddMoveVector(vertical, m_SlideAlongCeiling);
+                    AddMoveVector(vertical, slideAlongCeiling);
                     AddMoveVector(horizontal);
                 }
                 else
                 {
                     // Move up
-                    AddMoveVector(vertical, m_SlideAlongCeiling);
+                    AddMoveVector(vertical, slideAlongCeiling);
                 }
             }
             else if (vertical.y < 0.0f)
