@@ -1623,7 +1623,7 @@ namespace CharacterController2k
                 project.Normalize();
 
                 // Slide along the obstacle
-                var isWallSlowingDown = m_SlowAgainstWalls && m_MinSlowAgainstWallsAngle < 90.0f;
+                bool isWallSlowingDown = m_SlowAgainstWalls && m_MinSlowAgainstWallsAngle < 90.0f;
 
                 if (isWallSlowingDown)
                 {
