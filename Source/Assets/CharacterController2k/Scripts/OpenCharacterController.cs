@@ -974,9 +974,9 @@ namespace CharacterController2k
                 return;
             }
 
-            foreach (var keyValuePair in m_CollisionInfoDictionary)
+            foreach (KeyValuePair<Collider, CollisionInfo> kvp in m_CollisionInfoDictionary)
             {
-                collision(keyValuePair.Value);
+                collision(kvp.Value);
             }
         }
 
