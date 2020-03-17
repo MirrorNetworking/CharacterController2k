@@ -57,9 +57,10 @@ namespace CharacterController2k
         [Tooltip("Distance to test beneath the character when doing the grounded test. Increase if controller.isGrounded doesn't give the correct results or switches between true/false a lot.")]
         public float groundedTestDistance = 0.002f; // 0.001f isn't enough for big BoxColliders like uSurvival's Floor, even though it would work for MeshColliders.
 
-        [SerializeField, Tooltip("This will offset the Capsule Collider in world space, and won’t affect how the Character pivots. " +
+        [FormerlySerializedAs("m_Center")]
+        [Tooltip("This will offset the Capsule Collider in world space, and won’t affect how the Character pivots. " +
                  "Ideally, x and z should be zero to avoid rotating into another collider.")]
-        Vector3 m_Center;
+        public Vector3 center;
 
         [SerializeField, Tooltip("Length of the Capsule Collider’s radius. This is essentially the width of the collider.")]
         float m_Radius = 0.5f;
@@ -205,7 +206,7 @@ namespace CharacterController2k
         public bool isSlidingDownSlope { get { return m_SlidingDownSlopeTime > 0.0f; } }
 
         // The capsule center with scaling and rotation applied.
-        Vector3 transformedCenter { get { return transform.TransformVector(m_Center); } }
+        Vector3 transformedCenter { get { return transform.TransformVector(center); } }
 
         // The capsule height with the relevant scaling applied (e.g. if object scale is not 1,1,1)
         float scaledHeight { get { return m_Height * transform.lossyScale.y; } }
@@ -241,7 +242,6 @@ namespace CharacterController2k
 
         // vis2k: add old character controller compatibility
         public Vector3 velocity => m_Velocity;
-        public Vector3 center => m_Center;
         public float height => m_Height;
         public float radius => m_Radius;
         public Bounds bounds => m_CapsuleCollider.bounds;
@@ -468,7 +468,7 @@ namespace CharacterController2k
                                         bool updateGrounded)
         {
             float oldHeight = m_Height;
-            Vector3 oldCenter = m_Center;
+            Vector3 oldCenter = center;
             Vector3 oldPosition = transform.position;
             var cancelPending = true;
             Vector3 virtualPosition = oldPosition;
@@ -488,7 +488,7 @@ namespace CharacterController2k
                         m_PendingResize.SetHeightAndCenter(newHeight, newCenter);
                         // Restore data
                         m_Height = oldHeight;
-                        m_Center = oldCenter;
+                        center = oldCenter;
                         transform.position = oldPosition;
                         ValidateCapsule(true, ref virtualPosition);
                     }
@@ -521,7 +521,7 @@ namespace CharacterController2k
         // Get the capsule's center (local).
         public Vector3 GetCenter()
         {
-            return m_Center;
+            return center;
         }
 
         // Set the capsule's center (local).
@@ -530,12 +530,12 @@ namespace CharacterController2k
         //   updateGrounded: Update the grounded state? This uses a cast, so only set it to true if you need it.
         public void SetCenter(Vector3 newCenter, bool checkForPenetration, bool updateGrounded)
         {
-            Vector3 oldCenter = m_Center;
+            Vector3 oldCenter = center;
             Vector3 oldPosition = transform.position;
             bool cancelPending = true;
             Vector3 virtualPosition = oldPosition;
 
-            m_Center = newCenter;
+            center = newCenter;
             ValidateCapsule(true, ref virtualPosition);
 
             if (checkForPenetration)
@@ -549,7 +549,7 @@ namespace CharacterController2k
                         cancelPending = false;
                         m_PendingResize.SetCenter(newCenter);
                         // Restore data
-                        m_Center = oldCenter;
+                        center = oldCenter;
                         transform.position = oldPosition;
                         ValidateCapsule(true, ref virtualPosition);
                     }
@@ -613,7 +613,7 @@ namespace CharacterController2k
 
             Vector3 virtualPosition = transform.position;
             bool changeCenter = preserveFootPosition;
-            Vector3 newCenter = changeCenter ? CalculateCenterWithSameFootPosition(newHeight) : m_Center;
+            Vector3 newCenter = changeCenter ? CalculateCenterWithSameFootPosition(newHeight) : center;
             if (Mathf.Approximately(m_Height, newHeight))
             {
                 // Height remains the same
@@ -627,13 +627,13 @@ namespace CharacterController2k
             }
 
             float oldHeight = m_Height;
-            Vector3 oldCenter = m_Center;
+            Vector3 oldCenter = center;
             Vector3 oldPosition = transform.position;
             bool cancelPending = true;
 
             if (changeCenter)
             {
-                m_Center = newCenter;
+                center = newCenter;
             }
 
             m_Height = newHeight;
@@ -661,7 +661,7 @@ namespace CharacterController2k
                         m_Height = oldHeight;
                         if (changeCenter)
                         {
-                            m_Center = oldCenter;
+                            center = oldCenter;
                         }
 
                         transform.position = oldPosition;
@@ -723,7 +723,7 @@ namespace CharacterController2k
 
             // calculate the new capsule center & height
             bool changeCenter = preserveFootPosition;
-            Vector3 newCenter = changeCenter ? CalculateCenterWithSameFootPosition(newHeight) : m_Center;
+            Vector3 newCenter = changeCenter ? CalculateCenterWithSameFootPosition(newHeight) : center;
             if (Mathf.Approximately(m_Height, newHeight))
             {
                 // Height remains the same
@@ -810,7 +810,7 @@ namespace CharacterController2k
             m_CapsuleCollider = go.GetComponent<CapsuleCollider>();
 
             // Copy settings to the capsule collider
-            m_CapsuleCollider.center = m_Center;
+            m_CapsuleCollider.center = center;
             m_CapsuleCollider.radius = m_Radius;
             m_CapsuleCollider.height = m_Height;
 
@@ -820,7 +820,7 @@ namespace CharacterController2k
             rigidbody.useGravity = false;
 
             defaultHeight = m_Height;
-            m_DefaultCenter = m_Center;
+            m_DefaultCenter = center;
         }
 
         // Call this when the capsule's values change.
@@ -843,7 +843,7 @@ namespace CharacterController2k
                 if (updateCapsuleCollider)
                 {
                     // Copy settings to the capsule collider
-                    m_CapsuleCollider.center = m_Center;
+                    m_CapsuleCollider.center = center;
                     m_CapsuleCollider.radius = m_Radius;
                     m_CapsuleCollider.height = m_Height;
                 }
@@ -869,9 +869,9 @@ namespace CharacterController2k
         //      newHeight: New height
         Vector3 CalculateCenterWithSameFootPosition(float newHeight)
         {
-            float localFootY = m_Center.y - (m_Height / 2.0f + skinWidth);
+            float localFootY = center.y - (m_Height / 2.0f + skinWidth);
             float newCenterY = localFootY + (newHeight / 2.0f + skinWidth);
-            return new Vector3(m_Center.x, newCenterY, m_Center.z);
+            return new Vector3(center.x, newCenterY, center.z);
         }
 
         // Moves the characters.
