@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace CharacterController2k
 {
@@ -23,10 +24,8 @@ namespace CharacterController2k
         public event Action<CollisionInfo> collision;
 
         [Header("Player Root")]
-        [SerializeField, Tooltip("The root bone in the avatar.")]
-#pragma warning disable CS0649 // Field is never assigned to
-        Transform m_PlayerRootTransform;
-#pragma warning restore CS0649 // Field is never assigned to
+        [FormerlySerializedAs("m_PlayerRootTransform"), Tooltip("The root bone in the avatar.")]
+        public Transform playerRootTransform;
 
         [SerializeField, Tooltip("The root transform will be positioned at this offset.")]
         Vector3 m_RootTransformOffset = new Vector3(0, 0, 0);
@@ -1908,9 +1907,9 @@ namespace CharacterController2k
         // Sets the playerRootTransform's localPosition to the rootTransformOffset
         void SetRootToOffset()
         {
-            if (m_PlayerRootTransform != null)
+            if (playerRootTransform != null)
             {
-                m_PlayerRootTransform.localPosition = m_RootTransformOffset;
+                playerRootTransform.localPosition = m_RootTransformOffset;
             }
         }
     }
