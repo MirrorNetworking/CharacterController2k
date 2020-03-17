@@ -37,10 +37,11 @@ namespace CharacterController2k
         [Tooltip("Limits the collider to only climb slopes that are less steep (in degrees) than the indicated value.")]
         public float slopeLimit = 45.0f;
 
-        [SerializeField, Tooltip("The character will step up a stair only if it is closer to the ground than the indicated value. " +
+        [FormerlySerializedAs("m_StepOffset")]
+        [Tooltip("The character will step up a stair only if it is closer to the ground than the indicated value. " +
                  "This should not be greater than the Character Controller’s height or it will generate an error. " +
                  "Generally this should be kept as small as possible.")]
-        float m_StepOffset = 0.3f;
+        public float stepOffset = 0.3f;
 
         [SerializeField, Tooltip(
             "Two colliders can penetrate each other as deep as their Skin Width. Larger Skin Widths reduce jitter. " +
@@ -254,7 +255,7 @@ namespace CharacterController2k
             SetRootToOffset();
 
             m_InvRescaleFactor = 1 / Mathf.Cos(m_MinSlowAgainstWallsAngle * Mathf.Deg2Rad);
-            m_SlopeMovementOffset =  m_StepOffset / Mathf.Tan(slopeLimit * Mathf.Deg2Rad);
+            m_SlopeMovementOffset =  stepOffset / Mathf.Tan(slopeLimit * Mathf.Deg2Rad);
         }
 
         // Set the root position.
@@ -1112,7 +1113,7 @@ namespace CharacterController2k
                 return false;
             }
 
-            float upDistance = Mathf.Max(m_StepOffset, k_MinStepOffsetHeight);
+            float upDistance = Mathf.Max(stepOffset, k_MinStepOffsetHeight);
 
             // We only step over obstacles if we can partially fit on it (i.e. fit the capsule's radius)
             Vector3 horizontal = moveVector * scaledRadius;
@@ -1152,7 +1153,7 @@ namespace CharacterController2k
             // Check above where the step offset will move the player to
             return CheckSteepSlopAhead(direction,
                                        Mathf.Max(distance, k_MinCheckSteepSlopeAheadDistance),
-                                       Vector3.up * m_StepOffset);
+                                       Vector3.up * stepOffset);
         }
 
         // Returns true if there's a steep slope ahead.
@@ -1215,7 +1216,7 @@ namespace CharacterController2k
             Vector3 horizontal = new Vector3(moveVector.x, 0.0f, moveVector.z);
             Vector3 vertical = new Vector3(0.0f, moveVector.y, 0.0f);
             bool horizontalIsAlmostZero = IsMoveVectorAlmostZero(horizontal);
-            float tempStepOffset = m_StepOffset;
+            float tempStepOffset = stepOffset;
             bool doStepOffset = isGrounded &&
                                 !doNotStepOffset &&
                                 !Mathf.Approximately(tempStepOffset, 0.0f) &&
