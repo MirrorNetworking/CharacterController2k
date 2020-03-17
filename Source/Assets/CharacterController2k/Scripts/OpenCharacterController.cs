@@ -43,10 +43,10 @@ namespace CharacterController2k
                  "Generally this should be kept as small as possible.")]
         public float stepOffset = 0.3f;
 
-        [SerializeField, Tooltip(
-            "Two colliders can penetrate each other as deep as their Skin Width. Larger Skin Widths reduce jitter. " +
-            "Low Skin Width can cause the character to get stuck. A good setting is to make this value 10% of the Radius.")]
-        float m_SkinWidth = 0.08f;
+        [FormerlySerializedAs("m_SkinWidth")]
+        [Tooltip("Two colliders can penetrate each other as deep as their Skin Width. Larger Skin Widths reduce jitter. " +
+                 "Low Skin Width can cause the character to get stuck. A good setting is to make this value 10% of the Radius.")]
+        public float skinWidth = 0.08f;
 
         [SerializeField, Tooltip(
             "If the character tries to move below the indicated value, it will not move at all. This can be used to reduce jitter. " +
@@ -295,7 +295,7 @@ namespace CharacterController2k
                             footPosition + Vector3.forward * scaledRadius);
 
             // Top of head
-            Vector3 headPosition = transform.position + transformedCenter + Vector3.up * (scaledHeight / 2.0f + m_SkinWidth);
+            Vector3 headPosition = transform.position + transformedCenter + Vector3.up * (scaledHeight / 2.0f + skinWidth);
             Gizmos.DrawLine(headPosition + Vector3.left * scaledRadius,
                             headPosition + Vector3.right * scaledRadius);
             Gizmos.DrawLine(headPosition + Vector3.back * scaledRadius,
@@ -357,8 +357,8 @@ namespace CharacterController2k
 
             if (includeSkinWidth)
             {
-                m_CapsuleCollider.radius = m_Radius + m_SkinWidth;
-                m_CapsuleCollider.height = m_Height + (m_SkinWidth * 2.0f);
+                m_CapsuleCollider.radius = m_Radius + skinWidth;
+                m_CapsuleCollider.height = m_Height + (skinWidth * 2.0f);
             }
 
             // Note: Physics.ComputePenetration does not always return values when the colliders overlap.
@@ -450,7 +450,7 @@ namespace CharacterController2k
         // Get the skin width.
         public float GetSkinWidth()
         {
-            return m_SkinWidth;
+            return skinWidth;
         }
 
         // Get the minimum move sqr distance.
@@ -781,13 +781,13 @@ namespace CharacterController2k
         // Get the foot world position.
         public Vector3 GetFootWorldPosition()
         {
-            return transform.position + transformedCenter + (Vector3.down * (scaledHeight / 2.0f + m_SkinWidth));
+            return transform.position + transformedCenter + (Vector3.down * (scaledHeight / 2.0f + skinWidth));
         }
 
         // Get the foot world position.
         Vector3 GetFootWorldPosition(Vector3 position)
         {
-            return position + transformedCenter + (Vector3.down * (scaledHeight / 2.0f + m_SkinWidth));
+            return position + transformedCenter + (Vector3.down * (scaledHeight / 2.0f + skinWidth));
         }
 
         // Get the top sphere's world position.
@@ -835,7 +835,7 @@ namespace CharacterController2k
                              bool updateGrounded = false)
         {
             slopeLimit = Mathf.Clamp(slopeLimit, 0.0f, k_MaxSlopeLimit);
-            m_SkinWidth = Mathf.Clamp(m_SkinWidth, k_MinSkinWidth, float.MaxValue);
+            skinWidth = Mathf.Clamp(skinWidth, k_MinSkinWidth, float.MaxValue);
             float oldHeight = m_Height;
             m_Height = ValidateHeight(m_Height);
 
@@ -870,8 +870,8 @@ namespace CharacterController2k
         //      newHeight: New height
         Vector3 CalculateCenterWithSameFootPosition(float newHeight)
         {
-            float localFootY = m_Center.y - (m_Height / 2.0f + m_SkinWidth);
-            float newCenterY = localFootY + (newHeight / 2.0f + m_SkinWidth);
+            float localFootY = m_Center.y - (m_Height / 2.0f + skinWidth);
+            float newCenterY = localFootY + (newHeight / 2.0f + skinWidth);
             return new Vector3(m_Center.x, newCenterY, m_Center.z);
         }
 
