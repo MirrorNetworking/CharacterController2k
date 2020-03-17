@@ -1743,11 +1743,11 @@ namespace CharacterController2k
         {
             Vector3 offset = offsetPosition != null ? offsetPosition.Value : Vector3.zero;
             float tempSkinWidth = includeSkinWidth ? GetSkinWidth() : 0.0f;
-            return UnityEngine.Physics.CheckCapsule(GetTopSphereWorldPosition(currentPosition) + offset,
-                                                    GetBottomSphereWorldPosition(currentPosition) + offset,
-                                                    scaledRadius + tempSkinWidth,
-                                                    GetCollisionLayerMask(),
-                                                    m_TriggerQuery);
+            return Physics.CheckCapsule(GetTopSphereWorldPosition(currentPosition) + offset,
+                                        GetBottomSphereWorldPosition(currentPosition) + offset,
+                                        scaledRadius + tempSkinWidth,
+                                        GetCollisionLayerMask(),
+                                        m_TriggerQuery);
         }
 
         // Move the capsule position.
