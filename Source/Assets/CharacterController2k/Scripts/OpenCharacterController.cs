@@ -382,11 +382,11 @@ namespace CharacterController2k
             }
 
             // Note: Physics.ComputePenetration does not always return values when the colliders overlap.
-            bool result = UnityEngine.Physics.ComputePenetration(m_CapsuleCollider,
-                                                                 currentPosition + positionOffset,
-                                                                 Quaternion.identity,
-                                                                 collider, colliderPosition, colliderRotation,
-                                                                 out direction, out distance);
+            bool result = Physics.ComputePenetration(m_CapsuleCollider,
+                                                     currentPosition + positionOffset,
+                                                     Quaternion.identity,
+                                                     collider, colliderPosition, colliderRotation,
+                                                     out direction, out distance);
             if (includeSkinWidth)
             {
                 m_CapsuleCollider.radius = m_Radius;
