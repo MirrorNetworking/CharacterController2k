@@ -1417,14 +1417,14 @@ namespace CharacterController2k
             // when moving almost parallel to an obstacle for small distances).
             float extraDistance = scaledRadius;
 
-            if (UnityEngine.Physics.CapsuleCast(GetTopSphereWorldPosition(currentPosition) + offsetPosition,
-                                                GetBottomSphereWorldPosition(currentPosition) + offsetPosition,
-                                                scaledRadius,
-                                                direction,
-                                                out smallRadiusHitInfo,
-                                                distance + extraDistance,
-                                                GetCollisionLayerMask(),
-                                                m_TriggerQuery))
+            if (Physics.CapsuleCast(GetTopSphereWorldPosition(currentPosition) + offsetPosition,
+                                    GetBottomSphereWorldPosition(currentPosition) + offsetPosition,
+                                    scaledRadius,
+                                    direction,
+                                    out smallRadiusHitInfo,
+                                    distance + extraDistance,
+                                    GetCollisionLayerMask(),
+                                    m_TriggerQuery))
             {
                 return smallRadiusHitInfo.distance <= distance;
             }
