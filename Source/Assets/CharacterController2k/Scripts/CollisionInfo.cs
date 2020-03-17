@@ -2,9 +2,7 @@ using UnityEngine;
 
 namespace CharacterController2k
 {
-    /// <summary>
-    /// Collision info used by the OpenCharacterController and sent to the OnOpenCharacterControllerHit message.
-    /// </summary>
+    // Collision info used by the OpenCharacterController and sent to the OnOpenCharacterControllerHit message.
     public struct CollisionInfo
     {
         // The collider that was hit by the controller.
@@ -34,58 +32,38 @@ namespace CharacterController2k
         // The transform that was hit by the controller.
         readonly Transform m_Transform;
 
-        /// <summary>
-        /// Gets the <see cref="Collider"/> associated with the collision
-        /// </summary>
+        // Gets the Collider associated with the collision
         public Collider collider { get { return m_Collider; } }
 
-        /// <summary>
-        /// Gets the <see cref="OpenCharacterController"/> associated with the collision
-        /// </summary>
+        // Gets the OpenCharacterController associated with the collision
         public OpenCharacterController controller { get { return m_Controller; } }
 
-        /// <summary>
-        /// Gets the <see cref="GameObject"/> associated with the collision
-        /// </summary>
+        // Gets the GameObject associated with the collision
         public GameObject gameObject { get { return m_GameObject; } }
 
-        /// <summary>
-        /// Gets the move direction associated with the collision
-        /// </summary>
+        // Gets the move direction associated with the collision
         public Vector3 moveDirection { get { return m_MoveDirection; } }
 
-        /// <summary>
-        /// Gets the length of the move associated with the collision
-        /// </summary>
+        // Gets the length of the move associated with the collision
         public float moveLength { get { return m_MoveLength; } }
 
-        /// <summary>
-        /// Gets the normal of the collision
-        /// </summary>
+        // Gets the normal of the collision
         public Vector3 normal { get { return m_Normal; } }
 
-        /// <summary>
-        /// Gets the point of the collision
-        /// </summary>
+        // Gets the point of the collision
         public Vector3 point { get { return m_Point; } }
 
-        /// <summary>
-        /// Gets the <see cref="Rigidbody"/> associated with the collision
-        /// </summary>
+        // Gets the Rigidbody associated with the collision
         public Rigidbody rigidbody { get { return m_Rigidbody; } }
 
-        /// <summary>
-        /// Gets the <see cref="Transform"/> associated with the collision
-        /// </summary>
+        // Gets the Transform associated with the collision
         public Transform transform { get { return m_Transform; } }
 
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="openCharacterController">The character controller that hit.</param>
-        /// <param name="hitInfo">The hit info.</param>
-        /// <param name="directionMoved">Direction moved when collision occured.</param>
-        /// <param name="distanceMoved">How far the character has travelled until it hit the collider.</param>
+        // Constructor
+        // openCharacterController: The character controller that hit.
+        // hitInfo: The hit info.
+        // directionMoved: Direction moved when collision occured.
+        // distanceMoved: How far the character has travelled until it hit the collider.
         public CollisionInfo(OpenCharacterController openCharacterController,
                              RaycastHit hitInfo,
                              Vector3 directionMoved,
