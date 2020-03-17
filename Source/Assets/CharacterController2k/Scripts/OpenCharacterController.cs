@@ -90,8 +90,9 @@ namespace CharacterController2k
         [Range(0.0f, 90.0f), Tooltip("The minimal angle from which the character will start slowing down on walls.")]
         public float minSlowAgainstWallsAngle = 10.0f;
 
-        [SerializeField, Tooltip("The desired interaction that cast calls should make against triggers")]
-        QueryTriggerInteraction m_TriggerQuery = QueryTriggerInteraction.Ignore;
+        [FormerlySerializedAs("m_TriggerQuery")]
+        [Tooltip("The desired interaction that cast calls should make against triggers")]
+        public QueryTriggerInteraction triggerQuery = QueryTriggerInteraction.Ignore;
 
         [Header("Sliding")]
         [SerializeField, Tooltip("Should the character slide down slopes when their angle is more than the slope limit?")]
@@ -401,7 +402,7 @@ namespace CharacterController2k
                                     out hitInfo,
                                     distance + extraDistance,
                                     GetCollisionLayerMask(),
-                                    m_TriggerQuery))
+                                    triggerQuery))
                 {
                     didCollide = true;
                     hitInfo.distance = Mathf.Max(0.0f, hitInfo.distance - extraDistance);
@@ -743,7 +744,7 @@ namespace CharacterController2k
                 radius,
                 m_OverlapCapsuleColliders,
                 GetCollisionLayerMask(),
-                m_TriggerQuery);
+                triggerQuery);
 
             for (int i = 0; i < hits; ++i)
             {
@@ -1186,7 +1187,7 @@ namespace CharacterController2k
                                 out hitInfoRay,
                                 rayDirection.magnitude * k_RaycastScaleDistance,
                                 GetCollisionLayerMask(),
-                                m_TriggerQuery) &&
+                                triggerQuery) &&
                 hitInfoRay.collider == hitInfoCapsule.collider)
             {
                 hitInfoCapsule = hitInfoRay;
@@ -1369,7 +1370,7 @@ namespace CharacterController2k
                                     out smallRadiusHitInfo,
                                     distance + extraDistance,
                                     GetCollisionLayerMask(),
-                                    m_TriggerQuery))
+                                    triggerQuery))
             {
                 return smallRadiusHitInfo.distance <= distance;
             }
@@ -1398,7 +1399,7 @@ namespace CharacterController2k
                                     out bigRadiusHitInfo,
                                     distance + extraDistance,
                                     GetCollisionLayerMask(),
-                                    m_TriggerQuery))
+                                    triggerQuery))
             {
                 return bigRadiusHitInfo.distance <= distance;
             }
@@ -1430,7 +1431,7 @@ namespace CharacterController2k
                                    out smallRadiusHitInfo,
                                    distance + extraDistance,
                                    GetCollisionLayerMask(),
-                                   m_TriggerQuery))
+                                   triggerQuery))
             {
                 return smallRadiusHitInfo.distance <= distance;
             }
@@ -1462,7 +1463,7 @@ namespace CharacterController2k
                                    out bigRadiusHitInfo,
                                    distance + extraDistance,
                                    GetCollisionLayerMask(),
-                                   m_TriggerQuery))
+                                   triggerQuery))
             {
                 return bigRadiusHitInfo.distance <= distance;
             }
@@ -1510,7 +1511,7 @@ namespace CharacterController2k
                                 out hitInfoRay,
                                 rayDirection.magnitude * k_RaycastScaleDistance,
                                 GetCollisionLayerMask(),
-                                m_TriggerQuery) &&
+                                triggerQuery) &&
                 hitInfoRay.collider == hitInfoCapsule.collider &&
                 Vector3.Angle(hitInfoCapsule.normal, hitInfoRay.normal) <= k_MaxAngleToUseRaycastNormal)
             {
@@ -1636,7 +1637,7 @@ namespace CharacterController2k
                                                               scaledRadius + tempSkinWidth,
                                                               m_PenetrationInfoColliders,
                                                               GetCollisionLayerMask(),
-                                                              m_TriggerQuery);
+                                                              triggerQuery);
             if (overlapCount <= 0 || m_PenetrationInfoColliders.Length <= 0)
             {
                 return false;
@@ -1692,7 +1693,7 @@ namespace CharacterController2k
                                         GetBottomSphereWorldPosition(currentPosition) + offset,
                                         scaledRadius + tempSkinWidth,
                                         GetCollisionLayerMask(),
-                                        m_TriggerQuery);
+                                        triggerQuery);
         }
 
         // Move the capsule position.
@@ -1820,7 +1821,7 @@ namespace CharacterController2k
                                     out hitInfoRay,
                                     rayDirection.magnitude * k_RaycastScaleDistance,
                                     GetCollisionLayerMask(),
-                                    m_TriggerQuery) &&
+                                    triggerQuery) &&
                     hitInfoRay.collider == hitInfoSphere.collider)
                 {
                     hitNormal = hitInfoRay.normal;
