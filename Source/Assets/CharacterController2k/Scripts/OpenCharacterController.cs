@@ -70,8 +70,9 @@ namespace CharacterController2k
         [Tooltip("The Character’s Capsule Collider height. It should be at least double the radius.")]
         public float height = 2.0f;
 
-        [SerializeField, Tooltip("Layers to test against for collisions.")]
-        LayerMask m_CollisionLayerMask = ~0; // ~0 sets it to Everything
+        [FormerlySerializedAs("m_CollisionLayerMask")]
+        [Tooltip("Layers to test against for collisions.")]
+        public LayerMask collisionLayerMask = ~0; // ~0 sets it to Everything
 
         [SerializeField, Tooltip("Is the character controlled by a local human? If true then more calculations are done for more " +
                  "accurate movement.")]
@@ -774,7 +775,7 @@ namespace CharacterController2k
         // Get the layers to test for collision.
         public LayerMask GetCollisionLayerMask()
         {
-            return m_CollisionLayerMask;
+            return collisionLayerMask;
         }
 
         // Get the foot world position.
