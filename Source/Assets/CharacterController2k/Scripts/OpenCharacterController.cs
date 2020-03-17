@@ -24,14 +24,17 @@ namespace CharacterController2k
         public event Action<CollisionInfo> collision;
 
         [Header("Player Root")]
-        [FormerlySerializedAs("m_PlayerRootTransform"), Tooltip("The root bone in the avatar.")]
+        [FormerlySerializedAs("m_PlayerRootTransform")]
+        [Tooltip("The root bone in the avatar.")]
         public Transform playerRootTransform;
 
-        [FormerlySerializedAs("m_RootTransformOffset"), Tooltip("The root transform will be positioned at this offset.")]
+        [FormerlySerializedAs("m_RootTransformOffset")]
+        [Tooltip("The root transform will be positioned at this offset.")]
         public Vector3 rootTransformOffset = Vector3.zero;
 
         [Header("Collision")]
-        [FormerlySerializedAs("m_SlopeLimit"), Tooltip("Limits the collider to only climb slopes that are less steep (in degrees) than the indicated value.")]
+        [FormerlySerializedAs("m_SlopeLimit")]
+        [Tooltip("Limits the collider to only climb slopes that are less steep (in degrees) than the indicated value.")]
         public float slopeLimit = 45.0f;
 
         [SerializeField, Tooltip("The character will step up a stair only if it is closer to the ground than the indicated value. " +
