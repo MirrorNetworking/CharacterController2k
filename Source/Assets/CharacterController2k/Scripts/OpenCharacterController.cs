@@ -27,8 +27,8 @@ namespace CharacterController2k
         [FormerlySerializedAs("m_PlayerRootTransform"), Tooltip("The root bone in the avatar.")]
         public Transform playerRootTransform;
 
-        [SerializeField, Tooltip("The root transform will be positioned at this offset.")]
-        Vector3 m_RootTransformOffset = new Vector3(0, 0, 0);
+        [FormerlySerializedAs("m_RootTransformOffset"), Tooltip("The root transform will be positioned at this offset.")]
+        public Vector3 rootTransformOffset = Vector3.zero;
 
         [Header("Collision")]
         [SerializeField, Tooltip("Limits the collider to only climb slopes that are less steep (in degrees) than the indicated value.")]
@@ -1909,7 +1909,7 @@ namespace CharacterController2k
         {
             if (playerRootTransform != null)
             {
-                playerRootTransform.localPosition = m_RootTransformOffset;
+                playerRootTransform.localPosition = rootTransformOffset;
             }
         }
     }
