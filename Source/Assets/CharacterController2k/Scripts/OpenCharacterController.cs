@@ -107,8 +107,9 @@ namespace CharacterController2k
         [Tooltip("Gravity scale to apply when sliding down slopes.")]
         public float slideGravityScale = 1.0f;
 
-        [SerializeField, Tooltip("The time (in seconds) after initiating a slide classified as a slide start. Used to disable jumping.")]
-        float m_SlideStartTime = 0.25f;
+        [FormerlySerializedAs("m_SlideStartTime")]
+        [Tooltip("The time (in seconds) after initiating a slide classified as a slide start. Used to disable jumping.")]
+        public float slideStartTime = 0.25f;
 
         // Max slope limit.
         const float k_MaxSlopeLimit = 90.0f;
@@ -231,7 +232,7 @@ namespace CharacterController2k
         public float defaultHeight { get; private set; }
 
         // Is the character sliding and has been sliding less than slideDownTimeUntilJumAllowed
-        public bool startedSlide { get { return isSlidingDownSlope && m_SlidingDownSlopeTime <= m_SlideStartTime; } }
+        public bool startedSlide { get { return isSlidingDownSlope && m_SlidingDownSlopeTime <= slideStartTime; } }
 
         // The capsule radius with the relevant scaling applied (e.g. if object scale is not 1,1,1)
         public float scaledRadius
