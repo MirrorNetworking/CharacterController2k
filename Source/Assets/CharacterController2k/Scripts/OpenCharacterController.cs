@@ -99,8 +99,9 @@ namespace CharacterController2k
         [Tooltip("Should the character slide down slopes when their angle is more than the slope limit?")]
         public bool slideDownSlopes = true;
 
-        [SerializeField, Tooltip("The maximum speed that the character can slide downwards")]
-        float m_SlideMaxSpeed = 10.0f;
+        [FormerlySerializedAs("m_SlideMaxSpeed")]
+        [Tooltip("The maximum speed that the character can slide downwards")]
+        public float slideMaxSpeed = 10.0f;
 
         [SerializeField, Tooltip("Gravity scale to apply when sliding down slopes.")]
         float m_SlideGravityScale = 1.0f;
@@ -1850,7 +1851,7 @@ namespace CharacterController2k
 
             // Apply gravity and slide along the obstacle
             float gravity = Mathf.Abs(Physics.gravity.y) * m_SlideGravityScale * slideSpeedScale;
-            float verticalVelocity = Mathf.Clamp(gravity * m_SlidingDownSlopeTime, 0.0f, Mathf.Abs(m_SlideMaxSpeed));
+            float verticalVelocity = Mathf.Clamp(gravity * m_SlidingDownSlopeTime, 0.0f, Mathf.Abs(slideMaxSpeed));
             Vector3 moveVector = new Vector3(0.0f, -verticalVelocity, 0.0f) * dt;
 
             // Push slightly away from the slope
