@@ -764,6 +764,40 @@ namespace CharacterController2k
             return true;
         }
 
+        // vis2k: add missing CanSetCenter function
+        public bool CanSetCenter(Vector3 newCenter)
+        {
+            // debug draw
+            Debug.DrawLine(
+                GetTopSphereWorldPositionSimulated(transform, newCenter, height, scaledRadius),
+                GetBottomSphereWorldPositionSimulated(transform, newCenter, height, scaledRadius),
+                Color.yellow,
+                3f
+            );
+
+            // check the overlap capsule
+            int hits = Physics.OverlapCapsuleNonAlloc(
+                GetTopSphereWorldPositionSimulated(transform, newCenter, height, scaledRadius),
+                GetBottomSphereWorldPositionSimulated(transform, newCenter, height, scaledRadius),
+                radius,
+                m_OverlapCapsuleColliders,
+                GetCollisionLayerMask(),
+                triggerQuery);
+
+            for (int i = 0; i < hits; ++i)
+            {
+                // a collider that is not self?
+                Collider col = m_OverlapCapsuleColliders[i];
+                if (col != m_CapsuleCollider)
+                {
+                    return false;
+                }
+            }
+
+            // no overlaps
+            return true;
+        }
+
         // Reset the capsule's height to the default value.
         //   preserveFootPosition: Adjust the capsule's center to preserve the foot position?
         //   checkForPenetration: Check for collision, and then de-penetrate if there's collision?
