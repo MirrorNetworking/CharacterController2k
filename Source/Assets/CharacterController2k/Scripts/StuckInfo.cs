@@ -20,20 +20,13 @@ namespace CharacterController2k
         // Assume character is stuck if the position is the same for longer than this number of loop iterations
         const int k_MaxStuckPositionCount = 1;
 
-        /// <summary>
-        /// Is the character stuck in the current move loop iteration?
-        /// </summary>
+        // Is the character stuck in the current move loop iteration?
         public bool isStuck;
 
-        /// <summary>
-        /// Count the number of collisions during movement, to determine when the character gets stuck.
-        /// </summary>
+        // Count the number of collisions during movement, to determine when the character gets stuck.
         public int hitCount;
 
-
-        /// <summary>
-        /// Called when the move loop starts.
-        /// </summary>
+        // Called when the move loop starts.
         public void OnMoveLoop()
         {
             hitCount = 0;
@@ -42,13 +35,10 @@ namespace CharacterController2k
             isStuck = false;
         }
 
-        /// <summary>
-        /// Is the character stuck during the movement loop (e.g. bouncing between 2 or more colliders)?
-        /// </summary>
-        /// <param name="characterPosition">The character's position.</param>
-        /// <param name="currentMoveVector">Current move vector.</param>
-        /// <param name="originalMoveVector">Original move vector.</param>
-        /// <returns></returns>
+        // Is the character stuck during the movement loop (e.g. bouncing between 2 or more colliders)?
+        // characterPosition: The character's position.
+        // currentMoveVector: Current move vector.
+        // originalMoveVector: Original move vector.
         public bool UpdateStuck(Vector3 characterPosition, Vector3 currentMoveVector,
                                 Vector3 originalMoveVector)
         {
