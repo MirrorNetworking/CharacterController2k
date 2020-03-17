@@ -53,8 +53,9 @@ namespace CharacterController2k
                  "In most situations this value should be left at 0.")]
         public float minMoveDistance;
 
-        [SerializeField, Tooltip("Distance to test beneath the character when doing the grounded test. Increase if controller.isGrounded doesn't give the correct results or switches between true/false a lot.")]
-        float m_GroundedTestDistance = 0.002f; // 0.001f isn't enough for big BoxColliders like uSurvival's Floor, even though it would work for MeshColliders.
+        [FormerlySerializedAs("m_GroundedTestDistance")]
+        [Tooltip("Distance to test beneath the character when doing the grounded test. Increase if controller.isGrounded doesn't give the correct results or switches between true/false a lot.")]
+        public float groundedTestDistance = 0.002f; // 0.001f isn't enough for big BoxColliders like uSurvival's Floor, even though it would work for MeshColliders.
 
         [SerializeField, Tooltip("This will offset the Capsule Collider in world space, and won’t affect how the Character pivots. " +
                  "Ideally, x and z should be zero to avoid rotating into another collider.")]
@@ -937,7 +938,7 @@ namespace CharacterController2k
             }
             else if (doDownCast)
             {
-                isGrounded = CheckCollisionBelow(m_GroundedTestDistance,
+                isGrounded = CheckCollisionBelow(groundedTestDistance,
                                                  out RaycastHit hitInfo,
                                                  transform.position,
                                                  Vector3.zero,
