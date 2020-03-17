@@ -66,8 +66,9 @@ namespace CharacterController2k
         [Tooltip("Length of the Capsule Collider’s radius. This is essentially the width of the collider.")]
         public float radius = 0.5f;
 
-        [SerializeField, Tooltip("The Character’s Capsule Collider height. It should be at least double the radius.")]
-        float m_Height = 2.0f;
+        [FormerlySerializedAs("m_Height")]
+        [Tooltip("The Character’s Capsule Collider height. It should be at least double the radius.")]
+        public float height = 2.0f;
 
         [SerializeField, Tooltip("Layers to test against for collisions.")]
         LayerMask m_CollisionLayerMask = ~0; // ~0 sets it to Everything
@@ -210,7 +211,7 @@ namespace CharacterController2k
         Vector3 transformedCenter { get { return transform.TransformVector(center); } }
 
         // The capsule height with the relevant scaling applied (e.g. if object scale is not 1,1,1)
-        float scaledHeight { get { return m_Height * transform.lossyScale.y; } }
+        float scaledHeight { get { return height * transform.lossyScale.y; } }
 
         // Is the character on the ground? This is updated during Move or SetPosition.
         public bool isGrounded { get; private set; }
@@ -243,7 +244,6 @@ namespace CharacterController2k
 
         // vis2k: add old character controller compatibility
         public Vector3 velocity => m_Velocity;
-        public float height => m_Height;
         public Bounds bounds => m_CapsuleCollider.bounds;
 
         // Initialise the capsule and rigidbody, and set the root position.
@@ -357,7 +357,7 @@ namespace CharacterController2k
             if (includeSkinWidth)
             {
                 m_CapsuleCollider.radius = radius + skinWidth;
-                m_CapsuleCollider.height = m_Height + (skinWidth * 2.0f);
+                m_CapsuleCollider.height = height + (skinWidth * 2.0f);
             }
 
             // Note: Physics.ComputePenetration does not always return values when the colliders overlap.
@@ -369,7 +369,7 @@ namespace CharacterController2k
             if (includeSkinWidth)
             {
                 m_CapsuleCollider.radius = radius;
-                m_CapsuleCollider.height = m_Height;
+                m_CapsuleCollider.height = height;
             }
 
             return result;
@@ -467,7 +467,7 @@ namespace CharacterController2k
         public float SetHeightAndCenter(float newHeight, Vector3 newCenter, bool checkForPenetration,
                                         bool updateGrounded)
         {
-            float oldHeight = m_Height;
+            float oldHeight = height;
             Vector3 oldCenter = center;
             Vector3 oldPosition = transform.position;
             var cancelPending = true;
@@ -487,7 +487,7 @@ namespace CharacterController2k
                         cancelPending = false;
                         m_PendingResize.SetHeightAndCenter(newHeight, newCenter);
                         // Restore data
-                        m_Height = oldHeight;
+                        height = oldHeight;
                         center = oldCenter;
                         transform.position = oldPosition;
                         ValidateCapsule(true, ref virtualPosition);
@@ -506,7 +506,7 @@ namespace CharacterController2k
             }
 
             transform.position = virtualPosition;
-            return m_Height;
+            return height;
         }
 
         // Reset the capsule's height and center to the default values.
@@ -580,7 +580,7 @@ namespace CharacterController2k
         // Get the capsule's height (local).
         public float GetHeight()
         {
-            return m_Height;
+            return height;
         }
 
         // Validate the capsule's height. (It must be at least double the radius size.)
@@ -614,7 +614,7 @@ namespace CharacterController2k
             Vector3 virtualPosition = transform.position;
             bool changeCenter = preserveFootPosition;
             Vector3 newCenter = changeCenter ? CalculateCenterWithSameFootPosition(newHeight) : center;
-            if (Mathf.Approximately(m_Height, newHeight))
+            if (Mathf.Approximately(height, newHeight))
             {
                 // Height remains the same
                 m_PendingResize.CancelHeight();
@@ -623,10 +623,10 @@ namespace CharacterController2k
                     SetCenter(newCenter, checkForPenetration, updateGrounded);
                 }
 
-                return m_Height;
+                return height;
             }
 
-            float oldHeight = m_Height;
+            float oldHeight = height;
             Vector3 oldCenter = center;
             Vector3 oldPosition = transform.position;
             bool cancelPending = true;
@@ -636,7 +636,7 @@ namespace CharacterController2k
                 center = newCenter;
             }
 
-            m_Height = newHeight;
+            height = newHeight;
             ValidateCapsule(true, ref virtualPosition);
 
             if (checkForPenetration)
@@ -658,7 +658,7 @@ namespace CharacterController2k
                         }
 
                         // Restore data
-                        m_Height = oldHeight;
+                        height = oldHeight;
                         if (changeCenter)
                         {
                             center = oldCenter;
@@ -688,7 +688,7 @@ namespace CharacterController2k
             }
 
             transform.position = virtualPosition;
-            return m_Height;
+            return height;
         }
 
         // vis2k: add missing CanSetHeight function & helper functions
@@ -724,7 +724,7 @@ namespace CharacterController2k
             // calculate the new capsule center & height
             bool changeCenter = preserveFootPosition;
             Vector3 newCenter = changeCenter ? CalculateCenterWithSameFootPosition(newHeight) : center;
-            if (Mathf.Approximately(m_Height, newHeight))
+            if (Mathf.Approximately(height, newHeight))
             {
                 // Height remains the same
                 return true;
@@ -812,14 +812,14 @@ namespace CharacterController2k
             // Copy settings to the capsule collider
             m_CapsuleCollider.center = center;
             m_CapsuleCollider.radius = radius;
-            m_CapsuleCollider.height = m_Height;
+            m_CapsuleCollider.height = height;
 
             // Ensure that the rigidbody is kinematic and does not use gravity
             Rigidbody rigidbody = go.GetComponent<Rigidbody>();
             rigidbody.isKinematic = true;
             rigidbody.useGravity = false;
 
-            defaultHeight = m_Height;
+            defaultHeight = height;
             m_DefaultCenter = center;
         }
 
@@ -835,8 +835,8 @@ namespace CharacterController2k
         {
             slopeLimit = Mathf.Clamp(slopeLimit, 0.0f, k_MaxSlopeLimit);
             skinWidth = Mathf.Clamp(skinWidth, k_MinSkinWidth, float.MaxValue);
-            float oldHeight = m_Height;
-            m_Height = ValidateHeight(m_Height);
+            float oldHeight = height;
+            height = ValidateHeight(height);
 
             if (m_CapsuleCollider != null)
             {
@@ -845,12 +845,12 @@ namespace CharacterController2k
                     // Copy settings to the capsule collider
                     m_CapsuleCollider.center = center;
                     m_CapsuleCollider.radius = radius;
-                    m_CapsuleCollider.height = m_Height;
+                    m_CapsuleCollider.height = height;
                 }
-                else if (!Mathf.Approximately(m_Height, oldHeight))
+                else if (!Mathf.Approximately(height, oldHeight))
                 {
                     // Height changed
-                    m_CapsuleCollider.height = m_Height;
+                    m_CapsuleCollider.height = height;
                 }
             }
 
@@ -869,7 +869,7 @@ namespace CharacterController2k
         //      newHeight: New height
         Vector3 CalculateCenterWithSameFootPosition(float newHeight)
         {
-            float localFootY = center.y - (m_Height / 2.0f + skinWidth);
+            float localFootY = center.y - (height / 2.0f + skinWidth);
             float newCenterY = localFootY + (newHeight / 2.0f + skinWidth);
             return new Vector3(center.x, newCenterY, center.z);
         }
