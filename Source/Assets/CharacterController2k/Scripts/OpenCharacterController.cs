@@ -48,12 +48,10 @@ namespace CharacterController2k
                  "Low Skin Width can cause the character to get stuck. A good setting is to make this value 10% of the Radius.")]
         public float skinWidth = 0.08f;
 
-        [SerializeField, Tooltip(
-            "If the character tries to move below the indicated value, it will not move at all. This can be used to reduce jitter. " +
-            "In most situations this value should be left at 0.")]
-#pragma warning disable CS0649 // Field is never assigned to
-        float m_MinMoveDistance;
-#pragma warning restore CS0649 // Field is never assigned to
+        [FormerlySerializedAs("m_MinMoveDistance")]
+        [Tooltip("If the character tries to move below the indicated value, it will not move at all. This can be used to reduce jitter. " +
+                 "In most situations this value should be left at 0.")]
+        public float minMoveDistance;
 
         [SerializeField, Tooltip("Distance to test beneath the character when doing the grounded test. Increase if controller.isGrounded doesn't give the correct results or switches between true/false a lot.")]
         float m_GroundedTestDistance = 0.002f; // 0.001f isn't enough for big BoxColliders like uSurvival's Floor, even though it would work for MeshColliders.
@@ -456,7 +454,7 @@ namespace CharacterController2k
         // Get the minimum move sqr distance.
         float GetMinMoveSqrDistance()
         {
-            return m_MinMoveDistance * m_MinMoveDistance;
+            return minMoveDistance * minMoveDistance;
         }
 
         // Set the capsule's height and center.
