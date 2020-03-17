@@ -1560,12 +1560,12 @@ namespace CharacterController2k
 
             // Raycast returns a more accurate normal than SphereCast/CapsuleCast
             // Using angle <= k_MaxAngleToUseRaycastNormal gives a curve when collision is near an edge.
-            if (UnityEngine.Physics.Raycast(rayOrigin,
-                                            rayDirection,
-                                            out hitInfoRay,
-                                            rayDirection.magnitude * k_RaycastScaleDistance,
-                                            GetCollisionLayerMask(),
-                                            m_TriggerQuery) &&
+            if (Physics.Raycast(rayOrigin,
+                                rayDirection,
+                                out hitInfoRay,
+                                rayDirection.magnitude * k_RaycastScaleDistance,
+                                GetCollisionLayerMask(),
+                                m_TriggerQuery) &&
                 hitInfoRay.collider == hitInfoCapsule.collider &&
                 Vector3.Angle(hitInfoCapsule.normal, hitInfoRay.normal) <= k_MaxAngleToUseRaycastNormal)
             {
