@@ -310,7 +310,7 @@ namespace CharacterController2k
 
         // Move the character. This function does not apply any gravity.
         //   moveVector: Move along this vector.
-        // <returns>CollisionFlags is the summary of collisions that occurred during the Move.</returns>
+        // CollisionFlags is the summary of collisions that occurred during the Move.
         public CollisionFlags Move(Vector3 moveVector)
         {
             MoveInternal(moveVector, true);
@@ -339,7 +339,7 @@ namespace CharacterController2k
         //   distance: The distance along direction that is required to separate the colliders apart.
         //   includeSkinWidth: Include the skin width in the test?
         //   currentPosition: Position of the character
-        // <returns>True if found penetration.</returns>
+        // True if found penetration.
         bool ComputePenetration(Vector3 positionOffset,
                                        Collider collider, Vector3 colliderPosition, Quaternion colliderRotation,
                                        out Vector3 direction, out float distance,
@@ -382,7 +382,7 @@ namespace CharacterController2k
         //   useSecondSphereCast: The second cast includes the skin width. Ideally only needed for human controlled player, for more accuracy.
         //   adjustPositionSlightly: Adjust position slightly up, in case it's already inside an obstacle.
         //   currentPosition: Position of the character
-        // <returns>True if collision occurred.</returns>
+        // True if collision occurred.
         public bool CheckCollisionBelow(float distance, out RaycastHit hitInfo, Vector3 currentPosition,
                                         Vector3 offsetPosition,
                                         bool useSphereCast = false,
@@ -462,7 +462,7 @@ namespace CharacterController2k
         //   newCenter: The new center.
         //   checkForPenetration: Check for collision, and then de-penetrate if there's collision?
         //   updateGrounded: Update the grounded state? This uses a cast, so only set it to true if you need it.
-        // <returns>Returns the height that was set, which may be different to newHeight because of validation.</returns>
+        // Returns the height that was set, which may be different to newHeight because of validation.
         public float SetHeightAndCenter(float newHeight, Vector3 newCenter, bool checkForPenetration,
                                         bool updateGrounded)
         {
@@ -511,7 +511,7 @@ namespace CharacterController2k
         // Reset the capsule's height and center to the default values.
         //   checkForPenetration: Check for collision, and then de-penetrate if there's collision?
         //   updateGrounded: Update the grounded state? This uses a cast, so only set it to true if you need it.
-        // <returns>Returns the reset height.</returns>
+        // Returns the reset height.
         public float ResetHeightAndCenter(bool checkForPenetration, bool updateGrounded)
         {
             return SetHeightAndCenter(defaultHeight, m_DefaultCenter, checkForPenetration, updateGrounded);
@@ -583,7 +583,7 @@ namespace CharacterController2k
         }
 
         // Validate the capsule's height. (It must be at least double the radius size.)
-        // <returns>The valid height.</returns>
+        // The valid height.
         public float ValidateHeight(float newHeight)
         {
             return Mathf.Clamp(newHeight, m_Radius * 2.0f, float.MaxValue);
@@ -595,7 +595,7 @@ namespace CharacterController2k
         //   preserveFootPosition: Adjust the capsule's center to preserve the foot position?
         //   checkForPenetration: Check for collision, and then de-penetrate if there's collision?
         //   updateGrounded: Update the grounded state? This uses a cast, so only set it to true if you need it.
-        // <returns>Returns the height that was set, which may be different to newHeight because of validation.</returns>
+        // Returns the height that was set, which may be different to newHeight because of validation.
         public float SetHeight(float newHeight, bool preserveFootPosition, bool checkForPenetration,
                                bool updateGrounded)
         {
@@ -764,7 +764,7 @@ namespace CharacterController2k
         //   preserveFootPosition: Adjust the capsule's center to preserve the foot position?
         //   checkForPenetration: Check for collision, and then de-penetrate if there's collision?
         //   updateGrounded: Update the grounded state? This uses a cast, so only set it to true if you need it.
-        // <returns>Returns the reset height.</returns>
+        // Returns the reset height.
         public float ResetHeight(bool preserveFootPosition, bool checkForPenetration, bool updateGrounded)
         {
             return SetHeight(defaultHeight, preserveFootPosition, checkForPenetration, updateGrounded);
