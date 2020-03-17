@@ -5,22 +5,16 @@ namespace CharacterController2k
     // A vector used by the OpenCharacterController.
     public struct MoveVector
     {
-        /// <summary>
-        /// The move vector.
-        /// Note: This gets used up during the move loop, so will be zero by the end of the loop.
-        /// </summary>
+        // The move vector.
+        // Note: This gets used up during the move loop, so will be zero by the end of the loop.
         public Vector3 moveVector { get; set; }
 
-        /// <summary>
-        /// Can the movement slide along obstacles?
-        /// </summary>
+        // Can the movement slide along obstacles?
         public bool canSlide { get; set; }
 
-        /// <summary>
-        /// Constructor.
-        /// </summary>
-        /// <param name="newMoveVector">The move vector.</param>
-        /// <param name="newCanSlide">Can the movement slide along obstacles?</param>
+        // Constructor.
+        // newMoveVector: The move vector.
+        // newCanSlide: Can the movement slide along obstacles?
         public MoveVector(Vector3 newMoveVector, bool newCanSlide = true)
             : this()
         {
