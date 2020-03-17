@@ -7,10 +7,10 @@ namespace CharacterController2k
     {
         // The move vector.
         // Note: This gets used up during the move loop, so will be zero by the end of the loop.
-        public Vector3 moveVector { get; set; }
+        public Vector3 moveVector;
 
         // Can the movement slide along obstacles?
-        public bool canSlide { get; set; }
+        public bool canSlide;
 
         // Constructor.
         // newMoveVector: The move vector.
