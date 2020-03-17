@@ -315,14 +315,14 @@ public class PlayerMovement : MonoBehaviour
         else if (EventCrouchToggle())
         {
             // rescale capsule
-            controller.SetHeight(controller.defaultHeight * 0.5f, true, true, false);
-            return MoveState.CROUCHING;
+            if (controller.TrySetHeight(controller.defaultHeight * 0.5f, true, true, false))
+                return MoveState.CROUCHING;
         }
         else if (EventCrawlToggle())
         {
             // rescale capsule
-            controller.SetHeight(controller.defaultHeight * 0.25f, true, true, false);
-            return MoveState.CRAWLING;
+            if (controller.TrySetHeight(controller.defaultHeight * 0.25f, true, true, false))
+                return MoveState.CRAWLING;
         }
         else if (EventLadderEnter())
         {
@@ -332,8 +332,8 @@ public class PlayerMovement : MonoBehaviour
         else if (EventUnderWater())
         {
             // rescale capsule
-            controller.SetHeight(controller.defaultHeight * 0.25f, true, true, false);
-            return MoveState.SWIMMING;
+            if (controller.TrySetHeight(controller.defaultHeight * 0.25f, true, true, false))
+                return MoveState.SWIMMING;
         }
         else if (inputDir != Vector2.zero)
         {
@@ -373,21 +373,25 @@ public class PlayerMovement : MonoBehaviour
         }
         else if (EventCrouchToggle())
         {
-            // limit speed to crouch speed so we don't decelerate from run speed
-            // to crouch speed (hence crouching too fast for a short time)
-            horizontalSpeed = Mathf.Min(horizontalSpeed, crouchSpeed);
             // rescale capsule
-            controller.SetHeight(controller.defaultHeight * 0.5f, true, true, false);
-            return MoveState.CROUCHING;
+            if (controller.TrySetHeight(controller.defaultHeight * 0.5f, true, true, false))
+            {
+                // limit speed to crouch speed so we don't decelerate from run speed
+                // to crouch speed (hence crouching too fast for a short time)
+                horizontalSpeed = Mathf.Min(horizontalSpeed, crouchSpeed);
+                return MoveState.CROUCHING;
+            }
         }
         else if (EventCrawlToggle())
         {
-            // limit speed to crawl speed so we don't decelerate from run speed
-            // to crawl speed (hence crawling too fast for a short time)
-            horizontalSpeed = Mathf.Min(horizontalSpeed, crawlSpeed);
             // rescale capsule
-            controller.SetHeight(controller.defaultHeight * 0.25f, true, true, false);
-            return MoveState.CRAWLING;
+            if (controller.TrySetHeight(controller.defaultHeight * 0.25f, true, true, false))
+            {
+                // limit speed to crawl speed so we don't decelerate from run speed
+                // to crawl speed (hence crawling too fast for a short time)
+                horizontalSpeed = Mathf.Min(horizontalSpeed, crawlSpeed);
+                return MoveState.CRAWLING;
+            }
         }
         else if (EventLadderEnter())
         {
@@ -397,8 +401,8 @@ public class PlayerMovement : MonoBehaviour
         else if (EventUnderWater())
         {
             // rescale capsule
-            controller.SetHeight(controller.defaultHeight * 0.25f, true, true, false);
-            return MoveState.SWIMMING;
+            if (controller.TrySetHeight(controller.defaultHeight * 0.25f, true, true, false))
+                return MoveState.SWIMMING;
         }
         // go to idle after fully decelerating (y doesn't matter)
         else if (moveDir.x == 0 && moveDir.z == 0)
@@ -424,9 +428,8 @@ public class PlayerMovement : MonoBehaviour
         if (EventFalling())
         {
             // rescale capsule if possible
-            if (controller.CanSetHeight(controller.defaultHeight * 1f, true))
+            if (controller.TrySetHeight(controller.defaultHeight * 1f, true, true, false))
             {
-                controller.SetHeight(controller.defaultHeight * 1f, true, true, false);
                 sprintingBeforeAirborne = false;
                 return MoveState.AIRBORNE;
             }
@@ -437,36 +440,35 @@ public class PlayerMovement : MonoBehaviour
             // jumping from the crouching state.
 
             // rescale capsule if possible
-            if (controller.CanSetHeight(controller.defaultHeight * 1f, true))
+            if (controller.TrySetHeight(controller.defaultHeight * 1f, true, true, false))
             {
-                controller.SetHeight(controller.defaultHeight * 1f, true, true, false);
                 return MoveState.IDLE;
             }
         }
         else if (EventCrouchToggle())
         {
             // rescale capsule if possible
-            if (controller.CanSetHeight(controller.defaultHeight * 1f, true))
+            if (controller.TrySetHeight(controller.defaultHeight * 1f, true, true, false))
             {
-                controller.SetHeight(controller.defaultHeight * 1f, true, true, false);
                 return MoveState.IDLE;
             }
         }
         else if (EventCrawlToggle())
         {
-            // limit speed to crawl speed so we don't decelerate from run speed
-            // to crawl speed (hence crawling too fast for a short time)
-            horizontalSpeed = Mathf.Min(horizontalSpeed, crawlSpeed);
             // rescale capsule
-            controller.SetHeight(controller.defaultHeight * 0.25f, true, true, false);
-            return MoveState.CRAWLING;
+            if (controller.TrySetHeight(controller.defaultHeight * 0.25f, true, true, false))
+            {
+                // limit speed to crawl speed so we don't decelerate from run speed
+                // to crawl speed (hence crawling too fast for a short time)
+                horizontalSpeed = Mathf.Min(horizontalSpeed, crawlSpeed);
+                return MoveState.CRAWLING;
+            }
         }
         else if (EventLadderEnter())
         {
             // rescale capsule if possible
-            if (controller.CanSetHeight(controller.defaultHeight * 1f, true))
+            if (controller.TrySetHeight(controller.defaultHeight * 1f, true, true, false))
             {
-                controller.SetHeight(controller.defaultHeight * 1f, true, true, false);
                 EnterLadder();
                 return MoveState.CLIMBING;
             }
@@ -474,8 +476,10 @@ public class PlayerMovement : MonoBehaviour
         else if (EventUnderWater())
         {
             // rescale capsule
-            controller.SetHeight(controller.defaultHeight * 0.25f, true, true, false);
-            return MoveState.SWIMMING;
+            if (controller.TrySetHeight(controller.defaultHeight * 0.25f, true, true, false))
+            {
+                return MoveState.SWIMMING;
+            }
         }
 
         ProgressStepCycle(inputDir, crouchSpeed);
@@ -496,9 +500,8 @@ public class PlayerMovement : MonoBehaviour
         if (EventFalling())
         {
             // rescale capsule if possible
-            if (controller.CanSetHeight(controller.defaultHeight * 1f, true))
+            if (controller.TrySetHeight(controller.defaultHeight * 1f, true, true, false))
             {
-                controller.SetHeight(controller.defaultHeight * 1f, true, true, false);
                 sprintingBeforeAirborne = false;
                 return MoveState.AIRBORNE;
             }
@@ -509,40 +512,35 @@ public class PlayerMovement : MonoBehaviour
             // jumping from the crawling state.
 
             // rescale capsule if possible
-            if (controller.CanSetHeight(controller.defaultHeight * 1f, true))
+            if (controller.TrySetHeight(controller.defaultHeight * 1f, true, true, false))
             {
-                controller.SetHeight(controller.defaultHeight * 1f, true, true, false);
                 return MoveState.IDLE;
             }
         }
         else if (EventCrouchToggle())
         {
             // rescale capsule if possible
-            if (controller.CanSetHeight(controller.defaultHeight * 0.5f, true))
+            if (controller.TrySetHeight(controller.defaultHeight * 0.5f, true, true, false))
             {
                 // limit speed to crouch speed so we don't decelerate from run speed
                 // to crouch speed (hence crouching too fast for a short time)
                 horizontalSpeed = Mathf.Min(horizontalSpeed, crouchSpeed);
-                // rescale capsule
-                controller.SetHeight(controller.defaultHeight * 0.5f, true, true, false);
                 return MoveState.CROUCHING;
             }
         }
         else if (EventCrawlToggle())
         {
             // rescale capsule if possible
-            if (controller.CanSetHeight(controller.defaultHeight * 1f, true))
+            if (controller.TrySetHeight(controller.defaultHeight * 1f, true, true, false))
             {
-                controller.SetHeight(controller.defaultHeight * 1f, true, true, false);
                 return MoveState.IDLE;
             }
         }
         else if (EventLadderEnter())
         {
             // rescale capsule if possible
-            if (controller.CanSetHeight(controller.defaultHeight * 1f, true))
+            if (controller.TrySetHeight(controller.defaultHeight * 1f, true, true, false))
             {
-                controller.SetHeight(controller.defaultHeight * 1f, true, true, false);
                 EnterLadder();
                 return MoveState.CLIMBING;
             }
@@ -550,8 +548,10 @@ public class PlayerMovement : MonoBehaviour
         else if (EventUnderWater())
         {
             // rescale capsule
-            controller.SetHeight(controller.defaultHeight * 0.25f, true, true, false);
-            return MoveState.SWIMMING;
+            if (controller.TrySetHeight(controller.defaultHeight * 0.25f, true, true, false))
+            {
+                return MoveState.SWIMMING;
+            }
         }
 
         ProgressStepCycle(inputDir, crawlSpeed);
@@ -588,8 +588,10 @@ public class PlayerMovement : MonoBehaviour
         else if (EventUnderWater())
         {
             // rescale capsule
-            controller.SetHeight(controller.defaultHeight * 0.25f, true, true, false);
-            return MoveState.SWIMMING;
+            if (controller.TrySetHeight(controller.defaultHeight * 0.25f, true, true, false))
+            {
+                return MoveState.SWIMMING;
+            }
         }
 
         return MoveState.AIRBORNE;
@@ -629,9 +631,8 @@ public class PlayerMovement : MonoBehaviour
         if (EventLadderEnter())
         {
             // rescale capsule if possible
-            if (controller.CanSetHeight(controller.defaultHeight * 1f, true))
+            if (controller.TrySetHeight(controller.defaultHeight * 1f, true, true, false))
             {
-                controller.SetHeight(controller.defaultHeight * 1f, true, true, false);
                 EnterLadder();
                 return MoveState.CLIMBING;
             }
@@ -640,9 +641,8 @@ public class PlayerMovement : MonoBehaviour
         else if (!EventUnderWater())
         {
             // rescale capsule if possible
-            if (controller.CanSetHeight(controller.defaultHeight * 1f, true))
+            if (controller.TrySetHeight(controller.defaultHeight * 1f, true, true, false))
             {
-                controller.SetHeight(controller.defaultHeight * 1f, true, true, false);
                 return MoveState.IDLE;
             }
         }

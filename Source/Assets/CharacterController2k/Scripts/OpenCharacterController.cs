@@ -192,9 +192,6 @@ namespace CharacterController2k
         // Slight delay before stopping the sliding down slopes.
         float m_DelayStopSlidingDownSlopeTime;
 
-        // Pending resize info to set when it is safe to do so.
-        readonly ResizeInfo m_PendingResize = new ResizeInfo();
-
         // Collider array used for UnityEngine.Physics.OverlapCapsuleNonAlloc in GetPenetrationInfo
         readonly Collider[] m_PenetrationInfoColliders = new Collider[k_MaxOverlapColliders];
 
@@ -270,7 +267,6 @@ namespace CharacterController2k
         void Update()
         {
             UpdateSlideDownSlopes();
-            UpdatePendingHeightAndCenter();
         }
 
 #if UNITY_EDITOR
@@ -461,23 +457,34 @@ namespace CharacterController2k
             return minMoveDistance * minMoveDistance;
         }
 
-        // Set the capsule's height and center.
+        // Try to set the capsule's height and center. Originally, this would
+        // keep trying every Update until it's safe to resize. this required a
+        // LOT of magic. It now either resizes immediately or it returns false
+        // if there is no space.
         //   newHeight: The new height.
         //   newCenter: The new center.
         //   checkForPenetration: Check for collision, and then de-penetrate if there's collision?
         //   updateGrounded: Update the grounded state? This uses a cast, so only set it to true if you need it.
-        // Returns the height that was set, which may be different to newHeight because of validation.
-        public float SetHeightAndCenter(float newHeight, Vector3 newCenter, bool checkForPenetration,
-                                        bool updateGrounded)
+        public bool TrySetHeightAndCenter(float newHeight, Vector3 newCenter,
+                                          bool checkForPenetration,
+                                          bool updateGrounded)
         {
+            // only resize if we will succeed. otherwise don't.
+            if (checkForPenetration &&
+                !CanSetHeightAndCenter(newHeight, newCenter))
+                return false;
+
             float oldHeight = height;
             Vector3 oldCenter = center;
             Vector3 oldPosition = transform.position;
-            bool cancelPending = true;
             Vector3 virtualPosition = oldPosition;
 
-            SetCenter(newCenter, false, false);
-            SetHeight(newHeight, false, false, false);
+            // set center, set height
+            // if either one fails, we don't return immediately.
+            // we want to do the penetration test no matter what,
+            // and restore data no matter what if it fails.
+            bool result = TrySetCenter(newCenter, false, false) &&
+                          TrySetHeight(newHeight, false, false, false);
 
             if (checkForPenetration)
             {
@@ -486,21 +493,20 @@ namespace CharacterController2k
                     // Inside colliders?
                     if (CheckCapsule(virtualPosition))
                     {
-                        // Wait until it is safe to resize
-                        cancelPending = false;
-                        m_PendingResize.SetHeightAndCenter(newHeight, newCenter);
                         // Restore data
+                        // NOTE: even though we simulate the resize first, we
+                        // might still end up inside a collider after resizing
+                        // because the simulation isn't 100% precise. so we
+                        // sometimes still get here when it 'almost' succeeeds
                         height = oldHeight;
                         center = oldCenter;
                         transform.position = oldPosition;
                         ValidateCapsule(true, ref virtualPosition);
+
+                        // return false later
+                        result = false;
                     }
                 }
-            }
-
-            if (cancelPending)
-            {
-                m_PendingResize.CancelHeightAndCenter();
             }
 
             if (updateGrounded)
@@ -509,16 +515,15 @@ namespace CharacterController2k
             }
 
             transform.position = virtualPosition;
-            return height;
+            return result;
         }
 
         // Reset the capsule's height and center to the default values.
         //   checkForPenetration: Check for collision, and then de-penetrate if there's collision?
         //   updateGrounded: Update the grounded state? This uses a cast, so only set it to true if you need it.
-        // Returns the reset height.
-        public float ResetHeightAndCenter(bool checkForPenetration, bool updateGrounded)
+        public bool TryResetHeightAndCenter(bool checkForPenetration, bool updateGrounded)
         {
-            return SetHeightAndCenter(defaultHeight, m_DefaultCenter, checkForPenetration, updateGrounded);
+            return TrySetHeightAndCenter(defaultHeight, m_DefaultCenter, checkForPenetration, updateGrounded);
         }
 
         // Get the capsule's center (local).
@@ -527,20 +532,28 @@ namespace CharacterController2k
             return center;
         }
 
-        // Set the capsule's center (local).
+        // Try to set the capsule's center (local). Originally, this would
+        // keep trying every Update until it's safe to resize. this required a
+        // LOT of magic. It now either resizes immediately or it returns false
+        // if there is no space.
         //   newCenter: The new center.
         //   checkForPenetration: Check for collision, and then de-penetrate if there's collision?
         //   updateGrounded: Update the grounded state? This uses a cast, so only set it to true if you need it.
-        public void SetCenter(Vector3 newCenter, bool checkForPenetration, bool updateGrounded)
+        public bool TrySetCenter(Vector3 newCenter, bool checkForPenetration, bool updateGrounded)
         {
+            // only resize if we will succeed. otherwise don't.
+            if (checkForPenetration &&
+                !CanSetCenter(newCenter))
+                return false;
+
             Vector3 oldCenter = center;
             Vector3 oldPosition = transform.position;
-            bool cancelPending = true;
             Vector3 virtualPosition = oldPosition;
 
             center = newCenter;
             ValidateCapsule(true, ref virtualPosition);
 
+            bool result = true;
             if (checkForPenetration)
             {
                 if (Depenetrate(ref virtualPosition))
@@ -548,20 +561,19 @@ namespace CharacterController2k
                     // Inside colliders?
                     if (CheckCapsule(virtualPosition))
                     {
-                        // Wait until it is safe to resize
-                        cancelPending = false;
-                        m_PendingResize.SetCenter(newCenter);
                         // Restore data
+                        // NOTE: even though we simulate the resize first, we
+                        // might still end up inside a collider after resizing
+                        // because the simulation isn't 100% precise. so we
+                        // sometimes still get here when it 'almost' succeeeds
                         center = oldCenter;
                         transform.position = oldPosition;
                         ValidateCapsule(true, ref virtualPosition);
+
+                        // return false later
+                        result = false;
                     }
                 }
-            }
-
-            if (cancelPending)
-            {
-                m_PendingResize.CancelCenter();
             }
 
             if (updateGrounded)
@@ -570,14 +582,15 @@ namespace CharacterController2k
             }
 
             transform.position = virtualPosition;
+            return result;
         }
 
         // Reset the capsule's center to the default value.
         //   checkForPenetration: Check for collision, and then de-penetrate if there's collision?
         //   updateGrounded: Update the grounded state? This uses a cast, so only set it to true if you need it.
-        public void ResetCenter(bool checkForPenetration, bool updateGrounded)
+        public bool TryResetCenter(bool checkForPenetration, bool updateGrounded)
         {
-            SetCenter(m_DefaultCenter, checkForPenetration, updateGrounded);
+            return TrySetCenter(m_DefaultCenter, checkForPenetration, updateGrounded);
         }
 
         // Get the capsule's height (local).
@@ -599,10 +612,15 @@ namespace CharacterController2k
         //   preserveFootPosition: Adjust the capsule's center to preserve the foot position?
         //   checkForPenetration: Check for collision, and then de-penetrate if there's collision?
         //   updateGrounded: Update the grounded state? This uses a cast, so only set it to true if you need it.
-        // Returns the height that was set, which may be different to newHeight because of validation.
-        public float SetHeight(float newHeight, bool preserveFootPosition, bool checkForPenetration,
-                               bool updateGrounded)
+        public bool TrySetHeight(float newHeight, bool preserveFootPosition,
+                                     bool checkForPenetration,
+                                     bool updateGrounded)
         {
+            // only resize if we will succeed. otherwise don't.
+            if (checkForPenetration &&
+                !CanSetHeight(newHeight, preserveFootPosition))
+                return false;
+
             // vis2k fix:
             // IMPORTANT: adjust height BEFORE ever calculating the center.
             //            previously it was adjusted AFTER calculating the center.
@@ -619,20 +637,14 @@ namespace CharacterController2k
             Vector3 newCenter = changeCenter ? CalculateCenterWithSameFootPosition(newHeight) : center;
             if (Mathf.Approximately(height, newHeight))
             {
-                // Height remains the same
-                m_PendingResize.CancelHeight();
-                if (changeCenter)
-                {
-                    SetCenter(newCenter, checkForPenetration, updateGrounded);
-                }
-
-                return height;
+                // Height remains the same. only set new center, which may have
+                // changed because of preserveFootPosition
+                return TrySetCenter(newCenter, checkForPenetration, updateGrounded);
             }
 
             float oldHeight = height;
             Vector3 oldCenter = center;
             Vector3 oldPosition = transform.position;
-            bool cancelPending = true;
 
             if (changeCenter)
             {
@@ -642,6 +654,7 @@ namespace CharacterController2k
             height = newHeight;
             ValidateCapsule(true, ref virtualPosition);
 
+            bool result = true;
             if (checkForPenetration)
             {
                 if (Depenetrate(ref virtualPosition))
@@ -649,39 +662,22 @@ namespace CharacterController2k
                     // Inside colliders?
                     if (CheckCapsule(virtualPosition))
                     {
-                        // Wait until it is safe to resize
-                        cancelPending = false;
-                        if (changeCenter)
-                        {
-                            m_PendingResize.SetHeightAndCenter(newHeight, newCenter);
-                        }
-                        else
-                        {
-                            m_PendingResize.SetHeight(newHeight);
-                        }
-
                         // Restore data
+                        // NOTE: even though we simulate the resize first, we
+                        // might still end up inside a collider after resizing
+                        // because the simulation isn't 100% precise. so we
+                        // sometimes still get here when it 'almost' succeeeds
                         height = oldHeight;
                         if (changeCenter)
                         {
                             center = oldCenter;
                         }
-
                         transform.position = oldPosition;
                         ValidateCapsule(true, ref virtualPosition);
-                    }
-                }
-            }
 
-            if (cancelPending)
-            {
-                if (changeCenter)
-                {
-                    m_PendingResize.CancelHeightAndCenter();
-                }
-                else
-                {
-                    m_PendingResize.CancelHeight();
+                        // return false later
+                        result = false;
+                    }
                 }
             }
 
@@ -691,7 +687,7 @@ namespace CharacterController2k
             }
 
             transform.position = virtualPosition;
-            return height;
+            return result;
         }
 
         // vis2k: add missing CanSetHeight function & helper functions
@@ -792,9 +788,9 @@ namespace CharacterController2k
         //   checkForPenetration: Check for collision, and then de-penetrate if there's collision?
         //   updateGrounded: Update the grounded state? This uses a cast, so only set it to true if you need it.
         // Returns the reset height.
-        public float ResetHeight(bool preserveFootPosition, bool checkForPenetration, bool updateGrounded)
+        public bool TryResetHeight(bool preserveFootPosition, bool checkForPenetration, bool updateGrounded)
         {
-            return SetHeight(defaultHeight, preserveFootPosition, checkForPenetration, updateGrounded);
+            return TrySetHeight(defaultHeight, preserveFootPosition, checkForPenetration, updateGrounded);
         }
 
         // Get the layers to test for collision.
@@ -1898,38 +1894,6 @@ namespace CharacterController2k
             velocity = oldVelocity;
 
             return didSlide;
-        }
-
-        // Update pending height and center when it is safe.
-        void UpdatePendingHeightAndCenter()
-        {
-            if (m_PendingResize.heightTime == null && m_PendingResize.centerTime == null)
-            {
-                return;
-            }
-
-            // Use smallest time
-            float time = m_PendingResize.heightTime != null ? m_PendingResize.heightTime.Value : float.MaxValue;
-            time = Mathf.Min(time, m_PendingResize.centerTime != null ? m_PendingResize.centerTime.Value : float.MaxValue);
-            if (time > Time.time)
-            {
-                return;
-            }
-
-            m_PendingResize.ClearTimers();
-
-            if (m_PendingResize.height != null && m_PendingResize.center != null)
-            {
-                SetHeightAndCenter(m_PendingResize.height.Value, m_PendingResize.center.Value, true, false);
-            }
-            else if (m_PendingResize.height != null)
-            {
-                SetHeight(m_PendingResize.height.Value, false, true, false);
-            }
-            else if (m_PendingResize.center != null)
-            {
-                SetCenter(m_PendingResize.center.Value, true, false);
-            }
         }
 
         // Sets the playerRootTransform's localPosition to the rootTransformOffset
