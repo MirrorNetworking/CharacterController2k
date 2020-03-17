@@ -1685,12 +1685,12 @@ namespace CharacterController2k
 
             Vector3 offset = offsetPosition != null ? offsetPosition.Value : Vector3.zero;
             float tempSkinWidth = includeSkinWidth ? GetSkinWidth() : 0.0f;
-            int overlapCount = UnityEngine.Physics.OverlapCapsuleNonAlloc(GetTopSphereWorldPosition(currentPosition) + offset,
-                                                                          GetBottomSphereWorldPosition(currentPosition) + offset,
-                                                                          scaledRadius + tempSkinWidth,
-                                                                          m_PenetrationInfoColliders,
-                                                                          GetCollisionLayerMask(),
-                                                                          m_TriggerQuery);
+            int overlapCount = Physics.OverlapCapsuleNonAlloc(GetTopSphereWorldPosition(currentPosition) + offset,
+                                                              GetBottomSphereWorldPosition(currentPosition) + offset,
+                                                              scaledRadius + tempSkinWidth,
+                                                              m_PenetrationInfoColliders,
+                                                              GetCollisionLayerMask(),
+                                                              m_TriggerQuery);
             if (overlapCount <= 0 || m_PenetrationInfoColliders.Length <= 0)
             {
                 return false;
