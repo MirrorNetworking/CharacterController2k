@@ -16,7 +16,6 @@ namespace CharacterController2k
         // newMoveVector: The move vector.
         // newCanSlide: Can the movement slide along obstacles?
         public MoveVector(Vector3 newMoveVector, bool newCanSlide = true)
-            : this()
         {
             moveVector = newMoveVector;
             canSlide = newCanSlide;
