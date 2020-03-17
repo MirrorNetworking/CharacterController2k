@@ -74,9 +74,9 @@ namespace CharacterController2k
         [Tooltip("Layers to test against for collisions.")]
         public LayerMask collisionLayerMask = ~0; // ~0 sets it to Everything
 
-        [SerializeField, Tooltip("Is the character controlled by a local human? If true then more calculations are done for more " +
-                 "accurate movement.")]
-        bool m_IsLocalHuman = true;
+        [FormerlySerializedAs("m_IsLocalHuman")]
+        [Tooltip("Is the character controlled by a local human? If true then more calculations are done for more accurate movement.")]
+        public bool isLocalHuman = true;
 
         [SerializeField, Tooltip("Can character slide vertically when touching the ceiling? (For example, if ceiling is sloped.)")]
         bool m_SlideAlongCeiling = true;
@@ -239,9 +239,6 @@ namespace CharacterController2k
                 return radius * maxScale;
             }
         }
-
-        // Is the character controlled by a local human? If true then more calculations are done for more accurate movement.
-        public bool IsLocalHuman { get { return m_IsLocalHuman; } }
 
         // vis2k: add old character controller compatibility
         public Vector3 velocity => m_Velocity;
@@ -944,8 +941,8 @@ namespace CharacterController2k
                                                  transform.position,
                                                  Vector3.zero,
                                                  true,
-                                                 m_IsLocalHuman,
-                                                 m_IsLocalHuman);
+                                                 isLocalHuman,
+                                                 isLocalHuman);
             }
             else
             {
@@ -986,7 +983,7 @@ namespace CharacterController2k
                     // Stop current move loop vector
                     remainingMoveVector = new MoveVector(Vector3.zero);
                 }
-                else if (!m_IsLocalHuman && collided)
+                else if (!isLocalHuman && collided)
                 {
                     // Only slide once for non-human controlled characters
                     remainingMoveVector.canSlide = false;
@@ -1145,7 +1142,7 @@ namespace CharacterController2k
             }
 
             // Only need to do the second test for human controlled character
-            if (!alsoCheckForStepOffset || !m_IsLocalHuman)
+            if (!alsoCheckForStepOffset || !isLocalHuman)
             {
                 return false;
             }
