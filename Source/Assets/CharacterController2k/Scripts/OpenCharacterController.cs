@@ -1870,12 +1870,12 @@ namespace CharacterController2k
                 Vector3 rayDirection = hitInfoSphere.point - rayOrigin;
 
                 // Raycast returns a more accurate normal than SphereCast/CapsuleCast
-                if (UnityEngine.Physics.Raycast(rayOrigin,
-                                                rayDirection,
-                                                out hitInfoRay,
-                                                rayDirection.magnitude * k_RaycastScaleDistance,
-                                                GetCollisionLayerMask(),
-                                                m_TriggerQuery) &&
+                if (Physics.Raycast(rayOrigin,
+                                    rayDirection,
+                                    out hitInfoRay,
+                                    rayDirection.magnitude * k_RaycastScaleDistance,
+                                    GetCollisionLayerMask(),
+                                    m_TriggerQuery) &&
                     hitInfoRay.collider == hitInfoSphere.collider)
                 {
                     hitNormal = hitInfoRay.normal;
