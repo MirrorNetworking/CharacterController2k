@@ -514,12 +514,6 @@ namespace Controller2k
             return TrySetHeightAndCenter(defaultHeight, m_DefaultCenter, checkForPenetration, updateGrounded);
         }
 
-        // Get the capsule's center (local).
-        public Vector3 GetCenter()
-        {
-            return center;
-        }
-
         // Try to set the capsule's center (local). Originally, this would
         // keep trying every Update until it's safe to resize. this required a
         // LOT of magic. It now either resizes immediately or it returns false
