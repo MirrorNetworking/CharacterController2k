@@ -137,18 +137,6 @@ public class PlayerMovement : MonoBehaviour
         return transform.forward * inputDir.y + transform.right * inputDir.x;
     }
 
-    Vector3 GetDesiredDirectionOnGround(Vector3 desiredDir)
-    {
-        // get a normal for the surface that is being touched to move along it
-        RaycastHit hitInfo;
-        if (Physics.SphereCast(transform.position, controller.radius, Vector3.down, out hitInfo,
-                               controller.height/2f, Physics.AllLayers, QueryTriggerInteraction.Ignore))
-        {
-            return Vector3.ProjectOnPlane(desiredDir, hitInfo.normal).normalized;
-        }
-        return desiredDir;
-    }
-
     // movement state machine //////////////////////////////////////////////////
     bool EventJumpRequested()
     {
@@ -682,25 +670,25 @@ public class PlayerMovement : MonoBehaviour
         // get input and desired direction based on camera and ground
         Vector2 inputDir = GetInputDirection();
         Vector3 desiredDir = GetDesiredDirection(inputDir);
-        Vector3 desiredGroundDir = GetDesiredDirectionOnGround(desiredDir);
         Debug.DrawLine(transform.position, transform.position + desiredDir, Color.blue);
         Debug.DrawLine(transform.position, transform.position + desiredDir, Color.cyan);
 
         // update state machine
-        if (state == MoveState.IDLE)                  state = UpdateIDLE(inputDir, desiredGroundDir);
-        else if (state == MoveState.WALKING)          state = UpdateWALKINGandRUNNING(inputDir, desiredGroundDir);
-        else if (state == MoveState.RUNNING)          state = UpdateWALKINGandRUNNING(inputDir, desiredGroundDir);
-        else if (state == MoveState.CROUCHING)        state = UpdateCROUCHING(inputDir, desiredGroundDir);
-        else if (state == MoveState.CRAWLING)         state = UpdateCRAWLING(inputDir, desiredGroundDir);
-        else if (state == MoveState.AIRBORNE)         state = UpdateAIRBORNE(inputDir, desiredGroundDir);
-        else if (state == MoveState.CLIMBING)         state = UpdateCLIMBING(inputDir, desiredGroundDir);
-        else if (state == MoveState.SWIMMING)         state = UpdateSWIMMING(inputDir, desiredGroundDir);
+        if (state == MoveState.IDLE)                  state = UpdateIDLE(inputDir, desiredDir);
+        else if (state == MoveState.WALKING)          state = UpdateWALKINGandRUNNING(inputDir, desiredDir);
+        else if (state == MoveState.RUNNING)          state = UpdateWALKINGandRUNNING(inputDir, desiredDir);
+        else if (state == MoveState.CROUCHING)        state = UpdateCROUCHING(inputDir, desiredDir);
+        else if (state == MoveState.CRAWLING)         state = UpdateCRAWLING(inputDir, desiredDir);
+        else if (state == MoveState.AIRBORNE)         state = UpdateAIRBORNE(inputDir, desiredDir);
+        else if (state == MoveState.CLIMBING)         state = UpdateCLIMBING(inputDir, desiredDir);
+        else if (state == MoveState.SWIMMING)         state = UpdateSWIMMING(inputDir, desiredDir);
         else Debug.LogError("Unhandled Movement State: " + state);
 
         // cache this move's state to detect landing etc. next time
         if (!controller.isGrounded) lastFall = controller.velocity;
 
         // move depending on latest moveDir changes
+        Debug.DrawLine(transform.position, transform.position + moveDir * Time.fixedDeltaTime, Color.magenta);
         controller.Move(moveDir * Time.fixedDeltaTime); // note: returns CollisionFlags if needed
 
         // calculate which leg is behind, so as to leave that leg trailing in the jump animation
