@@ -60,15 +60,8 @@ namespace Controller2k.Tests
         [Test]
         public void GetTopSphereWorldPositionSimulated()
         {
-            //  y
-            // 2|    ___
-            //  |   / . \        top sphere center   = (2, 1.5, 0)
-            //  |  |\___/|
-            // 1|  |  p  |       p = (local)position = (0, 1, 0)
-            //  |  |     |
-            // 0|___\___/____x   transformedPosition = (2, 0, 0)
-            //  0  1  2  3
-            //
+            // same test as above, but with changed transform.scale to make
+            // sure it works
             go.transform.position = new Vector3(0, 1, 0);
             go.transform.localScale = new Vector3(1, 2, 1);
             Vector3 top = Helpers.GetTopSphereWorldPositionSimulated(go.transform, new Vector3(2, 0, 0), 0.5f, 1);
@@ -94,15 +87,8 @@ namespace Controller2k.Tests
         [Test]
         public void GetBottomSphereWorldPositionSimulated()
         {
-            //  y
-            // 2|    ___
-            //  |   /   \
-            //  |  |     |
-            // 1|  | _p_ |       p = (local)position  = (0, 1, 0)
-            //  |  |/ . \|       bottom sphere center = (2, 0.5, 0)
-            // 0|___\___/____x   transformedPosition  = (2, 0, 0)
-            //  0  1  2  3
-            //
+            // same test as above, but with changed transform.scale to make
+            // sure it works
             go.transform.position = new Vector3(0, 1, 0);
             go.transform.localScale = new Vector3(1, 2, 1);
             Vector3 top = Helpers.GetBottomSphereWorldPositionSimulated(go.transform, new Vector3(2, 0, 0), 0.5f, 1);
