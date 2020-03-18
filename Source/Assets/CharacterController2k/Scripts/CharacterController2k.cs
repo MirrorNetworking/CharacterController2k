@@ -1376,9 +1376,9 @@ namespace Controller2k
         //      useBottomSphere: Use the sphere at the bottom of the capsule? If false then use the top sphere.
         //      currentPosition: position of the character
         bool SmallSphereCast(Vector3 direction, float distance,
-                                     out RaycastHit smallRadiusHitInfo,
-                                     Vector3 offsetPosition,
-                                     bool useBottomSphere, Vector3 currentPosition)
+                             out RaycastHit smallRadiusHitInfo,
+                             Vector3 offsetPosition,
+                             bool useBottomSphere, Vector3 currentPosition)
         {
             // Cast further than the distance we need, to try to take into account small edge cases (e.g. Casts fail
             // when moving almost parallel to an obstacle for small distances).
