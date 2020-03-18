@@ -341,9 +341,9 @@ namespace Controller2k
         //   currentPosition: Position of the character
         // True if found penetration.
         bool ComputePenetration(Vector3 positionOffset,
-                                       Collider collider, Vector3 colliderPosition, Quaternion colliderRotation,
-                                       out Vector3 direction, out float distance,
-                                       bool includeSkinWidth, Vector3 currentPosition)
+                                Collider collider, Vector3 colliderPosition, Quaternion colliderRotation,
+                                out Vector3 direction, out float distance,
+                                bool includeSkinWidth, Vector3 currentPosition)
         {
             if (collider == m_CapsuleCollider)
             {
