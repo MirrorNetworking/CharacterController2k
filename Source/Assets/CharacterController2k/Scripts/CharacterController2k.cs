@@ -419,13 +419,13 @@ namespace Controller2k
                 Debug.DrawRay(currentPosition +  new Vector3(0.0f, 0.0f, -scaledRadius), Vector3.down, Color.blue);
 #endif
                 if (SmallSphereCast(Vector3.down,
-                                    GetSkinWidth() + distance,
+                                    skinWidth + distance,
                                     out hitInfo,
                                     offsetPosition,
                                     true, currentPosition))
                 {
                     didCollide = true;
-                    hitInfo.distance = Mathf.Max(0.0f, hitInfo.distance - GetSkinWidth());
+                    hitInfo.distance = Mathf.Max(0.0f, hitInfo.distance - skinWidth);
                 }
 
                 if (!didCollide && useSecondSphereCast)
@@ -443,12 +443,6 @@ namespace Controller2k
             }
 
             return didCollide;
-        }
-
-        // Get the skin width.
-        public float GetSkinWidth()
-        {
-            return skinWidth;
         }
 
         // Get the minimum move sqr distance.
@@ -1143,7 +1137,7 @@ namespace Controller2k
 
             // Any obstacles ahead (after we moved up)?
             Vector3 up = Vector3.up * upDistance;
-            if (SmallCapsuleCast(horizontal, GetSkinWidth() + horizontalSize, out hitInfo, up, position) ||
+            if (SmallCapsuleCast(horizontal, skinWidth + horizontalSize, out hitInfo, up, position) ||
                 BigCapsuleCast(horizontal, horizontalSize, out hitInfo, up, position))
             {
                 return false;
@@ -1413,11 +1407,11 @@ namespace Controller2k
         {
             // Cast further than the distance we need, to try to take into account small edge cases (e.g. Casts fail
             // when moving almost parallel to an obstacle for small distances).
-            float extraDistance = scaledRadius + GetSkinWidth();
+            float extraDistance = scaledRadius + skinWidth;
 
             if (Physics.CapsuleCast(GetTopSphereWorldPosition(currentPosition) + offsetPosition,
                                     GetBottomSphereWorldPosition(currentPosition) + offsetPosition,
-                                    scaledRadius + GetSkinWidth(),
+                                    scaledRadius + skinWidth,
                                     direction,
                                     out bigRadiusHitInfo,
                                     distance + extraDistance,
@@ -1476,12 +1470,12 @@ namespace Controller2k
         {
             // Cast further than the distance we need, to try to take into account small edge cases (e.g. Casts fail
             // when moving almost parallel to an obstacle for small distances).
-            float extraDistance = scaledRadius + GetSkinWidth();
+            float extraDistance = scaledRadius + skinWidth;
 
             Vector3 spherePosition = useBottomSphere ? GetBottomSphereWorldPosition(currentPosition) + offsetPosition
                                                      : GetTopSphereWorldPosition(currentPosition) + offsetPosition;
             if (Physics.SphereCast(spherePosition,
-                                   scaledRadius + GetSkinWidth(),
+                                   scaledRadius + skinWidth,
                                    direction,
                                    out bigRadiusHitInfo,
                                    distance + extraDistance,
@@ -1512,7 +1506,7 @@ namespace Controller2k
             // IMPORTANT: This method must set moveVector.
 
             // When the small capsule hit then stop skinWidth away from obstacles
-            float collisionOffset = hitSmallCapsule ? GetSkinWidth() : k_CollisionOffset;
+            float collisionOffset = hitSmallCapsule ? skinWidth : k_CollisionOffset;
 
             float hitDistance = Mathf.Max(hitInfoCapsule.distance - collisionOffset, 0.0f);
             // Note: remainingDistance is more accurate is we use hitDistance, but using hitInfoCapsule.distance gives a tiny
@@ -1654,7 +1648,7 @@ namespace Controller2k
             getDirection = Vector3.zero;
 
             Vector3 offset = offsetPosition != null ? offsetPosition.Value : Vector3.zero;
-            float tempSkinWidth = includeSkinWidth ? GetSkinWidth() : 0.0f;
+            float tempSkinWidth = includeSkinWidth ? skinWidth : 0.0f;
             int overlapCount = Physics.OverlapCapsuleNonAlloc(GetTopSphereWorldPosition(currentPosition) + offset,
                                                               GetBottomSphereWorldPosition(currentPosition) + offset,
                                                               scaledRadius + tempSkinWidth,
@@ -1711,7 +1705,7 @@ namespace Controller2k
                                   Vector3? offsetPosition = null)
         {
             Vector3 offset = offsetPosition != null ? offsetPosition.Value : Vector3.zero;
-            float tempSkinWidth = includeSkinWidth ? GetSkinWidth() : 0.0f;
+            float tempSkinWidth = includeSkinWidth ? skinWidth : 0.0f;
             return Physics.CheckCapsule(GetTopSphereWorldPosition(currentPosition) + offset,
                                         GetBottomSphereWorldPosition(currentPosition) + offset,
                                         scaledRadius + tempSkinWidth,
@@ -1826,7 +1820,7 @@ namespace Controller2k
             {
                 RaycastHit hitInfoSphere;
                 if (!SmallSphereCast(Vector3.down,
-                                     GetSkinWidth() + k_SlideDownSlopeTestDistance,
+                                     skinWidth + k_SlideDownSlopeTestDistance,
                                      out hitInfoSphere,
                                      Vector3.zero,
                                      true, transform.position))
