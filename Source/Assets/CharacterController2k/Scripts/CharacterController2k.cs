@@ -257,16 +257,16 @@ namespace Controller2k
             m_SlopeMovementOffset =  stepOffset / Mathf.Tan(slopeLimit * Mathf.Deg2Rad);
         }
 
-        // Set the root position.
-        void LateUpdate()
-        {
-            SetRootToOffset();
-        }
-
         // Update sliding down slopes, and changes to the capsule's height and center.
         void Update()
         {
             UpdateSlideDownSlopes();
+        }
+
+        // Set the root position.
+        void LateUpdate()
+        {
+            SetRootToOffset();
         }
 
 #if UNITY_EDITOR
