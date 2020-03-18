@@ -14,9 +14,8 @@ namespace Controller2k
         public static Vector3 GetTopSphereWorldPositionSimulated(Transform transform, Vector3 center, float scaledRadius, float height)
         {
             float scaledHeight = height * transform.lossyScale.y;
-            Vector3 sphereOffsetY = Vector3.up * (scaledHeight / 2.0f - scaledRadius);
             Vector3 transformedCenter = transform.TransformVector(center);
-            return transform.position + transformedCenter + sphereOffsetY;
+            return GetTopSphereWorldPosition(transform.position, transformedCenter, scaledRadius, scaledHeight);
         }
 
         // Get the bottom sphere's world position.
@@ -29,9 +28,8 @@ namespace Controller2k
         public static Vector3 GetBottomSphereWorldPositionSimulated(Transform transform, Vector3 center, float scaledRadius, float height)
         {
             float scaledHeight = height * transform.lossyScale.y;
-            Vector3 sphereOffsetY = Vector3.up * (scaledHeight / 2.0f - scaledRadius);
             Vector3 transformedCenter = transform.TransformVector(center);
-            return transform.position + transformedCenter - sphereOffsetY;
+            return GetBottomSphereWorldPosition(transform.position, transformedCenter, scaledRadius, scaledHeight);
         }
 
         // Calculate a new center if the height changes and preserve the foot position.
