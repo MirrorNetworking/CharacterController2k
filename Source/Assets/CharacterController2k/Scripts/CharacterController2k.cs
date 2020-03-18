@@ -733,8 +733,7 @@ namespace Controller2k
             for (int i = 0; i < hits; ++i)
             {
                 // a collider that is not self?
-                Collider col = m_OverlapCapsuleColliders[i];
-                if (col != m_CapsuleCollider)
+                if (m_OverlapCapsuleColliders[i] != m_CapsuleCollider)
                 {
                     return false;
                 }
