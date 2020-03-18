@@ -715,16 +715,16 @@ namespace Controller2k
 
             // debug draw
             Debug.DrawLine(
-                Helpers.GetTopSphereWorldPositionSimulated(transform, newCenter, newHeight, scaledRadius),
-                Helpers.GetBottomSphereWorldPositionSimulated(transform, newCenter, newHeight, scaledRadius),
+                Helpers.GetTopSphereWorldPositionSimulated(transform, newCenter, scaledRadius, newHeight),
+                Helpers.GetBottomSphereWorldPositionSimulated(transform, newCenter, scaledRadius, newHeight),
                 Color.yellow,
                 3f
             );
 
             // check the overlap capsule
             int hits = Physics.OverlapCapsuleNonAlloc(
-                Helpers.GetTopSphereWorldPositionSimulated(transform, newCenter, newHeight, scaledRadius),
-                Helpers.GetBottomSphereWorldPositionSimulated(transform, newCenter, newHeight, scaledRadius),
+                Helpers.GetTopSphereWorldPositionSimulated(transform, newCenter, scaledRadius, newHeight),
+                Helpers.GetBottomSphereWorldPositionSimulated(transform, newCenter, scaledRadius, newHeight),
                 radius,
                 m_OverlapCapsuleColliders,
                 collisionLayerMask,
