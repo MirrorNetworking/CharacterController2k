@@ -401,7 +401,7 @@ namespace Controller2k
                                     Vector3.down,
                                     out hitInfo,
                                     distance + extraDistance,
-                                    GetCollisionLayerMask(),
+                                    collisionLayerMask,
                                     triggerQuery))
                 {
                     didCollide = true;
@@ -727,7 +727,7 @@ namespace Controller2k
                 Helpers.GetBottomSphereWorldPositionSimulated(transform, newCenter, newHeight, scaledRadius),
                 radius,
                 m_OverlapCapsuleColliders,
-                GetCollisionLayerMask(),
+                collisionLayerMask,
                 triggerQuery);
 
             for (int i = 0; i < hits; ++i)
@@ -752,12 +752,6 @@ namespace Controller2k
         public bool TryResetHeight(bool preserveFootPosition, bool checkForPenetration, bool updateGrounded)
         {
             return TrySetHeight(defaultHeight, preserveFootPosition, checkForPenetration, updateGrounded);
-        }
-
-        // Get the layers to test for collision.
-        public LayerMask GetCollisionLayerMask()
-        {
-            return collisionLayerMask;
         }
 
         // Get the foot world position.
@@ -1170,7 +1164,7 @@ namespace Controller2k
                                 rayDirection,
                                 out hitInfoRay,
                                 rayDirection.magnitude * k_RaycastScaleDistance,
-                                GetCollisionLayerMask(),
+                                collisionLayerMask,
                                 triggerQuery) &&
                 hitInfoRay.collider == hitInfoCapsule.collider)
             {
@@ -1353,7 +1347,7 @@ namespace Controller2k
                                     direction,
                                     out smallRadiusHitInfo,
                                     distance + extraDistance,
-                                    GetCollisionLayerMask(),
+                                    collisionLayerMask,
                                     triggerQuery))
             {
                 return smallRadiusHitInfo.distance <= distance;
@@ -1382,7 +1376,7 @@ namespace Controller2k
                                     direction,
                                     out bigRadiusHitInfo,
                                     distance + extraDistance,
-                                    GetCollisionLayerMask(),
+                                    collisionLayerMask,
                                     triggerQuery))
             {
                 return bigRadiusHitInfo.distance <= distance;
@@ -1414,7 +1408,7 @@ namespace Controller2k
                                    direction,
                                    out smallRadiusHitInfo,
                                    distance + extraDistance,
-                                   GetCollisionLayerMask(),
+                                   collisionLayerMask,
                                    triggerQuery))
             {
                 return smallRadiusHitInfo.distance <= distance;
@@ -1446,7 +1440,7 @@ namespace Controller2k
                                    direction,
                                    out bigRadiusHitInfo,
                                    distance + extraDistance,
-                                   GetCollisionLayerMask(),
+                                   collisionLayerMask,
                                    triggerQuery))
             {
                 return bigRadiusHitInfo.distance <= distance;
@@ -1494,7 +1488,7 @@ namespace Controller2k
                                 rayDirection,
                                 out hitInfoRay,
                                 rayDirection.magnitude * k_RaycastScaleDistance,
-                                GetCollisionLayerMask(),
+                                collisionLayerMask,
                                 triggerQuery) &&
                 hitInfoRay.collider == hitInfoCapsule.collider &&
                 Vector3.Angle(hitInfoCapsule.normal, hitInfoRay.normal) <= k_MaxAngleToUseRaycastNormal)
@@ -1620,7 +1614,7 @@ namespace Controller2k
                                                               GetBottomSphereWorldPosition(currentPosition) + offset,
                                                               scaledRadius + tempSkinWidth,
                                                               m_PenetrationInfoColliders,
-                                                              GetCollisionLayerMask(),
+                                                              collisionLayerMask,
                                                               triggerQuery);
             if (overlapCount <= 0 || m_PenetrationInfoColliders.Length <= 0)
             {
@@ -1676,7 +1670,7 @@ namespace Controller2k
             return Physics.CheckCapsule(GetTopSphereWorldPosition(currentPosition) + offset,
                                         GetBottomSphereWorldPosition(currentPosition) + offset,
                                         scaledRadius + tempSkinWidth,
-                                        GetCollisionLayerMask(),
+                                        collisionLayerMask,
                                         triggerQuery);
         }
 
@@ -1804,7 +1798,7 @@ namespace Controller2k
                                     rayDirection,
                                     out hitInfoRay,
                                     rayDirection.magnitude * k_RaycastScaleDistance,
-                                    GetCollisionLayerMask(),
+                                    collisionLayerMask,
                                     triggerQuery) &&
                     hitInfoRay.collider == hitInfoSphere.collider)
                 {
