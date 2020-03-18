@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace CharacterController2k
+namespace Controller2k
 {
     // Collision info used by the OpenCharacterController and sent to the OnOpenCharacterControllerHit message.
     public struct CollisionInfo

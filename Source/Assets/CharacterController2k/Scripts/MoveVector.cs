@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace CharacterController2k
+namespace Controller2k
 {
     // A vector used by the OpenCharacterController.
     public struct MoveVector

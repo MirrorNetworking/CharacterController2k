@@ -7,7 +7,7 @@
 //
 using UnityEngine;
 
-namespace CharacterController2k
+namespace Controller2k
 {
 	public static class Extensions
 	{

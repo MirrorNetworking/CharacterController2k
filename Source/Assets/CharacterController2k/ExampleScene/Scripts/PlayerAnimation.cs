@@ -1,6 +1,6 @@
 ﻿// keep track of some meta info like class, account etc.
 using UnityEngine;
-using CharacterController2k;
+using Controller2k;
 
 public class PlayerAnimation : MonoBehaviour
 {

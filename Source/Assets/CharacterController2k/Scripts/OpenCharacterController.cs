@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-namespace CharacterController2k
+namespace Controller2k
 {
     // <summary>
     // Open character controller. Handles the movement of a character, by using a capsule for movement and collision detection.
