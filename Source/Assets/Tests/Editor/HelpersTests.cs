@@ -26,5 +26,21 @@ namespace Controller2k.Tests
             Assert.That(Helpers.IsMoveVectorAlmostZero(new Vector3(Mathf.Epsilon,   Mathf.Epsilon,   Mathf.Epsilon*2), Mathf.Epsilon), Is.False);
             Assert.That(Helpers.IsMoveVectorAlmostZero(new Vector3(1,               2,               3),               Mathf.Epsilon), Is.False);
         }
+
+        [Test]
+        public void GetTopSphereWorldPosition()
+        {
+            //  y
+            // 2|    ___
+            //  |   / . \        top sphere center   = (2, 1.5, 0)
+            //  |  |\___/|
+            // 1|  |  p  |       p = (local)position = (0, 1, 0)
+            //  |  |     |
+            // 0|___\___/____x   transformedPosition = (2, 0, 0)
+            //  0  1  2  3
+            //
+            Vector3 top = Helpers.GetTopSphereWorldPosition(new Vector3(0, 1, 0), new Vector3(2, 0, 0), 0.5f, 2);
+            Assert.That(top, Is.EqualTo(new Vector3(2, 1.5f, 0)));
+        }
     }
 }
