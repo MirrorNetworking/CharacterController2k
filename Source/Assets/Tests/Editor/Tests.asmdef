@@ -1,9 +1,18 @@
-﻿{
+{
     "name": "Tests",
+    "references": [
+        "Controller2k"
+    ],
     "optionalUnityReferences": [
         "TestAssemblies"
     ],
     "includePlatforms": [
         "Editor"
-    ]
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": []
 }
