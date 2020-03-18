@@ -1,6 +1,6 @@
 ﻿// based on Unity's FirstPersonController & ThirdPersonController scripts
 using UnityEngine;
-using CharacterController2k;
+using Controller2k;
 using Random = UnityEngine.Random;
 
 // MoveState as byte for minimal bandwidth (otherwise it's int by default)
@@ -8,14 +8,14 @@ using Random = UnityEngine.Random;
 //       difference somewhere (e.g. for endurance recovery)
 public enum MoveState : byte {IDLE, WALKING, RUNNING, CROUCHING, CRAWLING, AIRBORNE, CLIMBING, SWIMMING}
 
-[RequireComponent(typeof(OpenCharacterController))]
+[RequireComponent(typeof(CharacterController2k))]
 [RequireComponent(typeof(AudioSource))]
 public class PlayerMovement : MonoBehaviour
 {
     // components to be assigned in inspector
     [Header("Components")]
     public Animator animator;
-    public OpenCharacterController controller;
+    public CharacterController2k controller;
     public AudioSource feetAudio;
     public PlayerLook look;
     // the collider for the character controller. NOT the hips collider. this

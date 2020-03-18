@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace CharacterController2k
+namespace Controller2k
 {
     // Stuck info and logic used by the OpenCharacterController.
     public class StuckInfo

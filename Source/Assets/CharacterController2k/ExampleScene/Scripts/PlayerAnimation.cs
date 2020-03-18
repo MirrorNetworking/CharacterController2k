@@ -6,7 +6,7 @@ public class PlayerAnimation : MonoBehaviour
 {
     // fields for all player components to avoid costly GetComponent calls
     [Header("Components")]
-    public OpenCharacterController controller;
+    public CharacterController2k controller;
     public PlayerMovement movement;
 
     [Header("Animation")]

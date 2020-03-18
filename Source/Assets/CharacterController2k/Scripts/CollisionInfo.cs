@@ -9,7 +9,7 @@ namespace Controller2k
         public readonly Collider collider;
 
         // The controller that hit the collider.
-        public readonly OpenCharacterController controller;
+        public readonly CharacterController2k controller;
 
         // The game object that was hit by the controller.
         public readonly GameObject gameObject;
@@ -37,7 +37,7 @@ namespace Controller2k
         // hitInfo: The hit info.
         // directionMoved: Direction moved when collision occured.
         // distanceMoved: How far the character has travelled until it hit the collider.
-        public CollisionInfo(OpenCharacterController openCharacterController,
+        public CollisionInfo(CharacterController2k openCharacterController,
                              RaycastHit hitInfo,
                              Vector3 directionMoved,
                              float distanceMoved)

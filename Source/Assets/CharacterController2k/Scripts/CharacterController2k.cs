@@ -18,7 +18,7 @@ namespace Controller2k
     // </summary>
     [RequireComponent(typeof(CapsuleCollider))]
     [RequireComponent(typeof(Rigidbody))]
-    public class OpenCharacterController : MonoBehaviour
+    public class CharacterController2k : MonoBehaviour
     {
         // Fired on collision with colliders in the world
         public event Action<CollisionInfo> collision;
