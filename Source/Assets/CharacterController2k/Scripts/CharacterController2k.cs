@@ -588,8 +588,8 @@ namespace Controller2k
         //   checkForPenetration: Check for collision, and then de-penetrate if there's collision?
         //   updateGrounded: Update the grounded state? This uses a cast, so only set it to true if you need it.
         public bool TrySetHeight(float newHeight, bool preserveFootPosition,
-                                     bool checkForPenetration,
-                                     bool updateGrounded)
+                                 bool checkForPenetration,
+                                 bool updateGrounded)
         {
             // only resize if we will succeed. otherwise don't.
             if (checkForPenetration &&
