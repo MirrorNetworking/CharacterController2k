@@ -674,6 +674,7 @@ namespace Controller2k
             Vector3 transformedCenter = transform.TransformVector(center);
             return transform.position + transformedCenter + sphereOffsetY;
         }
+
         static Vector3 GetBottomSphereWorldPositionSimulated(Transform transform, Vector3 center, float height, float scaledRadius)
         {
             float scaledHeight = height * transform.lossyScale.y;
@@ -681,6 +682,7 @@ namespace Controller2k
             Vector3 transformedCenter = transform.TransformVector(center);
             return transform.position + transformedCenter - sphereOffsetY;
         }
+
         readonly Collider[] m_OverlapCapsuleColliders = new Collider[k_MaxOverlapColliders];
         public bool CanSetHeight(float newHeight, bool preserveFootPosition)
         {
