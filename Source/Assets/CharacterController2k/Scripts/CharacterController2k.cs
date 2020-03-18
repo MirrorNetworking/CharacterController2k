@@ -229,7 +229,7 @@ namespace Controller2k
         // Default height of the capsule (e.g. for resetting it).
         public float defaultHeight { get; private set; }
 
-        // Is the character sliding and has been sliding less than slideDownTimeUntilJumAllowed
+        // Is the character sliding and has been sliding less than slideDownTimeUntilJumpAllowed
         public bool startedSlide { get { return isSlidingDownSlope && m_SlidingDownSlopeTime <= slideStartTime; } }
 
         // The capsule radius with the relevant scaling applied (e.g. if object scale is not 1,1,1)
