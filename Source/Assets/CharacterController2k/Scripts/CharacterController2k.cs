@@ -909,7 +909,7 @@ namespace Controller2k
         // Movement loop. Keep moving until completely blocked by obstacles, or we reached the desired position/distance.
         //      moveVector: The move vector.
         //      tryToStickToGround: Try to stick to the ground?
-        //      slideWhenMovingDown: Slide against obstacles when moving down? (e.g. we don't want to slide when applying gravity while the charcter is grounded)
+        //      slideWhenMovingDown: Slide against obstacles when moving down? (e.g. we don't want to slide when applying gravity while the character is grounded)
         //      doNotStepOffset: Do not try to perform the step offset?
         void MoveLoop(Vector3 moveVector, bool tryToStickToGround, bool slideWhenMovingDown, bool doNotStepOffset)
         {
