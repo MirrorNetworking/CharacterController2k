@@ -575,12 +575,6 @@ namespace Controller2k
             return TrySetCenter(m_DefaultCenter, checkForPenetration, updateGrounded);
         }
 
-        // Get the capsule's height (local).
-        public float GetHeight()
-        {
-            return height;
-        }
-
         // Validate the capsule's height. (It must be at least double the radius size.)
         // The valid height.
         public float ValidateHeight(float newHeight)
