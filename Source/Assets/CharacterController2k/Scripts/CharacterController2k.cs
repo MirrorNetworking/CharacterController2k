@@ -1346,8 +1346,8 @@ namespace Controller2k
         //      offsetPosition: Offset position, if we want to test somewhere relative to the capsule's position.
         //      currentPosition: position of the character
         bool BigCapsuleCast(Vector3 direction, float distance,
-                                    out RaycastHit bigRadiusHitInfo,
-                                    Vector3 offsetPosition, Vector3 currentPosition)
+                            out RaycastHit bigRadiusHitInfo,
+                            Vector3 offsetPosition, Vector3 currentPosition)
         {
             // Cast further than the distance we need, to try to take into account small edge cases (e.g. Casts fail
             // when moving almost parallel to an obstacle for small distances).
