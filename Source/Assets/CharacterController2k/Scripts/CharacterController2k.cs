@@ -852,7 +852,7 @@ namespace Controller2k
                           bool doNotStepOffset = false)
         {
             bool wasGrounded = isGrounded;
-            Vector3 moveVectorNoY = new Vector3(moveVector.x, 0.0f, moveVector.z);
+            Vector3 moveVectorNoY = new Vector3(moveVector.x, 0, moveVector.z);
             bool tryToStickToGround = wasGrounded && (forceTryStickToGround || (moveVector.y <= 0.0f && moveVectorNoY.sqrMagnitude.NotEqualToZero()));
 
             m_StartPosition = transform.position;
