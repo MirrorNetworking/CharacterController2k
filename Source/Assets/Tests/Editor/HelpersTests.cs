@@ -42,5 +42,21 @@ namespace Controller2k.Tests
             Vector3 top = Helpers.GetTopSphereWorldPosition(new Vector3(0, 1, 0), new Vector3(2, 0, 0), 0.5f, 2);
             Assert.That(top, Is.EqualTo(new Vector3(2, 1.5f, 0)));
         }
+
+        [Test]
+        public void GetBottomSphereWorldPosition()
+        {
+            //  y
+            // 2|    ___
+            //  |   /   \
+            //  |  |     |
+            // 1|  | _p_ |       p = (local)position  = (0, 1, 0)
+            //  |  |/ . \|       bottom sphere center = (2, 0.5, 0)
+            // 0|___\___/____x   transformedPosition  = (2, 0, 0)
+            //  0  1  2  3
+            //
+            Vector3 top = Helpers.GetBottomSphereWorldPosition(new Vector3(0, 1, 0), new Vector3(2, 0, 0), 0.5f, 2);
+            Assert.That(top, Is.EqualTo(new Vector3(2, 0.5f, 0)));
+        }
     }
 }
