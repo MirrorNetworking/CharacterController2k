@@ -765,20 +765,6 @@ namespace Controller2k
             return position + transformedCenter + (Vector3.down * (scaledHeight / 2.0f + skinWidth));
         }
 
-        // Get the top sphere's world position.
-        Vector3 GetTopSphereWorldPosition(Vector3 position)
-        {
-            Vector3 sphereOffsetY = Vector3.up * (scaledHeight / 2.0f - scaledRadius);
-            return position + transformedCenter + sphereOffsetY;
-        }
-
-        // Get the bottom sphere's world position.
-        Vector3 GetBottomSphereWorldPosition(Vector3 position)
-        {
-            Vector3 sphereOffsetY = Vector3.up * (scaledHeight / 2.0f - scaledRadius);
-            return position + transformedCenter - sphereOffsetY;
-        }
-
         // Initialize the capsule collider and the rigidbody
         void InitCapsuleColliderAndRigidbody()
         {
@@ -1324,8 +1310,8 @@ namespace Controller2k
             // when moving almost parallel to an obstacle for small distances).
             float extraDistance = scaledRadius;
 
-            if (Physics.CapsuleCast(GetTopSphereWorldPosition(currentPosition) + offsetPosition,
-                                    GetBottomSphereWorldPosition(currentPosition) + offsetPosition,
+            if (Physics.CapsuleCast(Helpers.GetTopSphereWorldPosition(currentPosition, transformedCenter, scaledRadius, scaledHeight) + offsetPosition,
+                                    Helpers.GetBottomSphereWorldPosition(currentPosition, transformedCenter, scaledRadius, scaledHeight) + offsetPosition,
                                     scaledRadius,
                                     direction,
                                     out smallRadiusHitInfo,
@@ -1353,8 +1339,8 @@ namespace Controller2k
             // when moving almost parallel to an obstacle for small distances).
             float extraDistance = scaledRadius + skinWidth;
 
-            if (Physics.CapsuleCast(GetTopSphereWorldPosition(currentPosition) + offsetPosition,
-                                    GetBottomSphereWorldPosition(currentPosition) + offsetPosition,
+            if (Physics.CapsuleCast(Helpers.GetTopSphereWorldPosition(currentPosition, transformedCenter, scaledRadius, scaledHeight) + offsetPosition,
+                                    Helpers.GetBottomSphereWorldPosition(currentPosition, transformedCenter, scaledRadius, scaledHeight) + offsetPosition,
                                     scaledRadius + skinWidth,
                                     direction,
                                     out bigRadiusHitInfo,
@@ -1384,8 +1370,8 @@ namespace Controller2k
             // when moving almost parallel to an obstacle for small distances).
             float extraDistance = scaledRadius;
 
-            Vector3 spherePosition = useBottomSphere ? GetBottomSphereWorldPosition(currentPosition) + offsetPosition
-                                                     : GetTopSphereWorldPosition(currentPosition) + offsetPosition;
+            Vector3 spherePosition = useBottomSphere ? Helpers.GetBottomSphereWorldPosition(currentPosition, transformedCenter, scaledRadius, scaledHeight) + offsetPosition
+                                                     : Helpers.GetTopSphereWorldPosition(currentPosition, transformedCenter, scaledRadius, scaledHeight) + offsetPosition;
             if (Physics.SphereCast(spherePosition,
                                    scaledRadius,
                                    direction,
@@ -1416,8 +1402,8 @@ namespace Controller2k
             // when moving almost parallel to an obstacle for small distances).
             float extraDistance = scaledRadius + skinWidth;
 
-            Vector3 spherePosition = useBottomSphere ? GetBottomSphereWorldPosition(currentPosition) + offsetPosition
-                                                     : GetTopSphereWorldPosition(currentPosition) + offsetPosition;
+            Vector3 spherePosition = useBottomSphere ? Helpers.GetBottomSphereWorldPosition(currentPosition, transformedCenter, scaledRadius, scaledHeight) + offsetPosition
+                                                     : Helpers.GetTopSphereWorldPosition(currentPosition, transformedCenter, scaledRadius, scaledHeight) + offsetPosition;
             if (Physics.SphereCast(spherePosition,
                                    scaledRadius + skinWidth,
                                    direction,
@@ -1593,8 +1579,8 @@ namespace Controller2k
 
             Vector3 offset = offsetPosition != null ? offsetPosition.Value : Vector3.zero;
             float tempSkinWidth = includeSkinWidth ? skinWidth : 0.0f;
-            int overlapCount = Physics.OverlapCapsuleNonAlloc(GetTopSphereWorldPosition(currentPosition) + offset,
-                                                              GetBottomSphereWorldPosition(currentPosition) + offset,
+            int overlapCount = Physics.OverlapCapsuleNonAlloc(Helpers.GetTopSphereWorldPosition(currentPosition, transformedCenter, scaledRadius, scaledHeight) + offset,
+                                                              Helpers.GetBottomSphereWorldPosition(currentPosition, transformedCenter, scaledRadius, scaledHeight) + offset,
                                                               scaledRadius + tempSkinWidth,
                                                               m_PenetrationInfoColliders,
                                                               collisionLayerMask,
@@ -1650,8 +1636,8 @@ namespace Controller2k
         {
             Vector3 offset = offsetPosition != null ? offsetPosition.Value : Vector3.zero;
             float tempSkinWidth = includeSkinWidth ? skinWidth : 0;
-            return Physics.CheckCapsule(GetTopSphereWorldPosition(currentPosition) + offset,
-                                        GetBottomSphereWorldPosition(currentPosition) + offset,
+            return Physics.CheckCapsule(Helpers.GetTopSphereWorldPosition(currentPosition, transformedCenter, scaledRadius, scaledHeight) + offset,
+                                        Helpers.GetBottomSphereWorldPosition(currentPosition, transformedCenter, scaledRadius, scaledHeight) + offset,
                                         scaledRadius + tempSkinWidth,
                                         collisionLayerMask,
                                         triggerQuery);
@@ -1773,7 +1759,7 @@ namespace Controller2k
                 }
 
                 RaycastHit hitInfoRay;
-                Vector3 rayOrigin = GetBottomSphereWorldPosition(transform.position);
+                Vector3 rayOrigin = Helpers.GetBottomSphereWorldPosition(transform.position, transformedCenter, scaledRadius, scaledHeight);
                 Vector3 rayDirection = hitInfoSphere.point - rayOrigin;
 
                 // Raycast returns a more accurate normal than SphereCast/CapsuleCast
