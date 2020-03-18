@@ -576,7 +576,6 @@ namespace Controller2k
         }
 
         // Validate the capsule's height. (It must be at least double the radius size.)
-        // The valid height.
         public float ValidateHeight(float newHeight)
         {
             return Mathf.Clamp(newHeight, radius * 2.0f, float.MaxValue);
