@@ -12,6 +12,7 @@ namespace Controller2k
         }
 
         // added to simulate collision checks for CanSetHeight/Center
+        // TODO can probably get rid of it and use the above function with proper parameters
         public static Vector3 GetTopSphereWorldPositionSimulated(Transform transform, Vector3 center, float scaledRadius, float height)
         {
             float scaledHeight = height * transform.lossyScale.y;
@@ -27,6 +28,7 @@ namespace Controller2k
         }
 
         // added to simulate collision checks for CanSetHeight/Center
+        // TODO can probably get rid of it and use the above function with proper parameters
         public static Vector3 GetBottomSphereWorldPositionSimulated(Transform transform, Vector3 center, float scaledRadius, float height)
         {
             float scaledHeight = height * transform.lossyScale.y;
