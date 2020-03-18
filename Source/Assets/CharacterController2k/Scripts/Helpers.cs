@@ -11,6 +11,7 @@ namespace Controller2k
             return position + transformedCenter + sphereOffsetY;
         }
 
+        // added to simulate collision checks for CanSetHeight/Center
         public static Vector3 GetTopSphereWorldPositionSimulated(Transform transform, Vector3 center, float scaledRadius, float height)
         {
             float scaledHeight = height * transform.lossyScale.y;
@@ -25,6 +26,7 @@ namespace Controller2k
             return position + transformedCenter - sphereOffsetY;
         }
 
+        // added to simulate collision checks for CanSetHeight/Center
         public static Vector3 GetBottomSphereWorldPositionSimulated(Transform transform, Vector3 center, float scaledRadius, float height)
         {
             float scaledHeight = height * transform.lossyScale.y;
