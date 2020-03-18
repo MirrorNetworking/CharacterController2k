@@ -70,8 +70,8 @@ namespace Controller2k.Tests
             //  0  1  2  3
             //
             go.transform.position = new Vector3(0, 1, 0);
-            go.transform.localScale = new Vector3(1, 1, 1);
-            Vector3 top = Helpers.GetTopSphereWorldPositionSimulated(go.transform, new Vector3(2, 0, 0), 0.5f, 2);
+            go.transform.localScale = new Vector3(1, 2, 1);
+            Vector3 top = Helpers.GetTopSphereWorldPositionSimulated(go.transform, new Vector3(2, 0, 0), 0.5f, 1);
             Assert.That(top, Is.EqualTo(new Vector3(2, 1.5f, 0)));
         }
 
