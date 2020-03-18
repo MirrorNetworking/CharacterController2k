@@ -1632,7 +1632,7 @@ namespace Controller2k
         //      includeSkinWidth: Include the skin width in the test?
         //      offsetPosition: Offset position, if we want to test somewhere relative to the capsule's position.
         bool CheckCapsule(Vector3 currentPosition, bool includeSkinWidth = true,
-                                  Vector3? offsetPosition = null)
+                          Vector3? offsetPosition = null)
         {
             Vector3 offset = offsetPosition != null ? offsetPosition.Value : Vector3.zero;
             float tempSkinWidth = includeSkinWidth ? skinWidth : 0;
