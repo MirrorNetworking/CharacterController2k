@@ -683,9 +683,8 @@ public class PlayerMovement : MonoBehaviour
         Vector2 inputDir = GetInputDirection();
         Vector3 desiredDir = GetDesiredDirection(inputDir);
         Vector3 desiredGroundDir = GetDesiredDirectionOnGround(desiredDir);
-        Debug.DrawLine(transform.position, transform.position + new Vector3(inputDir.x, 0, inputDir.y), Color.green);
         Debug.DrawLine(transform.position, transform.position + desiredDir, Color.blue);
-        //Debug.DrawLine(transform.position, transform.position + desiredGroundDir, Color.cyan);
+        Debug.DrawLine(transform.position, transform.position + desiredDir, Color.cyan);
 
         // update state machine
         if (state == MoveState.IDLE)                  state = UpdateIDLE(inputDir, desiredGroundDir);
