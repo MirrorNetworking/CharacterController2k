@@ -1678,7 +1678,7 @@ namespace Controller2k
 
                 Vector3 direction;
                 float distance;
-                var colliderTransform = collider.transform;
+                Transform colliderTransform = collider.transform;
                 if (ComputePenetration(offset,
                                        collider, colliderTransform.position, colliderTransform.rotation,
                                        out direction, out distance, includeSkinWidth, currentPosition))
