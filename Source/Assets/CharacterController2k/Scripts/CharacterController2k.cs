@@ -846,9 +846,10 @@ namespace Controller2k
         //      slideWhenMovingDown: Slide against obstacles when moving down? (e.g. we don't want to slide when applying gravity while the character is grounded)
         //      forceTryStickToGround: Force try to stick to ground? Only used if character is grounded before moving.
         //      doNotStepOffset: Do not try to perform the step offset?
-        void MoveInternal(Vector3 moveVector, bool slideWhenMovingDown,
-                                            bool forceTryStickToGround = false,
-                                            bool doNotStepOffset = false)
+        void MoveInternal(Vector3 moveVector,
+                          bool slideWhenMovingDown,
+                          bool forceTryStickToGround = false,
+                          bool doNotStepOffset = false)
         {
             bool wasGrounded = isGrounded;
             Vector3 moveVectorNoY = new Vector3(moveVector.x, 0.0f, moveVector.z);
