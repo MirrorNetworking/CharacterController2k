@@ -31,9 +31,9 @@ namespace Controller2k
         // Is the movement vector almost zero (i.e. very small)?
         public static bool IsMoveVectorAlmostZero(Vector3 moveVector, float smallThreshold)
         {
-            return (Mathf.Abs(moveVector.x) > smallThreshold ||
-                    Mathf.Abs(moveVector.y) > smallThreshold ||
-                    Mathf.Abs(moveVector.z) > smallThreshold) ? false : true;
+            return Mathf.Abs(moveVector.x) <= smallThreshold &&
+                   Mathf.Abs(moveVector.y) <= smallThreshold &&
+                   Mathf.Abs(moveVector.z) <= smallThreshold;
         }
     }
 }
