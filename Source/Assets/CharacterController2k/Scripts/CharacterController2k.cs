@@ -756,7 +756,7 @@ namespace Controller2k
         // Get the foot world position.
         public Vector3 GetFootWorldPosition()
         {
-            return transform.position + transformedCenter + (Vector3.down * (scaledHeight / 2.0f + skinWidth));
+            return GetFootWorldPosition(transform.position);
         }
 
         // Get the foot world position.
