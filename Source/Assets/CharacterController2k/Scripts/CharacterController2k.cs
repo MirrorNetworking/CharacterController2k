@@ -1666,7 +1666,7 @@ namespace Controller2k
                                   Vector3? offsetPosition = null)
         {
             Vector3 offset = offsetPosition != null ? offsetPosition.Value : Vector3.zero;
-            float tempSkinWidth = includeSkinWidth ? skinWidth : 0.0f;
+            float tempSkinWidth = includeSkinWidth ? skinWidth : 0;
             return Physics.CheckCapsule(GetTopSphereWorldPosition(currentPosition) + offset,
                                         GetBottomSphereWorldPosition(currentPosition) + offset,
                                         scaledRadius + tempSkinWidth,
