@@ -1594,23 +1594,23 @@ namespace Controller2k
             Vector3 localPos = Vector3.zero;
             for (int i = 0; i < overlapCount; i++)
             {
-                Collider collider = m_PenetrationInfoColliders[i];
-                if (collider == null)
+                Collider col = m_PenetrationInfoColliders[i];
+                if (col == null)
                 {
                     break;
                 }
 
                 Vector3 direction;
                 float distance;
-                Transform colliderTransform = collider.transform;
+                Transform colliderTransform = col.transform;
                 if (ComputePenetration(offset,
-                                       collider, colliderTransform.position, colliderTransform.rotation,
+                                       col, colliderTransform.position, colliderTransform.rotation,
                                        out direction, out distance, includeSkinWidth, currentPosition))
                 {
                     localPos += direction * (distance + k_CollisionOffset);
                     result = true;
                 }
-                else if (hitInfo != null && hitInfo.Value.collider == collider)
+                else if (hitInfo != null && hitInfo.Value.collider == col)
                 {
                     // We can use the hit normal to push away from the collider, because CapsuleCast generally returns a normal
                     // that pushes away from the collider.
