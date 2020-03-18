@@ -609,7 +609,7 @@ namespace Controller2k
 
             Vector3 virtualPosition = transform.position;
             bool changeCenter = preserveFootPosition;
-            Vector3 newCenter = changeCenter ? CalculateCenterWithSameFootPosition(newHeight) : center;
+            Vector3 newCenter = changeCenter ? Helpers.CalculateCenterWithSameFootPosition(center, height, newHeight, skinWidth) : center;
             if (Mathf.Approximately(height, newHeight))
             {
                 // Height remains the same. only set new center, which may have
@@ -683,7 +683,7 @@ namespace Controller2k
 
             // calculate the new capsule center & height
             bool changeCenter = preserveFootPosition;
-            Vector3 newCenter = changeCenter ? CalculateCenterWithSameFootPosition(newHeight) : center;
+            Vector3 newCenter = changeCenter ? Helpers.CalculateCenterWithSameFootPosition(center, height, newHeight, skinWidth) : center;
             if (Mathf.Approximately(height, newHeight))
             {
                 // Height remains the same
@@ -839,15 +839,6 @@ namespace Controller2k
             {
                 UpdateGrounded(CollisionFlags.None);
             }
-        }
-
-        // Calculate a new center if the height changes and preserve the foot position.
-        //      newHeight: New height
-        Vector3 CalculateCenterWithSameFootPosition(float newHeight)
-        {
-            float localFootY = center.y - (height / 2.0f + skinWidth);
-            float newCenterY = localFootY + (newHeight / 2.0f + skinWidth);
-            return new Vector3(center.x, newCenterY, center.z);
         }
 
         // Moves the characters.

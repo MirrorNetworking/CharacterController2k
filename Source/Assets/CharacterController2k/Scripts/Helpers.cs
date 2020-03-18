@@ -19,5 +19,13 @@ namespace Controller2k
             Vector3 transformedCenter = transform.TransformVector(center);
             return transform.position + transformedCenter - sphereOffsetY;
         }
+
+        // Calculate a new center if the height changes and preserve the foot position.
+        public static Vector3 CalculateCenterWithSameFootPosition(Vector3 center, float height, float newHeight, float skinWidth)
+        {
+            float localFootY = center.y - (height / 2.0f + skinWidth);
+            float newCenterY = localFootY + (newHeight / 2.0f + skinWidth);
+            return new Vector3(center.x, newCenterY, center.z);
+        }
     }
 }
