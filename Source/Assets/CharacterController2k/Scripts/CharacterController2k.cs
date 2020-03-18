@@ -445,12 +445,6 @@ namespace Controller2k
             return didCollide;
         }
 
-        // Get the minimum move sqr distance.
-        float GetMinMoveSqrDistance()
-        {
-            return minMoveDistance * minMoveDistance;
-        }
-
         // Try to set the capsule's height and center. Originally, this would
         // keep trying every Update until it's safe to resize. this required a
         // LOT of magic. It now either resizes immediately or it returns false
