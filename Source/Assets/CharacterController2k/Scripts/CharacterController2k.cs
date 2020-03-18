@@ -1140,9 +1140,9 @@ namespace Controller2k
                 return false;
             }
 
-            RaycastHit hitInfoCapsule = (!bigRadiusHit || (smallRadiusHit && smallRadiusHitInfo.distance < bigRadiusHitInfo.distance)) ?
-                                        smallRadiusHitInfo :
-                                        bigRadiusHitInfo;
+            RaycastHit hitInfoCapsule = (!bigRadiusHit || (smallRadiusHit && smallRadiusHitInfo.distance < bigRadiusHitInfo.distance))
+                                        ? smallRadiusHitInfo
+                                        : bigRadiusHitInfo;
 
             RaycastHit hitInfoRay;
             Vector3 rayOrigin = transform.position + transformedCenter + offsetPosition;
