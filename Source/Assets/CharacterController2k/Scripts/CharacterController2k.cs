@@ -1182,7 +1182,7 @@ namespace Controller2k
         {
             Vector3 horizontal = new Vector3(moveVector.x, 0.0f, moveVector.z);
             Vector3 vertical = new Vector3(0.0f, moveVector.y, 0.0f);
-            bool horizontalIsAlmostZero = IsMoveVectorAlmostZero(horizontal);
+            bool horizontalIsAlmostZero = Helpers.IsMoveVectorAlmostZero(horizontal, k_SmallMoveVector);
             float tempStepOffset = stepOffset;
             bool doStepOffset = isGrounded &&
                                 !doNotStepOffset &&
@@ -1263,14 +1263,6 @@ namespace Controller2k
         void AddMoveVector(Vector3 moveVector, bool canSlide = true)
         {
             m_MoveVectors.Add(new MoveVector(moveVector, canSlide));
-        }
-
-        // Is the movement vector almost zero (i.e. very small)?
-        bool IsMoveVectorAlmostZero(Vector3 moveVector)
-        {
-            return (Mathf.Abs(moveVector.x) > k_SmallMoveVector ||
-                    Mathf.Abs(moveVector.y) > k_SmallMoveVector ||
-                    Mathf.Abs(moveVector.z) > k_SmallMoveVector) ? false : true;
         }
 
         // Test if character can stick to the ground, and set the down vector if so.
