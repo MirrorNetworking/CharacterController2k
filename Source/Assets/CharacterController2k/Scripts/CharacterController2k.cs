@@ -667,22 +667,6 @@ namespace Controller2k
 
         // vis2k: add missing CanSetHeight function & helper functions
         // Collider array used for UnityEngine.Physics.OverlapCapsuleNonAlloc in GetPenetrationInfo
-        static Vector3 GetTopSphereWorldPositionSimulated(Transform transform, Vector3 center, float height, float scaledRadius)
-        {
-            float scaledHeight = height * transform.lossyScale.y;
-            Vector3 sphereOffsetY = Vector3.up * (scaledHeight / 2.0f - scaledRadius);
-            Vector3 transformedCenter = transform.TransformVector(center);
-            return transform.position + transformedCenter + sphereOffsetY;
-        }
-
-        static Vector3 GetBottomSphereWorldPositionSimulated(Transform transform, Vector3 center, float height, float scaledRadius)
-        {
-            float scaledHeight = height * transform.lossyScale.y;
-            Vector3 sphereOffsetY = Vector3.up * (scaledHeight / 2.0f - scaledRadius);
-            Vector3 transformedCenter = transform.TransformVector(center);
-            return transform.position + transformedCenter - sphereOffsetY;
-        }
-
         readonly Collider[] m_OverlapCapsuleColliders = new Collider[k_MaxOverlapColliders];
         public bool CanSetHeight(float newHeight, bool preserveFootPosition)
         {
@@ -731,16 +715,16 @@ namespace Controller2k
 
             // debug draw
             Debug.DrawLine(
-                GetTopSphereWorldPositionSimulated(transform, newCenter, newHeight, scaledRadius),
-                GetBottomSphereWorldPositionSimulated(transform, newCenter, newHeight, scaledRadius),
+                Helpers.GetTopSphereWorldPositionSimulated(transform, newCenter, newHeight, scaledRadius),
+                Helpers.GetBottomSphereWorldPositionSimulated(transform, newCenter, newHeight, scaledRadius),
                 Color.yellow,
                 3f
             );
 
             // check the overlap capsule
             int hits = Physics.OverlapCapsuleNonAlloc(
-                GetTopSphereWorldPositionSimulated(transform, newCenter, newHeight, scaledRadius),
-                GetBottomSphereWorldPositionSimulated(transform, newCenter, newHeight, scaledRadius),
+                Helpers.GetTopSphereWorldPositionSimulated(transform, newCenter, newHeight, scaledRadius),
+                Helpers.GetBottomSphereWorldPositionSimulated(transform, newCenter, newHeight, scaledRadius),
                 radius,
                 m_OverlapCapsuleColliders,
                 GetCollisionLayerMask(),
