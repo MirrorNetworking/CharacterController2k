@@ -191,9 +191,6 @@ namespace Controller2k
         // (should only be set internally, but needs to be readable for animations)
         public Vector3 velocity { get; private set; }
 
-        // Factor used to perform a slow down against the walls.
-        float m_InvRescaleFactor;
-
         // How long has character been sliding down a steep slope? (Zero means not busy sliding.)
         float m_SlidingDownSlopeTime;
 
@@ -245,7 +242,6 @@ namespace Controller2k
 
             SetRootToOffset();
 
-            m_InvRescaleFactor = 1 / Mathf.Cos(minSlowAgainstWallsAngle * Mathf.Deg2Rad);
             m_SlopeMovementOffset =  stepOffset / Mathf.Tan(slopeLimit * Mathf.Deg2Rad);
         }
 
@@ -269,8 +265,6 @@ namespace Controller2k
             ValidateCapsule(false, ref position);
             transform.position = position;
             SetRootToOffset();
-
-            m_InvRescaleFactor = 1 / Mathf.Cos(minSlowAgainstWallsAngle * Mathf.Deg2Rad);
         }
 
         // Draws the debug Gizmos
@@ -1512,11 +1506,14 @@ namespace Controller2k
 
                 if (isWallSlowingDown)
                 {
+                    // Factor used to perform a slow down against the walls.
+                    float invRescaleFactor = 1 / Mathf.Cos(minSlowAgainstWallsAngle * Mathf.Deg2Rad);
+
                     // Cosine of angle between the movement direction and the tangent is equivalent to the sin of
                     // the angle between the movement direction and the normal, which is the sliding component of
                     // our movement.
                     float cosine = Vector3.Dot(project, direction);
-                    float slowDownFactor = Mathf.Clamp01(cosine * m_InvRescaleFactor);
+                    float slowDownFactor = Mathf.Clamp01(cosine * invRescaleFactor);
 
                     moveVector = project * (remainingDistance * slowDownFactor);
                 }
