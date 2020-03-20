@@ -48,11 +48,6 @@ namespace Controller2k
                  "Low Skin Width can cause the character to get stuck. A good setting is to make this value 10% of the Radius.")]
         public float skinWidth = 0.08f;
 
-        [FormerlySerializedAs("m_MinMoveDistance")]
-        [Tooltip("If the character tries to move below the indicated value, it will not move at all. This can be used to reduce jitter. " +
-                 "In most situations this value should be left at 0.")]
-        public float minMoveDistance;
-
         [FormerlySerializedAs("m_GroundedTestDistance")]
         [Tooltip("Distance to test beneath the character when doing the grounded test. Increase if controller.isGrounded doesn't give the correct results or switches between true/false a lot.")]
         public float groundedTestDistance = 0.002f; // 0.001f isn't enough for big BoxColliders like uSurvival's Floor, even though it would work for MeshColliders.
