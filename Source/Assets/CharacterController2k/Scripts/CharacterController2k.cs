@@ -1414,10 +1414,10 @@ namespace Controller2k
         //      hitSmallCapsule: Did the collision occur with the small capsule (i.e. no skin width)?
         //      currentPosition: position of the character
         void MoveAwayFromObstacle(ref Vector3 moveVector, ref RaycastHit hitInfoCapsule,
-                                          Vector3 direction, float distance,
-                                          bool canSlide,
-                                          bool tryGrounding,
-                                          bool hitSmallCapsule, ref Vector3 currentPosition)
+                                  Vector3 direction, float distance,
+                                  bool canSlide,
+                                  bool tryGrounding,
+                                  bool hitSmallCapsule, ref Vector3 currentPosition)
         {
             // IMPORTANT: This method must set moveVector.
 
