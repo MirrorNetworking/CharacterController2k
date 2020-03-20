@@ -715,8 +715,8 @@ public class PlayerMovement : MonoBehaviour
             // in front of camera and in screen?
             if (point.z >= 0 && Utils.IsPointInScreen(point))
             {
-                GUI.color = new Color(1, 1, 1, 0.3f);
-                GUILayout.BeginArea(new Rect(point.x, Screen.height - point.y, 150, 100));
+                GUI.color = new Color(1, 1, 1, 0.5f);
+                GUILayout.BeginArea(new Rect(point.x, Screen.height - point.y, 150, 200));
 
                 // some info for all players, including local
                 GUILayout.Label("grounded=" + controller.isGrounded);
