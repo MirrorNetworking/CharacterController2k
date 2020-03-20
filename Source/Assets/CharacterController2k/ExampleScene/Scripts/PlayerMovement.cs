@@ -721,8 +721,10 @@ public class PlayerMovement : MonoBehaviour
                 // some info for all players, including local
                 GUILayout.Label("grounded=" + controller.isGrounded);
                 GUILayout.Label("groundedTol=" + isGroundedWithinTolerance);
-                GUILayout.Label("sliding=" + controller.isSlidingDownSlope);
                 GUILayout.Label("lastFall=" + lastFall);
+                GUILayout.Label("");
+                GUILayout.Label("startingSlide=" + controller.startingSlide);
+                GUILayout.Label("sliding=" + controller.isSlidingDownSlope);
 
                 GUILayout.EndArea();
                 GUI.color = Color.white;
