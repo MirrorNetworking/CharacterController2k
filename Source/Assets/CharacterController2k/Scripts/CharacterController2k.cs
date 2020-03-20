@@ -335,7 +335,7 @@ namespace Controller2k
             {
                 // Ignore self
                 direction = Vector3.one;
-                distance = 0.0f;
+                distance = 0;
                 return false;
             }
 
