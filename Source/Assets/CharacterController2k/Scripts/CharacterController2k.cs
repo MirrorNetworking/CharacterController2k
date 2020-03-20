@@ -1464,7 +1464,7 @@ namespace Controller2k
                 MovePosition(penetrationDirection * penetrationDistance, null, null, ref currentPosition);
             }
 
-            var slopeIsSteep = false;
+            bool slopeIsSteep = false;
             if (tryGrounding || m_StuckInfo.isStuck)
             {
                 // No further movement when grounding the character, or the character is stuck
