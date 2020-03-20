@@ -106,6 +106,9 @@ namespace Controller2k
         [Tooltip("The time (in seconds) after initiating a slide classified as a slide start. Used to disable jumping.")]
         public float slideStartTime = 0.25f;
 
+        [Tooltip("Slight delay (in seconds) before we stop sliding down slopes. To handle cases where sliding test fails for a few frames.")]
+        public float slideStopTime = 0.5f;
+
         // Max slope limit.
         const float k_MaxSlopeLimit = 90.0f;
 
@@ -114,9 +117,6 @@ namespace Controller2k
 
         // Distance to test for ground when sliding down slopes.
         const float k_SlideDownSlopeTestDistance = 1.0f;
-
-        // Slight delay before we stop sliding down slopes. To handle cases where sliding test fails for a few frames.
-        const float k_StopSlideDownSlopeDelay = 0.5f;
 
         // Distance to push away from slopes when sliding down them.
         const float k_PushAwayFromSlopeDistance = 0.001f;
@@ -1704,7 +1704,7 @@ namespace Controller2k
                     m_DelayStopSlidingDownSlopeTime += deltaTime;
 
                     // Slight delay before we stop sliding down slopes. To handle cases where sliding test fails for a few frames.
-                    if (m_DelayStopSlidingDownSlopeTime > k_StopSlideDownSlopeDelay)
+                    if (m_DelayStopSlidingDownSlopeTime > slideStopTime)
                     {
                         StopSlideDownSlopes();
                     }
