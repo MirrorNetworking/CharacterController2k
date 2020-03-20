@@ -145,9 +145,6 @@ namespace Controller2k
         // Minimum distance to move. This minimizes small penetrations and inaccurate casts (e.g. into the floor)
         const float k_MinMoveDistance = 0.0001f;
 
-        // Minimum sqr distance to move. This minimizes small penetrations and inaccurate casts (e.g. into the floor)
-        const float k_MinMoveSqrDistance = k_MinMoveDistance * k_MinMoveDistance;
-
         // Minimum step offset height to move (if character has a step offset).
         const float k_MinStepOffsetHeight = k_MinMoveDistance;
 
