@@ -1735,6 +1735,27 @@ namespace Controller2k
             return true;
         }
 
+        // get best slope normal from either:
+        // * reusing last move's down collision normal IF sliding already
+        // * or casting for slope normal if NOT sliding yet
+        bool ReuseOrCastForSlopeNormal(out Vector3 slopeNormal)
+        {
+            // if we are sliding then we try to reuse the last move's downward
+            // collision normal. that's cheaper than casting again.
+            if (isSlidingDownSlope && m_DownCollisionNormal != null)
+            {
+                slopeNormal = m_DownCollisionNormal.Value;
+                return true;
+            }
+            // otherwise sphere/raycast to find a really good slope normal
+            else if (CastForSlopeNormal(out slopeNormal))
+            {
+                return true;
+            }
+            // no slope found
+            return false;
+        }
+
         public static bool IsSlideableAngle(float slopeAngle, float slopeLimit)
         {
             // needs to be between slopeLimit (to start sliding) and maxSlide
@@ -1770,17 +1791,9 @@ namespace Controller2k
                 return false;
             }
 
-            Vector3 slopeNormal;
-
-            // Collided downwards during the last slide movement?
-            if (isSlidingDownSlope && m_DownCollisionNormal != null)
+            // find slope normal by reusing or casting for a new one
+            if (!ReuseOrCastForSlopeNormal(out Vector3 slopeNormal))
             {
-                slopeNormal = m_DownCollisionNormal.Value;
-            }
-            // sphere/raycast to find a really good slope normal
-            else if (!CastForSlopeNormal(out slopeNormal))
-            {
-                // no slope found, not sliding anymore
                 return false;
             }
 
