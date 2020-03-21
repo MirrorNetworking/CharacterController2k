@@ -1696,9 +1696,7 @@ namespace Controller2k
         bool UpdateSlideDownSlopesInternal(float dt)
         {
             if (!slideDownSlopes || !isGrounded)
-            {
                 return false;
-            }
 
             Vector3 hitNormal;
 
