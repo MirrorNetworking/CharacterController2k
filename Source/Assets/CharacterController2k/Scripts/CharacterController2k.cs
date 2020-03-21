@@ -1791,6 +1791,7 @@ namespace Controller2k
             CollisionFlags oldCollisionFlags = collisionFlags;
             Vector3 oldVelocity = velocity;
 
+            // move along the slope
             MoveInternal(moveVector, true, true, true);
             if ((collisionFlags & CollisionFlags.CollidedSides) != 0)
             {
