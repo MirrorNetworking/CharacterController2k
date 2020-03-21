@@ -1735,6 +1735,7 @@ namespace Controller2k
         }
 
         // Auto-slide down steep slopes.
+        // returns true if we did slide, false otherwise
         bool UpdateSlideDownSlopesInternal(float dt)
         {
             // only if sliding feature enabled, and if on ground
