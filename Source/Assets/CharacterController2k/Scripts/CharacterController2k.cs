@@ -201,7 +201,8 @@ namespace Controller2k
         float m_SlopeMovementOffset;
 
         // Is character busy sliding down a steep slope?
-        public bool isSlidingDownSlope { get { return m_SlidingDownSlopeTime > 0; } }
+        // (only after slideStartTime expired)
+        public bool isSlidingDownSlope { get { return m_SlidingDownSlopeTime > 0 && m_SlidingDownSlopeTime >= slideStartTime; } }
 
         // The capsule center with scaling and rotation applied.
         Vector3 transformedCenter { get { return transform.TransformVector(center); } }
@@ -219,7 +220,7 @@ namespace Controller2k
         public float defaultHeight { get; private set; }
 
         // Are we on a sliding surface, but still waiting 'slideStartTime' before starting to actually slide?
-        public bool startingSlide { get { return isSlidingDownSlope && m_SlidingDownSlopeTime <= slideStartTime; } }
+        public bool startingSlide { get { return m_SlidingDownSlopeTime > 0 && m_SlidingDownSlopeTime <= slideStartTime; } }
 
         // The capsule radius with the relevant scaling applied (e.g. if object scale is not 1,1,1)
         public float scaledRadius
@@ -1775,6 +1776,19 @@ namespace Controller2k
 
             bool didSlide = true;
             m_SlidingDownSlopeTime += Time.deltaTime;
+
+            // we are definitely on a slide.
+            // sometimes, we are running over tiny slides, but we shouldn't
+            // immediately start sliding every time.
+            // only after slideStartTime.
+            // (originally slideStartTime was completely ignored. this fixes it.)
+            if (m_SlidingDownSlopeTime < slideStartTime)
+            {
+                // we return true because we are technically sliding. we just
+                // don't do the falling move yet.
+                Debug.Log("starting slide: " + m_SlidingDownSlopeTime + " of " + slideStartTime);
+                return true;
+            }
 
             // Pro tip: Here you can also use the friction of the physics material of the slope, to adjust the slide speed.
 
