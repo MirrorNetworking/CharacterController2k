@@ -1874,7 +1874,7 @@ namespace Controller2k
                     if (Time.time >= slidingStartedTime + slideStartDelay)
                     {
                         // actually start sliding in the next frame
-                        //Debug.LogWarning("Starting sliding for slope with angle: " + Vector3.Angle(Vector3.up, slopeNormal) + " after on it for " + slideStartTime + " seconds");
+                        //Debug.LogWarning("Starting sliding for slope with angle: " + Vector3.Angle(Vector3.up, slopeNormal) + " after on it for " + slideStartDelay + " seconds");
                         return SlidingState.Sliding;
                     }
                     // otherwise wait a little longer
@@ -1940,7 +1940,7 @@ namespace Controller2k
                 //   is useful in some games.
                 else if (Time.time >= slidingStoppedTime + slideStopDelay)
                 {
-                    //Debug.LogWarning("Stopping sliding after not on a slope for " + slideStopTime + " seconds");
+                    //Debug.LogWarning("Stopping sliding after not on a slope for " + slideStopDelay + " seconds");
                     return SlidingState.None;
                 }
                 // not on a slope, but not enough time elapsed.
