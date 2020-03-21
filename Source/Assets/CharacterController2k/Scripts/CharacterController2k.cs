@@ -1742,7 +1742,8 @@ namespace Controller2k
             return slopeLimit <= slopeAngle && slopeAngle < k_MaxSlideAngle;
         }
 
-        public static Vector3 CalculateSlideMoveVector(Vector3 slopeNormal, float slidingTime, float slideGravityMultiplier, float slideMaxSpeed)
+        // calculate y (down) component of slide move
+        public static float CalculateSlideVerticalVelocity(Vector3 slopeNormal, float slidingTime, float slideGravityMultiplier, float slideMaxSpeed)
         {
             // calculate slope angle
             float slopeAngle = Vector3.Angle(Vector3.up, slopeNormal);
@@ -1755,8 +1756,7 @@ namespace Controller2k
 
             // Apply gravity and slide along the obstacle
             // -> multiplied by slidingTime so it gets faster the longer we slide
-            float verticalVelocity = Mathf.Clamp(gravity * slidingTime, 0, Mathf.Abs(slideMaxSpeed));
-            return Vector3.down * verticalVelocity;
+            return -Mathf.Clamp(gravity * slidingTime, 0, Mathf.Abs(slideMaxSpeed));
         }
 
         // move one step further along the slide
@@ -1815,17 +1815,17 @@ namespace Controller2k
 
             // Pro tip: Here you can also use the friction of the physics material of the slope, to adjust the slide speed.
 
-            // calculate slide move vector based on parameters
-            Vector3 moveVector = CalculateSlideMoveVector(slopeNormal, m_SlidingDownSlopeTime, slideGravityMultiplier, slideMaxSpeed);
+            // calculate slide velocity Y based on parameters
+            float velocityY = CalculateSlideVerticalVelocity(slopeNormal, m_SlidingDownSlopeTime, slideGravityMultiplier, slideMaxSpeed);
 
             // multiply with deltaTime so it's frame rate independent
-            moveVector *= Time.deltaTime;
+            velocityY *= Time.deltaTime;
 
             // Push slightly away from the slope
             // => not multiplied by deltaTime because we stay away 'pushDistance'
             //    from the slope surface at all times
             Vector3 push = new Vector3(slopeNormal.x, 0, slopeNormal.z).normalized * k_PushAwayFromSlopeDistance;
-            moveVector = new Vector3(push.x, moveVector.y, push.z);
+            Vector3 moveVector = new Vector3(push.x, velocityY, push.z);
 
             // Preserve collision flags and velocity. Because user expects them to only be set when manually calling Move/SimpleMove.
             CollisionFlags oldCollisionFlags = collisionFlags;
