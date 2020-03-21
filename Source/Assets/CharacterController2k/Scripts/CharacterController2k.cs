@@ -1824,7 +1824,11 @@ namespace Controller2k
             // (in other words: SlidingDownSlopeTime wasn't reset yet?)
             else if (m_SlidingDownSlopeTime > 0)
             {
+                // keep increasing sliding time as long as we didn't stop.
+                // this way the slide speed keeps increasing too.
+                // (if we stop increasing time, the speed won't increase anymore)
                 m_SlidingDownSlopeTime += Time.deltaTime;
+
                 m_DelayStopSlidingDownSlopeTime += Time.deltaTime;
 
                 // Slight delay before we stop sliding down slopes. To handle cases where sliding test fails for a few frames.
