@@ -1736,7 +1736,7 @@ namespace Controller2k
 
         // move one step further along the slide
         // returns true if we did slide, false otherwise
-        bool SlideStep(float dt)
+        bool SlideStep()
         {
             // only if sliding feature enabled, and if on ground
             if (!slideDownSlopes || !isGrounded)
@@ -1774,7 +1774,7 @@ namespace Controller2k
             }
 
             bool didSlide = true;
-            m_SlidingDownSlopeTime += dt;
+            m_SlidingDownSlopeTime += Time.deltaTime;
 
             // Pro tip: Here you can also use the friction of the physics material of the slope, to adjust the slide speed.
 
@@ -1786,7 +1786,7 @@ namespace Controller2k
 
             // Apply gravity and slide along the obstacle
             float verticalVelocity = Mathf.Clamp(gravity * m_SlidingDownSlopeTime, 0, Mathf.Abs(slideMaxSpeed));
-            Vector3 moveVector = Vector3.down * (verticalVelocity * dt);
+            Vector3 moveVector = Vector3.down * (verticalVelocity * Time.deltaTime);
 
             // Push slightly away from the slope
             Vector3 push = new Vector3(slopeNormal.x, 0, slopeNormal.z).normalized * k_PushAwayFromSlopeDistance;
@@ -1814,15 +1814,13 @@ namespace Controller2k
         // Auto-slide down steep slopes.
         void UpdateSlideDownSlopes()
         {
-            float deltaTime = Time.deltaTime;
-
             // slide one step further
-            if (!SlideStep(deltaTime))
+            if (!SlideStep())
             {
                 if (isSlidingDownSlope)
                 {
-                    m_SlidingDownSlopeTime += deltaTime;
-                    m_DelayStopSlidingDownSlopeTime += deltaTime;
+                    m_SlidingDownSlopeTime += Time.deltaTime;
+                    m_DelayStopSlidingDownSlopeTime += Time.deltaTime;
 
                     // Slight delay before we stop sliding down slopes. To handle cases where sliding test fails for a few frames.
                     if (m_DelayStopSlidingDownSlopeTime > slideStopTime)
