@@ -1822,6 +1822,8 @@ namespace Controller2k
             moveVector *= Time.deltaTime;
 
             // Push slightly away from the slope
+            // => not multiplied by deltaTime because we stay away 'pushDistance'
+            //    from the slope surface at all times
             Vector3 push = new Vector3(slopeNormal.x, 0, slopeNormal.z).normalized * k_PushAwayFromSlopeDistance;
             moveVector = new Vector3(push.x, moveVector.y, push.z);
 
