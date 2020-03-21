@@ -12,6 +12,9 @@ using UnityEngine.Serialization;
 
 namespace Controller2k
 {
+    // sliding starts after a delay, and stops after a delay. we need an enum.
+    public enum SlidingState : byte { None, Starting, Sliding, Stopping };
+
     // <summary>
     // Open character controller. Handles the movement of a character, by using a capsule for movement and collision detection.
     // Note: The capsule is always upright. It ignores rotation.
@@ -181,9 +184,6 @@ namespace Controller2k
         // The collision info when hitting colliders.
         Dictionary<Collider, CollisionInfo> m_CollisionInfoDictionary = new Dictionary<Collider, CollisionInfo>();
 
-        // Slight delay before stopping the sliding down slopes.
-        float m_DelayStopSlidingDownSlopeTime;
-
         // Collider array used for UnityEngine.Physics.OverlapCapsuleNonAlloc in GetPenetrationInfo
         readonly Collider[] m_PenetrationInfoColliders = new Collider[k_MaxOverlapColliders];
 
@@ -191,21 +191,33 @@ namespace Controller2k
         // (should only be set internally, but needs to be readable for animations)
         public Vector3 velocity { get; private set; }
 
-        // How long has character been sliding down a steep slope? (Zero means not busy sliding.)
-        float m_SlidingDownSlopeTime;
-
         // Default center of the capsule (e.g. for resetting it).
         Vector3 m_DefaultCenter;
 
         // Used to offset movement raycast when determining if a slope is travesable.
         float m_SlopeMovementOffset;
 
-        // Is character busy sliding down a steep slope?
-        // (only after slideStartTime expired)
-        public bool isSlidingDownSlope { get { return m_SlidingDownSlopeTime > 0 && m_SlidingDownSlopeTime >= slideStartTime; } }
+        // current sliding state
+        // * NONE means we aren't sliding
+        // * STARTING means we are standing on a slide, going go start soon
+        // * SLIDING means we are sliding down right now
+        // * STOPPING means we were standing on a slide, not anymore, just
+        //   waiting a little longer so we don't immediately stop sliding when
+        //   sliding over an tiny even surface
+        public SlidingState slidingState { get; private set; }
 
-        // Are we on a sliding surface, but still waiting 'slideStartTime' before starting to actually slide?
-        public bool startingSlide { get { return m_SlidingDownSlopeTime > 0 && m_SlidingDownSlopeTime <= slideStartTime; } }
+        // We need to know how long a character has been sliding down a steep
+        // slope in order to calculate sliding speed (it gets faster the longer
+        // we have been sliding).
+        // => remembering the start time is easier than adding += deltaTime
+        //    everywhere.
+        float slidingStartedTime;
+
+        // we need to know when the physical sliding finished, so we can remain
+        // in sliding state a little longer before we truly quit.
+        // this is necessary so we don't immediately stop sliding if we slide
+        // over a tiny flat surface.
+        float slidingStoppedTime;
 
         // The capsule center with scaling and rotation applied.
         Vector3 transformedCenter { get { return transform.TransformVector(center); } }
@@ -835,9 +847,12 @@ namespace Controller2k
             m_DownCollisionNormal = null;
 
             // Stop sliding down slopes when character jumps
-            if (moveVector.y > 0.0f && isSlidingDownSlope)
+            if (moveVector.y > 0.0f && slidingState != SlidingState.None)
             {
-                StopSlideDownSlopes();
+                // this hasn't really been tested. let's show a log message for
+                // now.
+                Debug.Log("CharacterController2k: a jump stopped sliding: " + slidingState);
+                slidingState = SlidingState.None;
             }
 
             // Do the move loop
@@ -1687,12 +1702,6 @@ namespace Controller2k
             }
         }
 
-        // Stop auto-slide down steep slopes.
-        void StopSlideDownSlopes()
-        {
-            m_SlidingDownSlopeTime = 0.0f;
-        }
-
         // do different casts downwards to find the best slope normal
         bool CastForSlopeNormal(out Vector3 slopeNormal)
         {
@@ -1740,9 +1749,13 @@ namespace Controller2k
         // * or casting for slope normal if NOT sliding yet
         bool ReuseOrCastForSlopeNormal(out Vector3 slopeNormal)
         {
-            // if we are sliding then we try to reuse the last move's downward
-            // collision normal. that's cheaper than casting again.
-            if (isSlidingDownSlope && m_DownCollisionNormal != null)
+            // if we are about to slide, or currently sliding, then we already
+            // moved down and collided with the slope's surface. in that case,
+            // simply reuse the normal instead of casting again.
+            // IMPORTANT: we are NOT on a slope surface if state == Stopped!
+            bool onSlopeSurface = slidingState == SlidingState.Starting ||
+                                  slidingState == SlidingState.Sliding;
+            if (onSlopeSurface && m_DownCollisionNormal != null)
             {
                 slopeNormal = m_DownCollisionNormal.Value;
                 return true;
@@ -1780,49 +1793,12 @@ namespace Controller2k
             return -Mathf.Clamp(gravity * slidingTime, 0, Mathf.Abs(slideMaxSpeed));
         }
 
-        // move one step further along the slide
-        // returns true if we did slide, false otherwise
-        bool SlideStep()
+        // helper function to do the actual sliding move
+        // returns true if we did slide. false otherwise.
+        bool DoSlideMove(Vector3 slopeNormal, float slidingTimeElapsed)
         {
-            // only if sliding feature enabled, and if on ground
-            if (!slideDownSlopes || !isGrounded)
-                return false;
-
-            // find slope normal by reusing or casting for a new one
-            if (!ReuseOrCastForSlopeNormal(out Vector3 slopeNormal))
-            {
-                return false;
-            }
-
-            // calculate slope angle
-            float slopeAngle = Vector3.Angle(Vector3.up, slopeNormal);
-
-            // is the slope angle valid for sliding?
-            if (!IsSlideableAngle(slopeAngle, slopeLimit))
-            {
-                // too steep, not sliding anymore
-                return false;
-            }
-
-            m_SlidingDownSlopeTime += Time.deltaTime;
-
-            // we are definitely on a slide.
-            // sometimes, we are running over tiny slides, but we shouldn't
-            // immediately start sliding every time.
-            // only after slideStartTime.
-            // (originally slideStartTime was completely ignored. this fixes it.)
-            if (m_SlidingDownSlopeTime < slideStartTime)
-            {
-                // we return true because we are technically sliding. we just
-                // don't do the falling move yet.
-                Debug.Log("starting slide: " + m_SlidingDownSlopeTime + " of " + slideStartTime);
-                return true;
-            }
-
-            // Pro tip: Here you can also use the friction of the physics material of the slope, to adjust the slide speed.
-
             // calculate slide velocity Y based on parameters
-            float velocityY = CalculateSlideVerticalVelocity(slopeNormal, m_SlidingDownSlopeTime, slideGravityMultiplier, slideMaxSpeed);
+            float velocityY = CalculateSlideVerticalVelocity(slopeNormal, slidingTimeElapsed, slideGravityMultiplier, slideMaxSpeed);
 
             // multiply with deltaTime so it's frame rate independent
             velocityY *= Time.deltaTime;
@@ -1850,37 +1826,145 @@ namespace Controller2k
             collisionFlags = oldCollisionFlags;
             velocity = oldVelocity;
 
+            // return result
             return didSlide;
+        }
+
+        // move one step further along the slide
+        // returns the new state
+        SlidingState SlideStep()
+        {
+            // only if sliding feature enabled, and if on ground
+            if (!slideDownSlopes || !isGrounded)
+                return SlidingState.None;
+
+            // sliding mechanics are complex. we need a state machine to keep
+            // it simple, understandable and modifiable.
+            // (previously it used complex if/else cases, which were hard to
+            //  understand and hard to modify/debug)
+            if (slidingState == SlidingState.None)
+            {
+                // find slope normal by reusing or casting for a new one
+                // AND check if valid angle
+                if (ReuseOrCastForSlopeNormal(out Vector3 slopeNormal) &&
+                    IsSlideableAngle(Vector3.Angle(Vector3.up, slopeNormal), slopeLimit))
+                {
+                    // we are definitely on a slide.
+                    // sometimes, we are running over tiny slides, but we
+                    // shouldn't immediately start sliding every time.
+                    // only after a 'slideStartTime'
+                    // (originally slideStartTime was completely ignored.
+                    //  this fixes it.)
+                    //Debug.Log("Considering sliding for slope with angle: " + Vector3.Angle(Vector3.up, slopeNormal));
+                    slidingStartedTime = Time.time;
+                    return SlidingState.Starting;
+                }
+                // if none is found, then we just aren't sliding
+                else return SlidingState.None;
+            }
+            else if (slidingState == SlidingState.Starting)
+            {
+                // find slope normal by reusing or casting for a new one
+                // AND check if valid angle
+                if (ReuseOrCastForSlopeNormal(out Vector3 slopeNormal) &&
+                    IsSlideableAngle(Vector3.Angle(Vector3.up, slopeNormal), slopeLimit))
+                {
+                    // we are still on a slope that will cause sliding.
+                    // but wait until start time has elapsed.
+                    if (Time.time >= slidingStartedTime + slideStartTime)
+                    {
+                        // actually start sliding in the next frame
+                        //Debug.LogWarning("Starting sliding for slope with angle: " + Vector3.Angle(Vector3.up, slopeNormal) + " after on it for " + slideStartTime + " seconds");
+                        return SlidingState.Sliding;
+                    }
+                    // otherwise wait a little longer
+                    else return SlidingState.Starting;
+                }
+                // if none is found, then we briefly walked over a slope, but not
+                // long enough to actually start sliding
+                else
+                {
+                    return SlidingState.None;
+                }
+            }
+            else if (slidingState == SlidingState.Sliding)
+            {
+                // find slope normal by reusing or casting for a new one
+                // AND check if valid angle
+                if (ReuseOrCastForSlopeNormal(out Vector3 slopeNormal) &&
+                    IsSlideableAngle(Vector3.Angle(Vector3.up, slopeNormal), slopeLimit))
+                {
+                    // Pro tip: Here you can also use the friction of the physics material of the slope, to adjust the slide speed.
+
+                    // find out how long we have been sliding for.
+                    // speed gets faster the longer we have been sliding.
+                    float slidingTimeElapsed = Time.time - slidingStartedTime;
+
+                    // do the slide move
+                    // if we slided, then keep sliding
+                    if (DoSlideMove(slopeNormal, slidingTimeElapsed))
+                    {
+                        return SlidingState.Sliding;
+                    }
+                    // if we collided on the side,  we transition to stopping
+                    else
+                    {
+                        //Debug.LogWarning("Sliding->Stopping");
+                        slidingStoppedTime = Time.time;
+                        return SlidingState.Stopping;
+                    }
+                }
+                // if none is found, then we transition to stopping
+                else
+                {
+                    //Debug.LogWarning("Sliding->Stopping");
+                    slidingStoppedTime = Time.time;
+                    return SlidingState.Stopping;
+                }
+            }
+            else if (slidingState == SlidingState.Stopping)
+            {
+                // find slope normal by reusing or casting for a new one
+                // AND check if valid angle
+                if (ReuseOrCastForSlopeNormal(out Vector3 slopeNormal) &&
+                    IsSlideableAngle(Vector3.Angle(Vector3.up, slopeNormal), slopeLimit))
+                {
+                    // we found a new one even though we were about to stop.
+                    // in that case, continue sliding in the next frame.
+                    return SlidingState.Sliding;
+                }
+                // not on a slope and enough time elapsed to stop?
+                // this is necessary for two reason:
+                // * so we don't immediately stop to slide when sliding over a
+                //   tiny flat surface
+                // * so we don't allow jumping immediately after sliding, which
+                //   is useful in some games.
+                else if (Time.time >= slidingStoppedTime + slideStopTime)
+                {
+                    //Debug.LogWarning("Stopping sliding after not on a slope for " + slideStopTime + " seconds");
+                    return SlidingState.None;
+                }
+                // not on a slope, but not enough time elapsed.
+                // wait a little longer.
+                else
+                {
+                    return SlidingState.Stopping;
+                }
+            }
+            else
+            {
+                Debug.LogError("Unhandled sliding state: " + slidingState);
+                return SlidingState.None;
+            }
         }
 
         // Auto-slide down steep slopes.
         void UpdateSlideDownSlopes()
         {
-            // slide one step further. true if we are sliding.
-            if (SlideStep())
-            {
-                // reset remaining slide end time each time
-                m_DelayStopSlidingDownSlopeTime = 0;
-            }
-            // not sliding anymore, but was sliding last time?
-            // (in other words: SlidingDownSlopeTime wasn't reset yet?)
-            else if (m_SlidingDownSlopeTime > 0)
-            {
-                // keep increasing sliding time as long as we didn't stop.
-                // this way the slide speed keeps increasing too.
-                // (if we stop increasing time, the speed won't increase anymore)
-                m_SlidingDownSlopeTime += Time.deltaTime;
-
-                // increase sliding stop time time
-                m_DelayStopSlidingDownSlopeTime += Time.deltaTime;
-
-                // Slight delay before we stop sliding down slopes. To handle
-                // cases where sliding test fails for a few frames.
-                if (m_DelayStopSlidingDownSlopeTime > slideStopTime)
-                {
-                    StopSlideDownSlopes();
-                }
-            }
+            // slide one step further and set new state
+            //SlidingState last = slidingState;
+            slidingState = SlideStep();
+            //if (last != slidingState) Debug.LogWarning(last + "=>" + slidingState);
         }
 
         // Sets the playerRootTransform's localPosition to the rootTransformOffset

@@ -146,7 +146,7 @@ public class PlayerMovement : MonoBehaviour
         // => grounded check uses min fall tolerance so we can actually still
         //    jump when walking down steps.
         return isGroundedWithinTolerance &&
-               !controller.isSlidingDownSlope &&
+               controller.slidingState == SlidingState.None &&
                jumpKeyPressed;
     }
 
@@ -722,9 +722,7 @@ public class PlayerMovement : MonoBehaviour
                 GUILayout.Label("grounded=" + controller.isGrounded);
                 GUILayout.Label("groundedTol=" + isGroundedWithinTolerance);
                 GUILayout.Label("lastFall=" + lastFall);
-                GUILayout.Label("");
-                GUILayout.Label("startingSlide=" + controller.startingSlide);
-                GUILayout.Label("sliding=" + controller.isSlidingDownSlope);
+                GUILayout.Label("sliding=" + controller.slidingState);
 
                 GUILayout.EndArea();
                 GUI.color = Color.white;
