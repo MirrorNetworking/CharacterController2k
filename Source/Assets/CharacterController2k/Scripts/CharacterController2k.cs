@@ -1814,8 +1814,13 @@ namespace Controller2k
         // Auto-slide down steep slopes.
         void UpdateSlideDownSlopes()
         {
-            // slide one step further
-            if (!SlideStep())
+            // slide one step further. true if we are sliding.
+            if (SlideStep())
+            {
+                m_DelayStopSlidingDownSlopeTime = 0.0f;
+            }
+            // not sliding anymore
+            else
             {
                 if (isSlidingDownSlope)
                 {
@@ -1832,11 +1837,6 @@ namespace Controller2k
                 {
                     StopSlideDownSlopes();
                 }
-            }
-            // no sliding happened
-            else
-            {
-                m_DelayStopSlidingDownSlopeTime = 0.0f;
             }
         }
 
