@@ -715,7 +715,7 @@ public class PlayerMovement : MonoBehaviour
             // in front of camera and in screen?
             if (point.z >= 0 && Utils.IsPointInScreen(point))
             {
-                GUI.color = new Color(1, 1, 1, 0.5f);
+                GUI.color = new Color(0, 0, 0, 0.5f);
                 GUILayout.BeginArea(new Rect(point.x, Screen.height - point.y, 150, 200));
 
                 // some info for all players, including local
