@@ -201,7 +201,7 @@ namespace Controller2k
         float m_SlopeMovementOffset;
 
         // Is character busy sliding down a steep slope?
-        public bool isSlidingDownSlope { get { return m_SlidingDownSlopeTime > 0.0f; } }
+        public bool isSlidingDownSlope { get { return m_SlidingDownSlopeTime > 0; } }
 
         // The capsule center with scaling and rotation applied.
         Vector3 transformedCenter { get { return transform.TransformVector(center); } }
