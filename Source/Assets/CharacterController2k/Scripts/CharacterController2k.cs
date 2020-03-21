@@ -1794,7 +1794,6 @@ namespace Controller2k
                 return false;
             }
 
-            bool didSlide = true;
             m_SlidingDownSlopeTime += Time.deltaTime;
 
             // we are definitely on a slide.
@@ -1829,6 +1828,7 @@ namespace Controller2k
             Vector3 oldVelocity = velocity;
 
             // move along the slope
+            bool didSlide = true;
             MoveInternal(moveVector, true, true, true);
             if ((collisionFlags & CollisionFlags.CollidedSides) != 0)
             {
