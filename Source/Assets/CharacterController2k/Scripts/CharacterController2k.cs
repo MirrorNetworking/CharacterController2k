@@ -1734,9 +1734,9 @@ namespace Controller2k
             return true;
         }
 
-        // Auto-slide down steep slopes.
+        // move one step further along the slide
         // returns true if we did slide, false otherwise
-        bool UpdateSlideDownSlopesInternal(float dt)
+        bool SlideStep(float dt)
         {
             // only if sliding feature enabled, and if on ground
             if (!slideDownSlopes || !isGrounded)
@@ -1810,7 +1810,7 @@ namespace Controller2k
         void UpdateSlideDownSlopes()
         {
             float deltaTime = Time.deltaTime;
-            if (!UpdateSlideDownSlopesInternal(deltaTime))
+            if (!SlideStep(deltaTime))
             {
                 if (isSlidingDownSlope)
                 {
