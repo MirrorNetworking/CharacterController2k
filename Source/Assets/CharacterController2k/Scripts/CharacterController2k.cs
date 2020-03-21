@@ -1766,6 +1766,7 @@ namespace Controller2k
             bool slopeIsSteep = slopeAngle > slopeLimit;
             if (!slopeIsSteep || slopeAngle >= k_MaxSlopeSlideAngle)
             {
+                // too steep, not sliding anymore
                 return false;
             }
 
