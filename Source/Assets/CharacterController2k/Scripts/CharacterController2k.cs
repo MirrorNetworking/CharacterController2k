@@ -1781,7 +1781,7 @@ namespace Controller2k
 
             // Apply gravity and slide along the obstacle
             float verticalVelocity = Mathf.Clamp(gravity * m_SlidingDownSlopeTime, 0, Mathf.Abs(slideMaxSpeed));
-            Vector3 moveVector = new Vector3(0, -verticalVelocity, 0) * dt;
+            Vector3 moveVector = Vector3.down * (verticalVelocity * dt);
 
             // Push slightly away from the slope
             Vector3 push = new Vector3(slopeNormal.x, 0.0f, slopeNormal.z).normalized * k_PushAwayFromSlopeDistance;
