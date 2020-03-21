@@ -1819,20 +1819,17 @@ namespace Controller2k
             {
                 m_DelayStopSlidingDownSlopeTime = 0.0f;
             }
-            // not sliding anymore
-            else
+            // not sliding anymore, but was sliding last time?
+            // (in other words: SlidingDownSlopeTime wasn't reset yet?)
+            else if (m_SlidingDownSlopeTime > 0)
             {
-                // SlidingDownSlopeTime still > 0?
-                if (isSlidingDownSlope)
-                {
-                    m_SlidingDownSlopeTime += Time.deltaTime;
-                    m_DelayStopSlidingDownSlopeTime += Time.deltaTime;
+                m_SlidingDownSlopeTime += Time.deltaTime;
+                m_DelayStopSlidingDownSlopeTime += Time.deltaTime;
 
-                    // Slight delay before we stop sliding down slopes. To handle cases where sliding test fails for a few frames.
-                    if (m_DelayStopSlidingDownSlopeTime > slideStopTime)
-                    {
-                        StopSlideDownSlopes();
-                    }
+                // Slight delay before we stop sliding down slopes. To handle cases where sliding test fails for a few frames.
+                if (m_DelayStopSlidingDownSlopeTime > slideStopTime)
+                {
+                    StopSlideDownSlopes();
                 }
             }
         }
