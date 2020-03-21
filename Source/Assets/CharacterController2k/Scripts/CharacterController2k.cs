@@ -204,6 +204,9 @@ namespace Controller2k
         // (only after slideStartTime expired)
         public bool isSlidingDownSlope { get { return m_SlidingDownSlopeTime > 0 && m_SlidingDownSlopeTime >= slideStartTime; } }
 
+        // Are we on a sliding surface, but still waiting 'slideStartTime' before starting to actually slide?
+        public bool startingSlide { get { return m_SlidingDownSlopeTime > 0 && m_SlidingDownSlopeTime <= slideStartTime; } }
+
         // The capsule center with scaling and rotation applied.
         Vector3 transformedCenter { get { return transform.TransformVector(center); } }
 
@@ -218,9 +221,6 @@ namespace Controller2k
 
         // Default height of the capsule (e.g. for resetting it).
         public float defaultHeight { get; private set; }
-
-        // Are we on a sliding surface, but still waiting 'slideStartTime' before starting to actually slide?
-        public bool startingSlide { get { return m_SlidingDownSlopeTime > 0 && m_SlidingDownSlopeTime <= slideStartTime; } }
 
         // The capsule radius with the relevant scaling applied (e.g. if object scale is not 1,1,1)
         public float scaledRadius
