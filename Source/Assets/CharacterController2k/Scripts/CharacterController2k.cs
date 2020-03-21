@@ -13,7 +13,7 @@ using UnityEngine.Serialization;
 namespace Controller2k
 {
     // sliding starts after a delay, and stops after a delay. we need an enum.
-    public enum SlidingState : byte { None, Starting, Sliding, Stopping };
+    public enum SlidingState : byte { NONE, STARTING, SLIDING, STOPPING };
 
     // <summary>
     // Open character controller. Handles the movement of a character, by using a capsule for movement and collision detection.
@@ -847,12 +847,12 @@ namespace Controller2k
             m_DownCollisionNormal = null;
 
             // Stop sliding down slopes when character jumps
-            if (moveVector.y > 0.0f && slidingState != SlidingState.None)
+            if (moveVector.y > 0.0f && slidingState != SlidingState.NONE)
             {
                 // this hasn't really been tested. let's show a log message for
                 // now.
                 Debug.Log("CharacterController2k: a jump stopped sliding: " + slidingState);
-                slidingState = SlidingState.None;
+                slidingState = SlidingState.NONE;
             }
 
             // Do the move loop
@@ -1753,8 +1753,8 @@ namespace Controller2k
             // moved down and collided with the slope's surface. in that case,
             // simply reuse the normal instead of casting again.
             // IMPORTANT: we are NOT on a slope surface if state == Stopped!
-            bool onSlopeSurface = slidingState == SlidingState.Starting ||
-                                  slidingState == SlidingState.Sliding;
+            bool onSlopeSurface = slidingState == SlidingState.STARTING ||
+                                  slidingState == SlidingState.SLIDING;
             if (onSlopeSurface && m_DownCollisionNormal != null)
             {
                 slopeNormal = m_DownCollisionNormal.Value;
@@ -1846,10 +1846,10 @@ namespace Controller2k
                 //  this fixes it.)
                 //Debug.Log("Considering sliding for slope with angle: " + Vector3.Angle(Vector3.up, slopeNormal));
                 slidingStartedTime = Time.time;
-                return SlidingState.Starting;
+                return SlidingState.STARTING;
             }
             // if none is found, then we just aren't sliding
-            else return SlidingState.None;
+            else return SlidingState.NONE;
         }
 
         // sliding FSM state update
@@ -1866,16 +1866,16 @@ namespace Controller2k
                 {
                     // actually start sliding in the next frame
                     //Debug.LogWarning("Starting sliding for slope with angle: " + Vector3.Angle(Vector3.up, slopeNormal) + " after on it for " + slideStartDelay + " seconds");
-                    return SlidingState.Sliding;
+                    return SlidingState.SLIDING;
                 }
                 // otherwise wait a little longer
-                else return SlidingState.Starting;
+                else return SlidingState.STARTING;
             }
             // if none is found, then we briefly walked over a slope, but not
             // long enough to actually start sliding
             else
             {
-                return SlidingState.None;
+                return SlidingState.NONE;
             }
         }
 
@@ -1897,13 +1897,13 @@ namespace Controller2k
                 // if we slided, then keep sliding
                 if (DoSlideMove(slopeNormal, slidingTimeElapsed))
                 {
-                    return SlidingState.Sliding;
+                    return SlidingState.SLIDING;
                 }
                 // if we collided on the side,  we transition to stopping
                 else
                 {
                     slidingStoppedTime = Time.time;
-                    return SlidingState.Stopping;
+                    return SlidingState.STOPPING;
                 }
             }
             // if none is found, then we transition to stopping
@@ -1911,7 +1911,7 @@ namespace Controller2k
             {
                 //Debug.LogWarning("Sliding->Stopping");
                 slidingStoppedTime = Time.time;
-                return SlidingState.Stopping;
+                return SlidingState.STOPPING;
             }
         }
 
@@ -1925,7 +1925,7 @@ namespace Controller2k
             {
                 // we found a new one even though we were about to stop.
                 // in that case, continue sliding in the next frame.
-                return SlidingState.Sliding;
+                return SlidingState.SLIDING;
             }
             // not on a slope and enough time elapsed to stop?
             // this is necessary for two reason:
@@ -1936,13 +1936,13 @@ namespace Controller2k
             else if (Time.time >= slidingStoppedTime + slideStopDelay)
             {
                 //Debug.LogWarning("Stopping sliding after not on a slope for " + slideStopDelay + " seconds");
-                return SlidingState.None;
+                return SlidingState.NONE;
             }
             // not on a slope, but not enough time elapsed.
             // wait a little longer.
             else
             {
-                return SlidingState.Stopping;
+                return SlidingState.STOPPING;
             }
         }
 
@@ -1952,7 +1952,7 @@ namespace Controller2k
             // only if sliding feature enabled, and if on ground
             if (!slideDownSlopes || !isGrounded)
             {
-                slidingState = SlidingState.None;
+                slidingState = SlidingState.NONE;
                 return;
             }
 
@@ -1960,10 +1960,10 @@ namespace Controller2k
             // it simple, understandable and modifiable.
             // (previously it used complex if/else cases, which were hard to
             //  understand and hard to modify/debug)
-            if      (slidingState == SlidingState.None)     slidingState = UpdateSlidingNONE();
-            else if (slidingState == SlidingState.Starting) slidingState = UpdateSlidingSTARTING();
-            else if (slidingState == SlidingState.Sliding)  slidingState = UpdateSlidingSLIDING();
-            else if (slidingState == SlidingState.Stopping) slidingState = UpdateSlidingSTOPPING();
+            if      (slidingState == SlidingState.NONE)     slidingState = UpdateSlidingNONE();
+            else if (slidingState == SlidingState.STARTING) slidingState = UpdateSlidingSTARTING();
+            else if (slidingState == SlidingState.SLIDING)  slidingState = UpdateSlidingSLIDING();
+            else if (slidingState == SlidingState.STOPPING) slidingState = UpdateSlidingSTOPPING();
             else Debug.LogError("Unhandled sliding state: " + slidingState);
         }
 
