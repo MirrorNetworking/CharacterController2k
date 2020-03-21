@@ -1737,15 +1737,9 @@ namespace Controller2k
 
         public static bool IsSlideableAngle(float slopeAngle, float slopeLimit)
         {
-            // is the slope too steep?
-            bool slopeIsSteep = slopeAngle > slopeLimit;
-            if (!slopeIsSteep || slopeAngle >= k_MaxSlideAngle)
-            {
-                // too steep, not sliding anymore
-                return false;
-            }
-            // fine
-            return true;
+            // needs to be between slopeLimit (to start sliding) and maxSlide
+            // (to stop sliding)
+            return slopeLimit <= slopeAngle && slopeAngle < k_MaxSlideAngle;
         }
 
         // move one step further along the slide
