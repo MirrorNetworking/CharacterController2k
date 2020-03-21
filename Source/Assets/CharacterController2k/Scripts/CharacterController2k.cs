@@ -1786,10 +1786,7 @@ namespace Controller2k
         {
             // only if sliding feature enabled, and if on ground
             if (!slideDownSlopes || !isGrounded)
-            {
-                // not sliding if sliding is disabled
                 return false;
-            }
 
             // find slope normal by reusing or casting for a new one
             if (!ReuseOrCastForSlopeNormal(out Vector3 slopeNormal))
