@@ -1692,6 +1692,48 @@ namespace Controller2k
             m_SlidingDownSlopeTime = 0.0f;
         }
 
+        // do different casts downwards to find the best slope normal
+        bool CastForSlopeNormal(out Vector3 slopeNormal)
+        {
+
+            // sphere down to hit slope
+            RaycastHit hitInfoSphere;
+            if (!SmallSphereCast(Vector3.down,
+                                 skinWidth + k_SlideDownSlopeTestDistance,
+                                 out hitInfoSphere,
+                                 Vector3.zero,
+                                 true, transform.position))
+            {
+                // no slope found, not sliding anymore
+                slopeNormal = Vector3.zero;
+                return false;
+            }
+
+            RaycastHit hitInfoRay;
+            Vector3 rayOrigin = Helpers.GetBottomSphereWorldPosition(transform.position, transformedCenter, scaledRadius, scaledHeight);
+            Vector3 rayDirection = hitInfoSphere.point - rayOrigin;
+
+            // there is a slope below us.
+            // let's raycast again for a more accurate normal than spherecast/capsulecast
+            if (Physics.Raycast(rayOrigin,
+                                rayDirection,
+                                out hitInfoRay,
+                                rayDirection.magnitude * k_RaycastScaleDistance,
+                                collisionLayerMask,
+                                triggerQuery) &&
+                hitInfoRay.collider == hitInfoSphere.collider)
+            {
+                // raycast hit something, so we have a more accurate normal now
+                slopeNormal = hitInfoRay.normal;
+            }
+            else
+            {
+                // raycast hit nothing. let's keep the first normal.
+                slopeNormal = hitInfoSphere.normal;
+            }
+            return true;
+        }
+
         // Auto-slide down steep slopes.
         bool UpdateSlideDownSlopesInternal(float dt)
         {
@@ -1708,37 +1750,11 @@ namespace Controller2k
             }
             else
             {
-                // sphere down to hit slope
-                RaycastHit hitInfoSphere;
-                if (!SmallSphereCast(Vector3.down,
-                                     skinWidth + k_SlideDownSlopeTestDistance,
-                                     out hitInfoSphere,
-                                     Vector3.zero,
-                                     true, transform.position))
+                // sphere/raycast to find a really good slope normal
+                if (!CastForSlopeNormal(out hitNormal))
                 {
                     // no slope found, not sliding anymore
                     return false;
-                }
-
-                RaycastHit hitInfoRay;
-                Vector3 rayOrigin = Helpers.GetBottomSphereWorldPosition(transform.position, transformedCenter, scaledRadius, scaledHeight);
-                Vector3 rayDirection = hitInfoSphere.point - rayOrigin;
-
-                // there is a slope below us.
-                // let's raycast again for a more accurate normal than spherecast/capsulecast
-                if (Physics.Raycast(rayOrigin,
-                                    rayDirection,
-                                    out hitInfoRay,
-                                    rayDirection.magnitude * k_RaycastScaleDistance,
-                                    collisionLayerMask,
-                                    triggerQuery) &&
-                    hitInfoRay.collider == hitInfoSphere.collider)
-                {
-                    hitNormal = hitInfoRay.normal;
-                }
-                else
-                {
-                    hitNormal = hitInfoSphere.normal;
                 }
             }
 
