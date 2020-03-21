@@ -1832,7 +1832,8 @@ namespace Controller2k
                 // increase sliding stop time time
                 m_DelayStopSlidingDownSlopeTime += Time.deltaTime;
 
-                // Slight delay before we stop sliding down slopes. To handle cases where sliding test fails for a few frames.
+                // Slight delay before we stop sliding down slopes. To handle
+                // cases where sliding test fails for a few frames.
                 if (m_DelayStopSlidingDownSlopeTime > slideStopTime)
                 {
                     StopSlideDownSlopes();
