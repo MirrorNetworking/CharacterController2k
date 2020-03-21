@@ -1724,7 +1724,8 @@ namespace Controller2k
                 Vector3 rayOrigin = Helpers.GetBottomSphereWorldPosition(transform.position, transformedCenter, scaledRadius, scaledHeight);
                 Vector3 rayDirection = hitInfoSphere.point - rayOrigin;
 
-                // Raycast returns a more accurate normal than SphereCast/CapsuleCast
+                // there is a slope below us.
+                // let's raycast again for a more accurate normal than spherecast/capsulecast
                 if (Physics.Raycast(rayOrigin,
                                     rayDirection,
                                     out hitInfoRay,
