@@ -1708,6 +1708,7 @@ namespace Controller2k
             }
             else
             {
+                // sphere down to hit slope
                 RaycastHit hitInfoSphere;
                 if (!SmallSphereCast(Vector3.down,
                                      skinWidth + k_SlideDownSlopeTestDistance,
@@ -1715,6 +1716,7 @@ namespace Controller2k
                                      Vector3.zero,
                                      true, transform.position))
                 {
+                    // no slope found, not sliding anymore
                     return false;
                 }
 
