@@ -26,5 +26,31 @@ namespace Controller2k.Tests
             // 85 degree is really steep, but still valid for sliding
             Assert.That(CharacterController2k.IsSlideableAngle(85, 45), Is.True);
         }
+
+        [Test]
+        public void CalculateSlideMoveVector()
+        {
+            // create a normal for a 45 degree angled slope
+            // (= equal parts up and to the right)
+            Vector3 slopeNormal = new Vector3(1, 1, 0).normalized;
+
+            // zero if time spent sliding is 0
+            Assert.That(CharacterController2k.CalculateSlideMoveVector(slopeNormal, 0, 1, 1), Is.EqualTo(Vector3.zero));
+
+            // half of 'gravity' down after sliding 1 seconds in a 45 degree angle
+            // (the angle determines the speed, and 45 is half way between 0 and 90)
+            Assert.That(CharacterController2k.CalculateSlideMoveVector(slopeNormal, 1, 1, 10), Is.EqualTo(new Vector3(0, Physics.gravity.y/2, 0)));
+
+            // exactly 'gravity' down after sliding 2 seconds in a 45 degree angle
+            // (the angle determines the speed, and 45 is half way between 0 and 90)
+            Assert.That(CharacterController2k.CalculateSlideMoveVector(slopeNormal, 2, 1, 10), Is.EqualTo(new Vector3(0, Physics.gravity.y, 0)));
+
+            // exactly 'gravity' down after sliding 1 seconds in a 45 degree angle
+            // with 2x multiplier
+            Assert.That(CharacterController2k.CalculateSlideMoveVector(slopeNormal, 2, 1, 10), Is.EqualTo(new Vector3(0, Physics.gravity.y, 0)));
+
+            // test max speed too
+            Assert.That(CharacterController2k.CalculateSlideMoveVector(slopeNormal, 1, 1, 1), Is.EqualTo(new Vector3(0, -1, 0)));
+        }
     }
 }

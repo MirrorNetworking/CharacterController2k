@@ -1742,6 +1742,23 @@ namespace Controller2k
             return slopeLimit <= slopeAngle && slopeAngle < k_MaxSlideAngle;
         }
 
+        public static Vector3 CalculateSlideMoveVector(Vector3 slopeNormal, float slidingTime, float slideGravityMultiplier, float slideMaxSpeed)
+        {
+            // calculate slope angle
+            float slopeAngle = Vector3.Angle(Vector3.up, slopeNormal);
+
+            // Speed increases as slope angle increases
+            float slideSpeedScale = Mathf.Clamp01(slopeAngle / k_MaxSlideAngle);
+
+            // gravity depends on Physics.gravity and how steep the slide is
+            float gravity = Mathf.Abs(Physics.gravity.y) * slideGravityMultiplier * slideSpeedScale;
+
+            // Apply gravity and slide along the obstacle
+            // -> multiplied by slidingTime so it gets faster the longer we slide
+            float verticalVelocity = Mathf.Clamp(gravity * slidingTime, 0, Mathf.Abs(slideMaxSpeed));
+            return Vector3.down * verticalVelocity;
+        }
+
         // move one step further along the slide
         // returns true if we did slide, false otherwise
         bool SlideStep()
@@ -1798,15 +1815,11 @@ namespace Controller2k
 
             // Pro tip: Here you can also use the friction of the physics material of the slope, to adjust the slide speed.
 
-            // Speed increases as slope angle increases
-            float slideSpeedScale = Mathf.Clamp01(slopeAngle / k_MaxSlideAngle);
+            // calculate slide move vector based on parameters
+            Vector3 moveVector = CalculateSlideMoveVector(slopeNormal, m_SlidingDownSlopeTime, slideGravityMultiplier, slideMaxSpeed);
 
-            // gravity depends on Physics.gravity and how steep the slide is
-            float gravity = Mathf.Abs(Physics.gravity.y) * slideGravityMultiplier * slideSpeedScale;
-
-            // Apply gravity and slide along the obstacle
-            float verticalVelocity = Mathf.Clamp(gravity * m_SlidingDownSlopeTime, 0, Mathf.Abs(slideMaxSpeed));
-            Vector3 moveVector = Vector3.down * (verticalVelocity * Time.deltaTime);
+            // multiply with deltaTime so it's frame rate independent
+            moveVector *= Time.deltaTime;
 
             // Push slightly away from the slope
             Vector3 push = new Vector3(slopeNormal.x, 0, slopeNormal.z).normalized * k_PushAwayFromSlopeDistance;
