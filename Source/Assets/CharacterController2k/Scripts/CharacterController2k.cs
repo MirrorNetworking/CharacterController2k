@@ -1822,6 +1822,7 @@ namespace Controller2k
             // not sliding anymore
             else
             {
+                // SlidingDownSlopeTime still > 0?
                 if (isSlidingDownSlope)
                 {
                     m_SlidingDownSlopeTime += Time.deltaTime;
