@@ -1776,8 +1776,10 @@ namespace Controller2k
             // Speed increases as slope angle increases
             float slideSpeedScale = Mathf.Clamp01(slopeAngle / k_MaxSlopeSlideAngle);
 
-            // Apply gravity and slide along the obstacle
+            // gravity depends on Physics.gravity and how steep the slide is
             float gravity = Mathf.Abs(Physics.gravity.y) * slideGravityScale * slideSpeedScale;
+
+            // Apply gravity and slide along the obstacle
             float verticalVelocity = Mathf.Clamp(gravity * m_SlidingDownSlopeTime, 0.0f, Mathf.Abs(slideMaxSpeed));
             Vector3 moveVector = new Vector3(0.0f, -verticalVelocity, 0.0f) * dt;
 
