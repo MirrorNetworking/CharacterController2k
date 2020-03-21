@@ -1810,6 +1810,8 @@ namespace Controller2k
         void UpdateSlideDownSlopes()
         {
             float deltaTime = Time.deltaTime;
+
+            // slide one step further
             if (!SlideStep(deltaTime))
             {
                 if (isSlidingDownSlope)
@@ -1828,6 +1830,7 @@ namespace Controller2k
                     StopSlideDownSlopes();
                 }
             }
+            // no sliding happened
             else
             {
                 m_DelayStopSlidingDownSlopeTime = 0.0f;
