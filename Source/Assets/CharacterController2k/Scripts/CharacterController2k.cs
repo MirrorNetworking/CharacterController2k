@@ -1834,12 +1834,6 @@ namespace Controller2k
                         StopSlideDownSlopes();
                     }
                 }
-                // otherwise set slidingDownSlopeTime = 0
-                // TODO this is pointless
-                else
-                {
-                    StopSlideDownSlopes();
-                }
             }
         }
 
