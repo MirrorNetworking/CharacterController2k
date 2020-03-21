@@ -99,8 +99,8 @@ namespace Controller2k
         public float slideMaxSpeed = 10.0f;
 
         [FormerlySerializedAs("m_SlideGravityScale")]
-        [Tooltip("Gravity scale to apply when sliding down slopes.")]
-        public float slideGravityScale = 1.0f;
+        [Tooltip("Gravity multiplier to apply when sliding down slopes.")]
+        public float slideGravityMultiplier = 1.0f;
 
         [FormerlySerializedAs("m_SlideStartTime")]
         [Tooltip("The time (in seconds) after initiating a slide classified as a slide start. Used to disable jumping.")]
@@ -1796,7 +1796,7 @@ namespace Controller2k
             float slideSpeedScale = Mathf.Clamp01(slopeAngle / k_MaxSlopeSlideAngle);
 
             // gravity depends on Physics.gravity and how steep the slide is
-            float gravity = Mathf.Abs(Physics.gravity.y) * slideGravityScale * slideSpeedScale;
+            float gravity = Mathf.Abs(Physics.gravity.y) * slideGravityMultiplier * slideSpeedScale;
 
             // Apply gravity and slide along the obstacle
             float verticalVelocity = Mathf.Clamp(gravity * m_SlidingDownSlopeTime, 0, Mathf.Abs(slideMaxSpeed));
