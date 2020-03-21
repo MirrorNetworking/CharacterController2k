@@ -1777,14 +1777,11 @@ namespace Controller2k
             {
                 slopeNormal = m_DownCollisionNormal.Value;
             }
-            else
+            // sphere/raycast to find a really good slope normal
+            else if (!CastForSlopeNormal(out slopeNormal))
             {
-                // sphere/raycast to find a really good slope normal
-                if (!CastForSlopeNormal(out slopeNormal))
-                {
-                    // no slope found, not sliding anymore
-                    return false;
-                }
+                // no slope found, not sliding anymore
+                return false;
             }
 
             // calculate slope angle
