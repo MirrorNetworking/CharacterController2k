@@ -1800,6 +1800,7 @@ namespace Controller2k
                 didSlide = false;
             }
 
+            // restore collision flags and velocity
             collisionFlags = oldCollisionFlags;
             velocity = oldVelocity;
 
