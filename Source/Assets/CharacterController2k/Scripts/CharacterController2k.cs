@@ -1741,24 +1741,24 @@ namespace Controller2k
             if (!slideDownSlopes || !isGrounded)
                 return false;
 
-            Vector3 hitNormal;
+            Vector3 slopeNormal;
 
             // Collided downwards during the last slide movement?
             if (isSlidingDownSlope && m_DownCollisionNormal != null)
             {
-                hitNormal = m_DownCollisionNormal.Value;
+                slopeNormal = m_DownCollisionNormal.Value;
             }
             else
             {
                 // sphere/raycast to find a really good slope normal
-                if (!CastForSlopeNormal(out hitNormal))
+                if (!CastForSlopeNormal(out slopeNormal))
                 {
                     // no slope found, not sliding anymore
                     return false;
                 }
             }
 
-            float slopeAngle = Vector3.Angle(Vector3.up, hitNormal);
+            float slopeAngle = Vector3.Angle(Vector3.up, slopeNormal);
             bool slopeIsSteep = slopeAngle > slopeLimit;
             if (!slopeIsSteep || slopeAngle >= k_MaxSlopeSlideAngle)
             {
@@ -1779,7 +1779,7 @@ namespace Controller2k
             Vector3 moveVector = new Vector3(0.0f, -verticalVelocity, 0.0f) * dt;
 
             // Push slightly away from the slope
-            Vector3 push = new Vector3(hitNormal.x, 0.0f, hitNormal.z).normalized * k_PushAwayFromSlopeDistance;
+            Vector3 push = new Vector3(slopeNormal.x, 0.0f, slopeNormal.z).normalized * k_PushAwayFromSlopeDistance;
             moveVector = new Vector3(push.x, moveVector.y, push.z);
 
             // Preserve collision flags and velocity. Because user expects them to only be set when manually calling Move/SimpleMove.
