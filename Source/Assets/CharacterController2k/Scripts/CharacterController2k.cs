@@ -1758,7 +1758,10 @@ namespace Controller2k
                 }
             }
 
+            // calculate slope angle
             float slopeAngle = Vector3.Angle(Vector3.up, slopeNormal);
+
+            // is the slope too steep?
             bool slopeIsSteep = slopeAngle > slopeLimit;
             if (!slopeIsSteep || slopeAngle >= k_MaxSlopeSlideAngle)
             {
