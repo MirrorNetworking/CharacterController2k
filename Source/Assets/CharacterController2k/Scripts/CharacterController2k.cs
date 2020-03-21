@@ -107,10 +107,10 @@ namespace Controller2k
 
         [FormerlySerializedAs("m_SlideStartTime")]
         [Tooltip("The time (in seconds) after initiating a slide classified as a slide start. Used to disable jumping.")]
-        public float slideStartTime = 0.25f;
+        public float slideStartDelay = 0.25f;
 
         [Tooltip("Slight delay (in seconds) before we stop sliding down slopes. To handle cases where sliding test fails for a few frames.")]
-        public float slideStopTime = 0.5f;
+        public float slideStopDelay = 0.5f;
 
         // Max slope limit.
         const float k_MaxSlopeLimit = 90.0f;
@@ -1871,7 +1871,7 @@ namespace Controller2k
                 {
                     // we are still on a slope that will cause sliding.
                     // but wait until start time has elapsed.
-                    if (Time.time >= slidingStartedTime + slideStartTime)
+                    if (Time.time >= slidingStartedTime + slideStartDelay)
                     {
                         // actually start sliding in the next frame
                         //Debug.LogWarning("Starting sliding for slope with angle: " + Vector3.Angle(Vector3.up, slopeNormal) + " after on it for " + slideStartTime + " seconds");
@@ -1939,7 +1939,7 @@ namespace Controller2k
                 //   tiny flat surface
                 // * so we don't allow jumping immediately after sliding, which
                 //   is useful in some games.
-                else if (Time.time >= slidingStoppedTime + slideStopTime)
+                else if (Time.time >= slidingStoppedTime + slideStopDelay)
                 {
                     //Debug.LogWarning("Stopping sliding after not on a slope for " + slideStopTime + " seconds");
                     return SlidingState.None;
