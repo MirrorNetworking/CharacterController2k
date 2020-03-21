@@ -1909,7 +1909,6 @@ namespace Controller2k
                     // if we collided on the side,  we transition to stopping
                     else
                     {
-                        //Debug.LogWarning("Sliding->Stopping");
                         slidingStoppedTime = Time.time;
                         return SlidingState.Stopping;
                     }
