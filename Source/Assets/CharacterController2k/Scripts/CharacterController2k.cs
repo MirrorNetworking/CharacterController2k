@@ -113,7 +113,7 @@ namespace Controller2k
         const float k_MaxSlopeLimit = 90.0f;
 
         // Max slope angle on which character can slide down automatically.
-        const float k_MaxSlopeSlideAngle = 90.0f;
+        const float k_MaxSlideAngle = 90.0f;
 
         // Distance to test for ground when sliding down slopes.
         const float k_SlideDownSlopeTestDistance = 1.0f;
@@ -1739,7 +1739,7 @@ namespace Controller2k
         {
             // is the slope too steep?
             bool slopeIsSteep = slopeAngle > slopeLimit;
-            if (!slopeIsSteep || slopeAngle >= k_MaxSlopeSlideAngle)
+            if (!slopeIsSteep || slopeAngle >= k_MaxSlideAngle)
             {
                 // too steep, not sliding anymore
                 return false;
@@ -1805,7 +1805,7 @@ namespace Controller2k
             // Pro tip: Here you can also use the friction of the physics material of the slope, to adjust the slide speed.
 
             // Speed increases as slope angle increases
-            float slideSpeedScale = Mathf.Clamp01(slopeAngle / k_MaxSlopeSlideAngle);
+            float slideSpeedScale = Mathf.Clamp01(slopeAngle / k_MaxSlideAngle);
 
             // gravity depends on Physics.gravity and how steep the slide is
             float gravity = Mathf.Abs(Physics.gravity.y) * slideGravityMultiplier * slideSpeedScale;
