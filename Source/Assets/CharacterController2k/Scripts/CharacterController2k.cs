@@ -1693,34 +1693,6 @@ namespace Controller2k
         }
 
         // Auto-slide down steep slopes.
-        void UpdateSlideDownSlopes()
-        {
-            float deltaTime = Time.deltaTime;
-            if (!UpdateSlideDownSlopesInternal(deltaTime))
-            {
-                if (isSlidingDownSlope)
-                {
-                    m_SlidingDownSlopeTime += deltaTime;
-                    m_DelayStopSlidingDownSlopeTime += deltaTime;
-
-                    // Slight delay before we stop sliding down slopes. To handle cases where sliding test fails for a few frames.
-                    if (m_DelayStopSlidingDownSlopeTime > slideStopTime)
-                    {
-                        StopSlideDownSlopes();
-                    }
-                }
-                else
-                {
-                    StopSlideDownSlopes();
-                }
-            }
-            else
-            {
-                m_DelayStopSlidingDownSlopeTime = 0.0f;
-            }
-        }
-
-        // Auto-slide down steep slopes.
         bool UpdateSlideDownSlopesInternal(float dt)
         {
             if (!slideDownSlopes || !isGrounded)
@@ -1807,6 +1779,34 @@ namespace Controller2k
             velocity = oldVelocity;
 
             return didSlide;
+        }
+
+        // Auto-slide down steep slopes.
+        void UpdateSlideDownSlopes()
+        {
+            float deltaTime = Time.deltaTime;
+            if (!UpdateSlideDownSlopesInternal(deltaTime))
+            {
+                if (isSlidingDownSlope)
+                {
+                    m_SlidingDownSlopeTime += deltaTime;
+                    m_DelayStopSlidingDownSlopeTime += deltaTime;
+
+                    // Slight delay before we stop sliding down slopes. To handle cases where sliding test fails for a few frames.
+                    if (m_DelayStopSlidingDownSlopeTime > slideStopTime)
+                    {
+                        StopSlideDownSlopes();
+                    }
+                }
+                else
+                {
+                    StopSlideDownSlopes();
+                }
+            }
+            else
+            {
+                m_DelayStopSlidingDownSlopeTime = 0.0f;
+            }
         }
 
         // Sets the playerRootTransform's localPosition to the rootTransformOffset
