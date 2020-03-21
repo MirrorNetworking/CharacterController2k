@@ -1817,7 +1817,8 @@ namespace Controller2k
             // slide one step further. true if we are sliding.
             if (SlideStep())
             {
-                m_DelayStopSlidingDownSlopeTime = 0.0f;
+                // reset remaining slide end time each time
+                m_DelayStopSlidingDownSlopeTime = 0;
             }
             // not sliding anymore, but was sliding last time?
             // (in other words: SlidingDownSlopeTime wasn't reset yet?)
