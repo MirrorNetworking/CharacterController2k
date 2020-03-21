@@ -1829,6 +1829,7 @@ namespace Controller2k
                 // (if we stop increasing time, the speed won't increase anymore)
                 m_SlidingDownSlopeTime += Time.deltaTime;
 
+                // increase sliding stop time time
                 m_DelayStopSlidingDownSlopeTime += Time.deltaTime;
 
                 // Slight delay before we stop sliding down slopes. To handle cases where sliding test fails for a few frames.
