@@ -1735,6 +1735,19 @@ namespace Controller2k
             return true;
         }
 
+        public static bool IsSlideableAngle(float slopeAngle, float slopeLimit)
+        {
+            // is the slope too steep?
+            bool slopeIsSteep = slopeAngle > slopeLimit;
+            if (!slopeIsSteep || slopeAngle >= k_MaxSlopeSlideAngle)
+            {
+                // too steep, not sliding anymore
+                return false;
+            }
+            // fine
+            return true;
+        }
+
         // move one step further along the slide
         // returns true if we did slide, false otherwise
         bool SlideStep()
@@ -1766,9 +1779,8 @@ namespace Controller2k
             // calculate slope angle
             float slopeAngle = Vector3.Angle(Vector3.up, slopeNormal);
 
-            // is the slope too steep?
-            bool slopeIsSteep = slopeAngle > slopeLimit;
-            if (!slopeIsSteep || slopeAngle >= k_MaxSlopeSlideAngle)
+            // is the slope angle valid for sliding?
+            if (!IsSlideableAngle(slopeAngle, slopeLimit))
             {
                 // too steep, not sliding anymore
                 return false;
