@@ -1784,7 +1784,7 @@ namespace Controller2k
             Vector3 moveVector = Vector3.down * (verticalVelocity * dt);
 
             // Push slightly away from the slope
-            Vector3 push = new Vector3(slopeNormal.x, 0.0f, slopeNormal.z).normalized * k_PushAwayFromSlopeDistance;
+            Vector3 push = new Vector3(slopeNormal.x, 0, slopeNormal.z).normalized * k_PushAwayFromSlopeDistance;
             moveVector = new Vector3(push.x, moveVector.y, push.z);
 
             // Preserve collision flags and velocity. Because user expects them to only be set when manually calling Move/SimpleMove.
