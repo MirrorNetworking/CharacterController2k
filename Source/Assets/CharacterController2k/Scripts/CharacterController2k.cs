@@ -107,10 +107,10 @@ namespace Controller2k
 
         [FormerlySerializedAs("m_SlideStartTime")]
         [Tooltip("The time (in seconds) after initiating a slide classified as a slide start. Used to disable jumping.")]
-        public float slideStartDelay = 0.25f;
+        public float slideStartDelay = 0.1f;
 
         [Tooltip("Slight delay (in seconds) before we stop sliding down slopes. To handle cases where sliding test fails for a few frames.")]
-        public float slideStopDelay = 0.5f;
+        public float slideStopDelay = 0.1f;
 
         // Max slope limit.
         const float k_MaxSlopeLimit = 90.0f;

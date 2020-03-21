@@ -9027,28 +9027,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29d02e23dd78c434baee064aae1caed9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_PlayerRootTransform: {fileID: 0}
-  m_RootTransformOffset: {x: 0, y: 0, z: 0}
-  m_SlopeLimit: 45
-  m_StepOffset: 0.3
-  m_SkinWidth: 0.08
-  m_MinMoveDistance: 0
-  m_GroundedTestDistance: 0.002
-  m_Center: {x: 0, y: 1, z: 0}
-  m_Radius: 0.2
-  m_Height: 1.87
-  m_CollisionLayerMask:
+  playerRootTransform: {fileID: 0}
+  rootTransformOffset: {x: 0, y: 0, z: 0}
+  slopeLimit: 45
+  stepOffset: 0.3
+  skinWidth: 0.08
+  groundedTestDistance: 0.002
+  center: {x: 0, y: 1, z: 0}
+  radius: 0.2
+  height: 1.87
+  collisionLayerMask:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsLocalHuman: 1
-  m_SlideAlongCeiling: 1
-  m_SlowAgainstWalls: 1
-  m_MinSlowAgainstWallsAngle: 10
-  m_TriggerQuery: 1
-  m_SlideDownSlopes: 1
-  m_SlideMaxSpeed: 10
-  m_SlideGravityScale: 4
-  m_SlideStartTime: 0.25
+  isLocalHuman: 1
+  slideAlongCeiling: 1
+  slowAgainstWalls: 1
+  minSlowAgainstWallsAngle: 10
+  triggerQuery: 1
+  slideDownSlopes: 1
+  slideMaxSpeed: 10
+  slideGravityMultiplier: 4
+  slideStartDelay: 0.1
+  slideStopDelay: 0.1
 --- !u!114 &114874947028204008
 MonoBehaviour:
   m_ObjectHideFlags: 0
