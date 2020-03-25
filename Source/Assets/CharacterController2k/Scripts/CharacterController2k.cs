@@ -975,7 +975,7 @@ namespace Controller2k
 #if UNITY_EDITOR
                 if (i == k_MaxMoveIterations - 1)
                 {
-                    Debug.LogWarning(name + " reached MaxMoveInterations(" + k_MaxMoveIterations + "): remainingVector=" + remainingMoveVector + " moveVector=" + moveVector + " hitCount=" + m_StuckInfo.hitCount);
+                    Debug.Log(name + " reached MaxMoveInterations(" + k_MaxMoveIterations + "): remainingVector=" + remainingMoveVector + " moveVector=" + moveVector + " hitCount=" + m_StuckInfo.hitCount);
                 }
 #endif
             }
