@@ -1,5 +1,8 @@
 ﻿// CharacterController2k is based on Unity's OpenCharacterController, modified by vis2k, all rights reserved.
 //
+// Collide & Slide based controller, instead of using Rigidbody.
+// Read more: https://docs.nvidia.com/gameworks/content/gameworkslibrary/physx/guide/Manual/CharacterControllers.html
+//
 // -------------------------------------------------------------------------------------------------------------
 // Original License from: https://github.com/Unity-Technologies/Standard-Assets-Characters:
 // Licensed under the Unity Companion License for Unity-dependent projects--see Unity Companion License.
