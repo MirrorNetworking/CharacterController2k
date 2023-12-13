@@ -696,8 +696,11 @@ public class PlayerMovement : MonoBehaviour
         // calculate which leg is behind, so as to leave that leg trailing in the jump animation
         // (This code is reliant on the specific run cycle offset in our animations,
         // and assumes one leg passes the other at the normalized clip times of 0.0 and 0.5)
-        float runCycle = Mathf.Repeat(animator.GetCurrentAnimatorStateInfo(0).normalizedTime + runCycleLegOffset, 1);
-        jumpLeg = (runCycle < 0.5f ? 1 : -1);// * move.z;
+        if (animator != null)
+        {
+            float runCycle = Mathf.Repeat(animator.GetCurrentAnimatorStateInfo(0).normalizedTime + runCycleLegOffset, 1);
+            jumpLeg = (runCycle < 0.5f ? 1 : -1);// * move.z;
+        }
 
         // reset keys no matter what
         jumpKeyPressed = false;
@@ -763,6 +766,9 @@ public class PlayerMovement : MonoBehaviour
     void PlayFootStepAudio()
     {
         if (!controller.isGrounded) return;
+
+        // any configured sounds?
+        if (footstepSounds == null || footstepSounds.Length == 0) return;
 
         // pick & play a random footstep sound from the array,
         // excluding sound at index 0
