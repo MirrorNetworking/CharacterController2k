@@ -2,14 +2,15 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!21 &2100000
 Material:
-  serializedVersion: 6
+  serializedVersion: 8
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: mat_fx_water_01
   m_Shader: {fileID: 4800000, guid: 475c4a4e617a8401b84ca7b32c7cc460, type: 3}
-  m_ShaderKeywords: 
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
   m_LightmapFlags: 5
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
@@ -99,6 +100,7 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    m_Ints: []
     m_Floats:
     - _Ambient: 1
     - _Displacement: 0.27863377
@@ -165,6 +167,7 @@ Material:
     - _WaveOffset: {r: 1, g: 1, b: -0.01, a: -0.01}
     - _WaveScale4: {r: 0.1, g: 0.1, b: 0.01, a: 0.01}
     - _WorldLightDir: {r: 0.5409661, g: -0.59902376, b: -0.59036124, a: 0}
+  m_BuildTextureStacks: []
 --- !u!1002 &2100001
 EditorExtensionImpl:
   serializedVersion: 6
