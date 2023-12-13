@@ -225,7 +225,7 @@ public class Utils
     public static bool IsCursorOverUserInterface()
     {
         // IsPointerOverGameObject check for left mouse (default)
-        if (EventSystem.current.IsPointerOverGameObject())
+        if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
             return true;
 
         // IsPointerOverGameObject check for touches
