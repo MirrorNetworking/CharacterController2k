@@ -27,6 +27,6 @@ PRs with bug fixes are most welcome.
 # Usage
 The project includes an example scene which uses Unity's Viking Village asset (free).
 You can try jumping, crouching, climbing, sliding down slopes, etc.
-The main component is 'CharacterController2k' - with a few custom scripts added to show crouching, climing, etc.
+The main component is 'CharacterController2k' - with a few custom scripts added to show crouching, climbing, etc.
 
 <img width="1448" alt="2023-12-13 - 16-20-05@2x" src="https://github.com/MirrorNetworking/CharacterController2k/assets/16416509/17ca0e31-ef2f-429a-be4d-f0fdd8436916">
