@@ -184,6 +184,10 @@ namespace Controller2k
         // Stuck info.
         StuckInfo m_StuckInfo = new StuckInfo();
 
+        // Displacement of the last movement's stick-to-ground snap, set by
+        // MoveLoop and used by MoveInternal to calculate the clean 'velocity'.
+        Vector3 m_StickToGroundOffset;
+
         // The collision info when hitting colliders.
         Dictionary<Collider, CollisionInfo> m_CollisionInfoDictionary = new Dictionary<Collider, CollisionInfo>();
 
@@ -191,8 +195,22 @@ namespace Controller2k
         readonly Collider[] m_PenetrationInfoColliders = new Collider[k_MaxOverlapColliders];
 
         // Velocity of the last movement. It's the new position minus the old position.
-        // (should only be set internally, but needs to be readable for animations)
+        // use this for animations, physics calculations, etc.
+        // this is different from stickyVelocity, see comments below.
         public Vector3 velocity { get; private set; }
+
+        // Raw velocity of the last movement, including the stick-to-ground force.
+        // stick-to-ground is always applied for collide & slide movement.
+        // but for animations etc., we need to separate this from raw velocity.
+        //
+        // fixes an animation bug where stickyVelocity was passed to Animator,
+        // which then activated the falling animation much quicker when falling
+        // of a minor edge (i.e. sidewalk) while sprinting. for example:
+        //   walk->fall   velocity.y was -5
+        //   sprint->fall velocity.y was -7
+        //
+        // where as rawVelocity is the same independent of walk vs. sprint.
+        Vector3 stickyVelocity;
 
         // Default center of the capsule (e.g. for resetting it).
         Vector3 m_DefaultCenter;
@@ -866,8 +884,19 @@ namespace Controller2k
 
             // vis2k: fix velocity
             // set velocity, which is direction * speed. we don't have speed,
-            // but we do have elapsed time
-            velocity = (transform.position - m_StartPosition) / Time.deltaTime;
+            // but we do have elapsed time.
+            //
+            // vis2k: fix sticky force included in velocity for animations.
+            // we need two different velocities:
+            // => stickyVelocity:
+            //    includes stick-to-ground force from collide & slide for movement.
+            //    when falling, velocity.y is larger when sprinting vs. walking
+            // => rawVelocity:
+            //    actual physics velocity ((last-current)/time).
+            //    not used for colide & slide movement.
+            //    used for animators etc.
+            stickyVelocity = (transform.position - m_StartPosition) / Time.deltaTime;
+            velocity = (transform.position - m_StartPosition - m_StickToGroundOffset) / Time.deltaTime;
 
             BroadcastCollisionEvent();
         }
@@ -927,6 +956,8 @@ namespace Controller2k
             m_NextMoveVectorIndex++;
 
             bool didTryToStickToGround = false;
+            Vector3 stickToGroundStartPosition = Vector3.zero;
+            m_StickToGroundOffset = Vector3.zero;
             m_StuckInfo.OnMoveLoop();
             Vector3 virtualPosition = transform.position;
 
@@ -968,6 +999,7 @@ namespace Controller2k
 
                         // Try to stick to the ground
                         didTryToStickToGround = true;
+                        stickToGroundStartPosition = virtualPosition;
                         if (!CanStickToGround(moveVector, out remainingMoveVector))
                         {
                             break;
@@ -981,6 +1013,13 @@ namespace Controller2k
                     Debug.Log(name + " reached MaxMoveInterations(" + k_MaxMoveIterations + "): remainingVector=" + remainingMoveVector + " moveVector=" + moveVector + " hitCount=" + m_StuckInfo.hitCount);
                 }
 #endif
+            }
+
+            // remember the stick-to-ground snap displacement so MoveInternal
+            // can exclude this grounding correction from the clean 'velocity'
+            if (didTryToStickToGround)
+            {
+                m_StickToGroundOffset = virtualPosition - stickToGroundStartPosition;
             }
 
             transform.position = virtualPosition;
@@ -1836,7 +1875,8 @@ namespace Controller2k
 
             // Preserve collision flags and velocity. Because user expects them to only be set when manually calling Move/SimpleMove.
             CollisionFlags oldCollisionFlags = collisionFlags;
-            Vector3 oldVelocity = velocity;
+            Vector3 oldRawVelocity = velocity;
+            Vector3 oldStickyVelocity = stickyVelocity;
 
             // move along the slope
             bool didSlide = true;
@@ -1849,7 +1889,8 @@ namespace Controller2k
 
             // restore collision flags and velocity
             collisionFlags = oldCollisionFlags;
-            velocity = oldVelocity;
+            velocity = oldRawVelocity;
+            stickyVelocity = oldStickyVelocity;
 
             // return result
             return didSlide;
